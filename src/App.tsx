@@ -3,7 +3,7 @@ import './App.css';
 
 const App: React.FC = () => {
   return (
-    <div>
+    <div className="border m-4">
 
     </div>
   );
