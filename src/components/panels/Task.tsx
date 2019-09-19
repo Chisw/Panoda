@@ -1,7 +1,13 @@
 import React, { useState } from 'react'
 import { Card, ButtonGroup, Button, Popover, Menu, MenuDivider, MenuItem, Dialog, Classes, TextArea } from '@blueprintjs/core'
 
-export default function Task() {
+interface TaskProps {
+  setTaskFrom: (val: string) => void
+}
+
+export default function Task(props: TaskProps) {
+
+  const { setTaskFrom } = props
 
   const [dialogOpen, setDialogOpen] = useState(false)
   const [panoIds, setPanoIds] = useState('')
@@ -57,6 +63,7 @@ export default function Task() {
                   icon="map" 
                   text="Map"
                   onClick={() => {
+                    setTaskFrom('map')
                     console.log('map')
                   }}
                 />
@@ -64,6 +71,7 @@ export default function Task() {
                   icon="text-highlight" 
                   text="Input" 
                   onClick={() => {
+                    setTaskFrom('input')
                     setDialogOpen(true)
                   }}
                 />
@@ -82,12 +90,21 @@ export default function Task() {
             Setting
           </Button>
         </ButtonGroup>
+        <ButtonGroup className="ml-4">
+          <Button 
+            icon="list"
+            active
+          />
+          <Button 
+            icon="grid-view"
+          />
+        </ButtonGroup>
         <Button
-            minimal
-            className="float-right text-xs"
-          >
-            What does task mean?
-          </Button>
+          minimal
+          className="float-right text-xs"
+        >
+          What does task mean?
+        </Button>
       </div>
       <Card>
         a

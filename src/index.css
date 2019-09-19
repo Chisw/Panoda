@@ -40,11 +40,22 @@ code {
   z-index: 10;
   margin-right: -200px;
 }
+
+.panoda-container .map-select-guider {
+  z-index: 15;
+  width: 200px;
+  box-sizing: border-box;
+  background: rgba(255,255,255, .96);
+}
+
 .panoda-container .panoda-panel {
   z-index: 20;
   margin-left: -200px;
   transition: all .5s;
+  overflow: hidden;
+  overflow-y: scroll;
 }
+
 .panoda-container .panoda-panel::before {
   content: '';
   display: block;
@@ -56,11 +67,30 @@ code {
   width: 400px;
   background-image: -webkit-linear-gradient(0, rgba(255,255,255, .92), #fff);  
 }
+
+.panoda-container .panoda-panel::after {
+  content: '';
+  display: block;
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  bottom: 0;
+  left: 400px;
+  width: 100%;
+  background: #fff;
+}
+
 .panoda-container.map-expand .panoda-panel {
   margin-left: 200px;
 }
+
 .panoda-container.map-expand .panoda-panel::before {
   background-image: -webkit-linear-gradient(0, #fff, #fff);  
+}
+
+.panoda-container .panoda-panel .panel-inner {
+  min-width: 600px;
+  max-width: 800px;
 }
 
 .anchorBL {

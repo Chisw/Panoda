@@ -37,8 +37,6 @@ map = {
 
     // map && map.panTo(new G.BMap.Point(120,31))
 
-
-
     G.map = map;
   }
 }
