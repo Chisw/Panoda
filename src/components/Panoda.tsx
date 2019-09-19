@@ -1,6 +1,6 @@
 import React from 'react'
 import { Tabs, Tab } from '@blueprintjs/core'
-import Fetcher from './panels/Fetcher'
+import Task from './panels/Task'
 
 export default function Panoda() {
   return (
@@ -11,10 +11,9 @@ export default function Panoda() {
         animate={true}
         id="navi"
         key="horizontal"
-        // renderActiveTabPanelOnly={this.state.activePanelOnly}
       >
-        <Tab id="task-list" title="Task" panel={<Fetcher />} />
-        <Tab id="fetched-history" title="History" panel={<Fetcher />} />
+        <Tab id="task" title="Task" panel={<Task />} />
+        <Tab id="history" title="History" panel={<Task />} />
       </Tabs>
     </>
   )

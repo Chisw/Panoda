@@ -36,14 +36,32 @@ code {
   overflow: hidden;
 }
 
-.panoda-container > div {
-  transition: margin .5s;
+.panoda-container .panoda-map {
+  z-index: 10;
+  margin-right: -200px;
 }
-
-.panoda-container .panoda-map { margin-right: 200px; }
-.panoda-container .panoda-panel { margin-left: -200px; }
-.panoda-container.map-expand .panoda-map { margin-right: -200px; }
-.panoda-container.map-expand .panoda-panel { margin-left: 200px; }
+.panoda-container .panoda-panel {
+  z-index: 20;
+  margin-left: -200px;
+  transition: all .5s;
+}
+.panoda-container .panoda-panel::before {
+  content: '';
+  display: block;
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 400px;
+  background-image: -webkit-linear-gradient(0, rgba(255,255,255, .95), #fff);  
+}
+.panoda-container.map-expand .panoda-panel {
+  margin-left: 200px;
+}
+.panoda-container.map-expand .panoda-panel::before {
+  background-image: -webkit-linear-gradient(0, #fff, #fff);  
+}
 
 .anchorBL {
   display: none;
