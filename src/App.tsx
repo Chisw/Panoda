@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import './App.css'
-import Panoda from './components/Panoda'
+import Header from './components/Header'
 import map, { PANO_COVER } from './map/map'
+import { Tabs, Tab } from '@blueprintjs/core'
+import Task from './components/panels/Task'
+import History from './components/panels/History'
 
 const App: React.FC = () => {
 
@@ -17,39 +20,30 @@ const App: React.FC = () => {
     mapCollect 
       ? G.map.addTileLayer(PANO_COVER)
       : G.map.removeTileLayer(PANO_COVER)
-  }, [mapCollect])
+  }, [mapCollect, G.map])
 
   return (
     <div className={`panoda-container ${mapExpand ? 'map-expand' : ''} w-full h-full absolute top-0 right-0 bottom-0 left-0`}>
 
-      <div id="map" className="panoda-map absolute top-0 right-50 bottom-0 left-0">
-      
-      </div>
+      <div id="map" className="panoda-map absolute top-0 right-50 bottom-0 left-0" />
 
       <div className="panoda-panel absolute top-0 right-0 bottom-0 left-50 px-10 shadow-md">
-        <div className="pt-8 pb-4 border-b">
-          <h3 className="text-4xl font-hairline">
-            Panoda
-          </h3>
-          <h3 className="text-sm text-gray-500 font-hairline">
-            Fetch Baidu panoramic photo easily!
-          </h3>
-        </div>
-        <Panoda />
-        <a
+        <Header />
+        <Tabs large animate id="navi" key="horizontal">
+          <Tab id="task" title="Task" panel={<Task />} />
+          <Tab id="history" title="History" panel={<History />} />
+        </Tabs>
+        <span
             onClick={() => {
               setMapExpand(!mapExpand)
             }}
-          >expand</a>
+          >expand</span>
 
-          <a
+          <span
             onClick={() => {
               setMapCollect(!mapCollect)
             }}
-          >mapCollect</a>
-        <div className="pt-12 pb-4">
-          <h3 className="text-xs font-hairline">i@jisuowei.com</h3>
-        </div>
+          >mapCollect</span>
       </div>
 
     </div>
