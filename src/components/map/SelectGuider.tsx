@@ -1,12 +1,12 @@
 import React from 'react'
 import { ButtonGroup, Button, Tooltip } from '@blueprintjs/core'
 
-interface MapSelectGuiderProps {
+interface SelectGuiderProps {
   selectWith: string
   setSelectWith: (val: string) => void
 }
 
-export default function MapSelectGuider(props: MapSelectGuiderProps) {
+export default function SelectGuider(props: SelectGuiderProps) {
 
   const { selectWith, setSelectWith } = props
 

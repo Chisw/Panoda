@@ -2,12 +2,13 @@ import React, { useState } from 'react'
 import { Card, ButtonGroup, Button, Popover, Menu, MenuDivider, MenuItem, Dialog, Classes, TextArea } from '@blueprintjs/core'
 
 interface TaskProps {
+  panos: any[]
   setTaskFrom: (val: string) => void
 }
 
 export default function Task(props: TaskProps) {
 
-  const { setTaskFrom } = props
+  const { panos, setTaskFrom } = props
 
   const [inputDialogOpen, setInputDialogOpen] = useState(false)
   const [panoIds, setPanoIds] = useState('')
@@ -50,6 +51,7 @@ export default function Task(props: TaskProps) {
         <ButtonGroup>
           <Button
             icon="tick"
+            disabled={panos.length === 0}
           >
             Select All
           </Button>
@@ -104,7 +106,7 @@ export default function Task(props: TaskProps) {
           What does task mean?
         </Button>
       </div>
-      <Card>
+      <Card className="bp3-skeleton">
         a
       </Card>
       <Button intent="primary">

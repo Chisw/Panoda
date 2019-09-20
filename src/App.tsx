@@ -1,19 +1,22 @@
 import React, { useState, useEffect } from 'react'
 import './App.css'
-import MapSelectGuider from './components/MapSelectGuider'
+import SelectGuider from './components/map/SelectGuider'
 import Header from './components/Header'
-import { Tabs, Tab } from '@blueprintjs/core'
+import { Tabs, Tab, ProgressBar } from '@blueprintjs/core'
 import Task from './components/panels/Task'
 import History from './components/panels/History'
 import Map from './map'
 
 const App: React.FC = () => {
 
-  const [tabId, setTabId] = useState('task')
+  const [loading, setLoading] = useState(false)
   const [taskFrom, setTaskFrom] = useState('')
   const [selectWith, setSelectWith] = useState('point')
   const [mapCollect, setMapCollect] = useState(false)
+  const [panos, setPanos] = useState([])
 
+  Map.parent.setLoading = setLoading
+  
   useEffect(() => {
     Map.init()
   }, [])
@@ -28,6 +31,7 @@ const App: React.FC = () => {
 
   useEffect(() => {
     setMapCollect( taskFrom === 'map' )
+    Map.clear()
   }, [taskFrom])
 
   return (
@@ -35,7 +39,7 @@ const App: React.FC = () => {
 
       <div className="panoda-map absolute top-0 right-50 bottom-0 left-0">
         <div id="map" className="absolute top-0 right-0 bottom-0 left-0"></div>
-        <MapSelectGuider
+        <SelectGuider
           selectWith={selectWith}
           setSelectWith={setSelectWith}
         />
@@ -44,33 +48,30 @@ const App: React.FC = () => {
       <div className="panoda-panel absolute top-0 right-0 bottom-0 left-50 px-10 shadow-md">
         <div className="panel-inner">
           <Header />
-          <Tabs 
-            large 
-            animate 
+          <Tabs large animate 
             className="border-t border-b mb-4"
             id="navi" 
             key="horizontal" 
-            selectedTabId={tabId}
-            onChange={(id: string) => {
-              setTabId(id)
-            }}
           >
-            <Tab id="task" title="Task" />
-            <Tab id="history" title="History" />
+            <Tab id="task" title="Task" 
+              panel={
+                <Task
+                  setTaskFrom={setTaskFrom}
+                  panos={panos}
+                />
+              } 
+            />
+            <Tab id="history" title="History" 
+              panel={
+                <History />
+              }
+            />
           </Tabs>
-          {
-            tabId === 'task' && (
-              <Task 
-                setTaskFrom={setTaskFrom}
-              />
-            )
-          }
-          {
-            tabId === 'history' && (
-              <History />
-            )
-          }
         </div>
+      </div>
+
+      <div className={`${loading ? 'block' : 'hidden'} fixed z-50 top-0 right-0 bottom-0 left-0`}>
+        <ProgressBar className="shadow-lg" />
       </div>
 
     </div>
