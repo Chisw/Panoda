@@ -1,22 +1,41 @@
 import React from 'react'
-import { ButtonGroup, Button } from '@blueprintjs/core'
+import { ButtonGroup, Button, Tooltip } from '@blueprintjs/core'
 
-export default function MapSelectGuider() {
+interface MapSelectGuiderProps {
+  selectWith: string
+  setSelectWith: (val: string) => void
+}
+
+export default function MapSelectGuider(props: MapSelectGuiderProps) {
+
+  const { selectWith, setSelectWith } = props
+
   return (
-    <div className="map-select-guider p-2 absolute top-0 bottom-0 left-50 shadow">
+    <div className="map-select-guider p-2 absolute left-50">
       <div className="text-center">
-        <ButtonGroup fill>
-          <Button
-            icon="locate"
-            active
-          >
-            Point
-          </Button>
-          <Button
-            icon="square"
-          >
-            Area
-          </Button>
+        <ButtonGroup fill className="shadow-xl">
+          <Tooltip content="Click the blue line on the map">
+            <Button
+              icon="locate"
+              active={selectWith === 'point'}
+              onClick={() => {
+                setSelectWith('point')
+              }}
+            >
+              Point
+            </Button>
+          </Tooltip>
+          <Tooltip content="Select an area on the map">
+            <Button
+              icon="square"
+              active={selectWith === 'area'}
+              onClick={() => {
+                setSelectWith('area')
+              }}
+            >
+              Area
+            </Button>
+          </Tooltip>
         </ButtonGroup>
       </div>
     </div>

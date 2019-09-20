@@ -9,19 +9,18 @@ export default function Task(props: TaskProps) {
 
   const { setTaskFrom } = props
 
-  const [dialogOpen, setDialogOpen] = useState(false)
+  const [inputDialogOpen, setInputDialogOpen] = useState(false)
   const [panoIds, setPanoIds] = useState('')
 
   const renderInputDialogView = () => {
     return (
       <Dialog
         title="New Task"
-        className={''}
         icon="text-highlight"
         canEscapeKeyClose={false}
         canOutsideClickClose={false}
-        isOpen={dialogOpen}
-        onClose={() => {setDialogOpen(false)}}
+        isOpen={inputDialogOpen}
+        onClose={() => {setInputDialogOpen(false)}}
       >
         <div className={Classes.DIALOG_BODY}>
           <TextArea
@@ -36,7 +35,7 @@ export default function Task(props: TaskProps) {
         <div className={Classes.DIALOG_FOOTER}>
           <div className={Classes.DIALOG_FOOTER_ACTIONS}>
             <Button minimal className="text-xs">How to get pano id(s)?</Button>
-            <Button onClick={() => {setDialogOpen(false)}}>Cancel</Button>
+            <Button onClick={() => {setInputDialogOpen(false)}}>Cancel</Button>
             <Button intent="primary" onClick={() => {}}>Finish</Button>
           </div>
         </div>
@@ -64,7 +63,6 @@ export default function Task(props: TaskProps) {
                   text="Map"
                   onClick={() => {
                     setTaskFrom('map')
-                    console.log('map')
                   }}
                 />
                 <MenuItem 
@@ -72,7 +70,7 @@ export default function Task(props: TaskProps) {
                   text="Input" 
                   onClick={() => {
                     setTaskFrom('input')
-                    setDialogOpen(true)
+                    setInputDialogOpen(true)
                   }}
                 />
             </Menu>

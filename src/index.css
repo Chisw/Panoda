@@ -43,9 +43,12 @@ code {
 
 .panoda-container .map-select-guider {
   z-index: 15;
-  width: 200px;
+  bottom: -46px;
   box-sizing: border-box;
-  background: rgba(255,255,255, .96);
+  margin-left: -120px;
+  width: 240px;
+  height: 46px;
+  transition: all 1.2s;
 }
 
 .panoda-container .panoda-panel {
@@ -86,6 +89,10 @@ code {
 
 .panoda-container.map-expand .panoda-panel::before {
   background-image: -webkit-linear-gradient(0, #fff, #fff);  
+}
+
+.panoda-container.map-expand .map-select-guider {
+  bottom: 20px;
 }
 
 .panoda-container .panoda-panel .panel-inner {
