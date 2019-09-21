@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { Card, ButtonGroup, Button, Popover, Menu, MenuDivider, MenuItem, Dialog, Classes, TextArea, Icon } from '@blueprintjs/core'
+import MAP from '../../map'
 
 interface TaskProps {
   panos: any[]
@@ -106,54 +107,55 @@ export default function Task(props: TaskProps) {
           What does task mean?
         </Button>
       </div>
-      {
-        panos.map( pano => {
+      <div className="task-wrapper absolute bottom-0 w-full">
+        {
+          panos.map( (pano, index) => {
 
-          const { id, lng, lat, Date, Rname } = pano
-          return (
-            <div className="pano-task mb-3 p-2 border rounded flex" key={id}>
-              <div>
-                <img 
-                  className="task-preview rounded-sm" 
-                  src={`https://mapsv1.bdimg.com/?qt=pdata&sid=${id}&pos=0_0&z=1`} 
-                />
-              </div>
-              <div className="px-2" style={{width: 360}}>
-                <p className="text-xs">
-                  PanoID: {id}
-                </p>
-                <p className="text-xs text-gray-500">
-                  ShotIn: {Date} 
-                  {
-                    Rname 
-                      ? <span className="ml-4">RoadName: {Rname}</span> 
-                      : ''
-                  }
-                </p>
-                <p className="text-xs text-gray-500">
-                  Position: {lng + ',' + lat}
-                </p>
-              </div>
-              <div className="px-2 text-right self-center flex-grow">
-                <ButtonGroup minimal>
-                  <Button 
-                    icon="map-marker"
+            const { id, lng, lat, Date, Rname } = pano
+            return (
+              <div className="pano-task py-3 border-b flex" key={index}>
+                <div>
+                  <img 
+                    className="task-preview rounded-sm" 
+                    src={`https://mapsv1.bdimg.com/?qt=pdata&sid=${id}&pos=0_0&z=1`} 
                   />
-                  <Button
-                    icon="trash"
-                    intent="danger"
-                  />
-                </ButtonGroup>
+                </div>
+                <div className="px-3 leading-snug" style={{width: 380}}>
+                  <p className="text-xs">
+                    PanoID: {id}
+                  </p>
+                  <p className="text-xs text-gray-500">
+                    ShotIn: {Date} 
+                    {
+                      Rname 
+                        ? <span className="ml-4">RoadName: {Rname}</span> 
+                        : ''
+                    }
+                  </p>
+                  <p className="text-xs text-gray-500">
+                    Position: {lng + ',' + lat}
+                  </p>
+                </div>
+                <div className="px-2 text-right self-center flex-grow">
+                  <ButtonGroup minimal>
+                    <Button 
+                      icon="map-marker"
+                      onClick={() => {
+                        MAP.panToPoint({lng, lat})
+                      }}
+                    />
+                    <Button
+                      icon="trash"
+                      intent="danger"
+                    />
+                  </ButtonGroup>
+                </div>
               </div>
-            </div>
-          )
-        }).reverse()
-      }
-
-      <Button intent="primary">
-          Fetch
-      </Button>
-
+            )
+          }).reverse()
+        }
+      </div>
+      
       {renderInputDialogView()}
 
     </>

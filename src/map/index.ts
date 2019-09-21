@@ -1,5 +1,6 @@
 import { Toaster } from "@blueprintjs/core"
-// import MapStyle from './custom_map.json'
+import { SVG_PIN } from '../data'
+// import MapStyle from '../data/custom_map.json'
 
 const toaster = Toaster.create({ position: 'top-left' })
 
@@ -7,22 +8,40 @@ const G = window as any
 const BMap = G.BMap
 const PANO_COVER = new BMap.PanoramaCoverageLayer()
 
+const getPinIcon = (point: {lng: number, lat: number}) => {
+  return new BMap.Marker(point, {
+    offset: {
+      width: -16,
+      height: -32
+    },
+    icon: new BMap.Symbol(SVG_PIN, {
+      rotation: 0,
+      fillColor: '#ea2323',
+      fillOpacity: 1,
+      strokeColor: '#dd2323',
+      strokeWeight: 1,
+      scale: .05
+    })
+  });
+}
+
 let map: any
 
-interface MapState {
+interface MAPState {
   parent: any
-  init: () => void
-  clear: () => void
-  listen: () => void
-  unlisten: () => void
-  getPanoId: (point: any, cb?: () => void) => void
+  init(): void
+  clear(): void
+  listen(): void
+  unlisten(): void
+  getPanoId(point: any, cb?: () => void): void
+  panToPoint(point: {lng: number, lat: number}): void
   panoCover: {
     show: () => void
     hide: () => void
   },
 }
 
-const Map: MapState = {
+const MAP: MAPState = {
   parent: {},
   init() {
     map = new BMap.Map('map', {enableMapClick: false});
@@ -51,28 +70,28 @@ const Map: MapState = {
   },
 
   listen() {
-    Map.panoCover.show()
-    map.addEventListener('click', Map.getPanoId)
+    MAP.panoCover.show()
+    map.addEventListener('click', MAP.getPanoId)
   },
 
   unlisten() {
-    Map.panoCover.hide()
-    map.removeEventListener('click', Map.getPanoId)
+    MAP.panoCover.hide()
+    map.removeEventListener('click', MAP.getPanoId)
   },
   
   getPanoId(event: any) {
     const { point: { lng, lat } } = event
 
-    Map.parent.setLoading(true)
+    MAP.parent.setLoading(true)
     const panoramaService = new BMap.PanoramaService();
     panoramaService.getPanoramaByLocation(new BMap.Point(lng, lat), (data: any) => {
-      Map.clear()
+      map.clearOverlays()
       if (data !== null) {
         // $('#pano-posi').val(data.position.lng + ',' + data.position.lat );
         // this.setThumbnail(data.id);
 
         const { id, position: { lng, lat }} = data
-        const { panos, setPanos } = Map.parent
+        const { panos, setPanos } = MAP.parent
 
         fetch(`https://mapsv0.bdimg.com/?qt=sdata&sid=${id}`)
           .then((response) => {
@@ -88,10 +107,9 @@ const Map: MapState = {
 
             const p = new BMap.Point(data.position.lng, data.position.lat)
             map.panTo(p)
-            const marker = new BMap.Marker(p)
-            map.addOverlay(marker)
+            map.addOverlay(getPinIcon(p))
 
-            Map.parent.setLoading(false)
+            MAP.parent.setLoading(false)
           })
           .catch( e => {
             toaster.show({
@@ -100,11 +118,11 @@ const Map: MapState = {
               timeout: 2000,
               icon: 'error'
             })
-            Map.parent.setLoading(false)
+            MAP.parent.setLoading(false)
           })
 
       } else {
-        Map.parent.setLoading(false)
+        MAP.parent.setLoading(false)
         toaster.show({
           message: 'No point matched, try again',
           intent: 'danger',
@@ -113,6 +131,14 @@ const Map: MapState = {
         })
       }
     });
+  },
+
+  panToPoint(point) {
+    const { lng, lat } = point
+    const p = new BMap.Point(lng, lat)
+    map.panTo(p)
+    map.clearOverlays()
+    map.addOverlay(getPinIcon(p))
   },
 
   panoCover: {
@@ -125,4 +151,4 @@ const Map: MapState = {
   },
 }
 
-export default Map
+export default MAP

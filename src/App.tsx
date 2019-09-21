@@ -1,40 +1,39 @@
 import React, { useState, useEffect } from 'react'
-import './App.css'
 import SelectGuider from './components/map/SelectGuider'
 import Header from './components/Header'
 import { Tabs, Tab, ProgressBar } from '@blueprintjs/core'
 import Task from './components/panels/Task'
 import History from './components/panels/History'
-import Map from './map'
+import MAP from './map'
 
 const App: React.FC = () => {
 
   const [loading, setLoading] = useState(false)
   const [taskFrom, setTaskFrom] = useState('')
+  const [mapSelect, setMapSelect] = useState(false)
   const [selectWith, setSelectWith] = useState('point')
-  const [mapCollect, setMapCollect] = useState(false)
   const [panos, setPanos] = useState(JSON.parse(localStorage.getItem('PANODA_PANOS') || '[]'))
 
-  Map.parent.setLoading = setLoading
-  Map.parent.panos = panos
-  Map.parent.setPanos = setPanos
+  MAP.parent.setLoading = setLoading
+  MAP.parent.panos = panos
+  MAP.parent.setPanos = setPanos
 
   useEffect(() => {
-    Map.init()
+    MAP.init()
   }, [])
 
   useEffect(() => {
-    setMapCollect(taskFrom === 'map')
-    Map.clear()
+    setMapSelect(taskFrom === 'map')
+    MAP.clear()
   }, [taskFrom])
 
   useEffect(() => {
-    if ( mapCollect ) {
-      Map.listen()
+    if ( mapSelect ) {
+      MAP.listen()
     } else {
-      Map.unlisten()
+      MAP.unlisten()
     }
-  }, [mapCollect])
+  }, [mapSelect])
 
   useEffect(() => {
     localStorage.setItem('PANODA_PANOS', JSON.stringify(panos))
@@ -46,13 +45,14 @@ const App: React.FC = () => {
       <div className="panoda-map absolute top-0 right-50 bottom-0 left-0">
         <div id="map" className="absolute top-0 right-0 bottom-0 left-0"></div>
         <SelectGuider
+          setTaskFrom={setTaskFrom}
           selectWith={selectWith}
           setSelectWith={setSelectWith}
         />
       </div>
 
       <div className="panoda-panel absolute top-0 right-0 bottom-0 left-50 px-10 shadow-md">
-        <div className="panel-inner">
+        <div className="panel-inner relative h-full">
           <Header />
           <Tabs large animate 
             className="border-t"

@@ -1,3 +1,11 @@
+@import "~normalize.css";
+@import "~@blueprintjs/core/lib/css/blueprint.css";
+@import "~@blueprintjs/icons/lib/css/blueprint-icons.css";
+
+@import "~tailwindcss/base.css";
+@import "~tailwindcss/components.css";
+@import "~tailwindcss/utilities.css";
+
 * {
   margin: 0;
   padding: 0;
@@ -68,7 +76,6 @@ code {
   margin-left: -200px;
   transition: all .5s;
   overflow: hidden;
-  overflow-y: scroll;
 }
 
 .panoda-container .panoda-panel::before {
@@ -108,12 +115,22 @@ code {
 }
 
 .panoda-container .panoda-panel .panel-inner {
-  min-width: 600px;
-  max-width: 800px;
+  min-width: 640px;
+  max-width: 840px;
 }
 
 .anchorBL {
   display: none;
+}
+
+.BMap_Marker canvas {
+  transform: scale(.5);
+  transform-origin: top left;
+}
+
+.task-wrapper {
+  overflow-y: scroll;
+  top: 210px;
 }
 
 .pano-task {
