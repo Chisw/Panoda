@@ -2,6 +2,7 @@
   "name": "pano",
   "version": "0.1.0",
   "private": true,
+  "homepage": "http://jisuowei.com/i/ws/panoda",
   "dependencies": {
     "@babel/core": "7.5.5",
     "@blueprintjs/core": "^3.18.1",

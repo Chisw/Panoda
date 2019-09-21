@@ -1,7 +1,7 @@
 import { Toaster } from "@blueprintjs/core"
 // import MapStyle from './custom_map.json'
 
-const toaster = Toaster.create()
+const toaster = Toaster.create({ position: 'top-left' })
 
 const G = window as any
 const BMap = G.BMap
@@ -66,20 +66,49 @@ const Map: MapState = {
     Map.parent.setLoading(true)
     const panoramaService = new BMap.PanoramaService();
     panoramaService.getPanoramaByLocation(new BMap.Point(lng, lat), (data: any) => {
-      Map.parent.setLoading(false)
       Map.clear()
       if (data !== null) {
         // $('#pano-posi').val(data.position.lng + ',' + data.position.lat );
         // this.setThumbnail(data.id);
-        const p = new BMap.Point(data.position.lng, data.position.lat)
-        map.panTo(p)
-        const marker = new BMap.Marker(p)
-        map.addOverlay(marker)
+
+        const { id, position: { lng, lat }} = data
+        const { panos, setPanos } = Map.parent
+
+        fetch(`https://mapsv0.bdimg.com/?qt=sdata&sid=${id}`)
+          .then((response) => {
+            return response.json();
+          })
+          .then((json) => {
+            const info = json.content[0]
+            const { Date, Rname } = info
+
+            panos.push({ id, lng, lat, Date, Rname })
+            setPanos([])
+            setPanos(panos)
+
+            const p = new BMap.Point(data.position.lng, data.position.lat)
+            map.panTo(p)
+            const marker = new BMap.Marker(p)
+            map.addOverlay(marker)
+
+            Map.parent.setLoading(false)
+          })
+          .catch( e => {
+            toaster.show({
+              message: 'Get pano info failed',
+              intent: 'danger',
+              timeout: 2000,
+              icon: 'error'
+            })
+            Map.parent.setLoading(false)
+          })
+
       } else {
+        Map.parent.setLoading(false)
         toaster.show({
           message: 'No point matched, try again',
           intent: 'danger',
-          timeout: 3000,
+          timeout: 2000,
           icon: 'error'
         })
       }

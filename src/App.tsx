@@ -13,13 +13,20 @@ const App: React.FC = () => {
   const [taskFrom, setTaskFrom] = useState('')
   const [selectWith, setSelectWith] = useState('point')
   const [mapCollect, setMapCollect] = useState(false)
-  const [panos, setPanos] = useState([])
+  const [panos, setPanos] = useState(JSON.parse(localStorage.getItem('PANODA_PANOS') || '[]'))
 
   Map.parent.setLoading = setLoading
-  
+  Map.parent.panos = panos
+  Map.parent.setPanos = setPanos
+
   useEffect(() => {
     Map.init()
   }, [])
+
+  useEffect(() => {
+    setMapCollect(taskFrom === 'map')
+    Map.clear()
+  }, [taskFrom])
 
   useEffect(() => {
     if ( mapCollect ) {
@@ -30,9 +37,8 @@ const App: React.FC = () => {
   }, [mapCollect])
 
   useEffect(() => {
-    setMapCollect( taskFrom === 'map' )
-    Map.clear()
-  }, [taskFrom])
+    localStorage.setItem('PANODA_PANOS', JSON.stringify(panos))
+  }, [panos])
 
   return (
     <div className={`panoda-container ${taskFrom === 'map' ? 'map-expand' : ''} w-full h-full absolute top-0 right-0 bottom-0 left-0`}>
@@ -49,7 +55,7 @@ const App: React.FC = () => {
         <div className="panel-inner">
           <Header />
           <Tabs large animate 
-            className="border-t border-b mb-4"
+            className="border-t"
             id="navi" 
             key="horizontal" 
           >
@@ -70,7 +76,7 @@ const App: React.FC = () => {
         </div>
       </div>
 
-      <div className={`${loading ? 'block' : 'hidden'} fixed z-50 top-0 right-0 bottom-0 left-0`}>
+      <div className={`${loading ? 'block' : 'hidden'} fixed z-50 top-0 right-0 bottom-0 left-0 cursor-wait`}>
         <ProgressBar className="shadow-lg" />
       </div>
 

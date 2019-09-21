@@ -4,7 +4,8 @@
   outline: none !important;
 }
 
-html, body {
+html,
+body {
   width: 100%;
   height: 100%;
   overflow: hidden;
@@ -24,11 +25,22 @@ code {
     monospace;
 }
 
-@font-face {font-family: 'ablt'; src: url('./fonts/ablt.woff');}
-.font-ablt {font-family: 'ablt';}
+@font-face {
+  font-family: 'ablt';
+  src: url('./fonts/ablt.woff');
+}
 
-.right-50 { right: 50%; }
-.left-50 { left: 50%; }
+.font-ablt {
+  font-family: 'ablt';
+}
+
+.right-50 {
+  right: 50%;
+}
+
+.left-50 {
+  left: 50%;
+}
 
 .panoda-container {
   min-width: 1200px;
@@ -68,7 +80,7 @@ code {
   bottom: 0;
   left: 0;
   width: 400px;
-  background-image: -webkit-linear-gradient(0, rgba(255,255,255, .92), #fff);  
+  background-image: -webkit-linear-gradient(0, rgba(255, 255, 255, .92), #fff);
 }
 
 .panoda-container .panoda-panel::after {
@@ -88,7 +100,7 @@ code {
 }
 
 .panoda-container.map-expand .panoda-panel::before {
-  background-image: -webkit-linear-gradient(0, #fff, #fff);  
+  background-image: -webkit-linear-gradient(0, #fff, #fff);
 }
 
 .panoda-container.map-expand .map-select-guider {
@@ -102,4 +114,15 @@ code {
 
 .anchorBL {
   display: none;
+}
+
+.pano-task {
+  font-family: monospace, Consolas;
+  font-variant-numeric: tabular-nums;
+}
+
+.pano-task .task-preview {
+  width: 100px;
+  height: 50px;
+  background: #efefef;
 }

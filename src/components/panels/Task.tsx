@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Card, ButtonGroup, Button, Popover, Menu, MenuDivider, MenuItem, Dialog, Classes, TextArea } from '@blueprintjs/core'
+import { Card, ButtonGroup, Button, Popover, Menu, MenuDivider, MenuItem, Dialog, Classes, TextArea, Icon } from '@blueprintjs/core'
 
 interface TaskProps {
   panos: any[]
@@ -106,9 +106,50 @@ export default function Task(props: TaskProps) {
           What does task mean?
         </Button>
       </div>
-      <Card className="bp3-skeleton">
-        a
-      </Card>
+      {
+        panos.map( pano => {
+
+          const { id, lng, lat, Date, Rname } = pano
+          return (
+            <div className="pano-task mb-3 p-2 border rounded flex" key={id}>
+              <div>
+                <img 
+                  className="task-preview rounded-sm" 
+                  src={`https://mapsv1.bdimg.com/?qt=pdata&sid=${id}&pos=0_0&z=1`} 
+                />
+              </div>
+              <div className="px-2" style={{width: 360}}>
+                <p className="text-xs">
+                  PanoID: {id}
+                </p>
+                <p className="text-xs text-gray-500">
+                  ShotIn: {Date} 
+                  {
+                    Rname 
+                      ? <span className="ml-4">RoadName: {Rname}</span> 
+                      : ''
+                  }
+                </p>
+                <p className="text-xs text-gray-500">
+                  Position: {lng + ',' + lat}
+                </p>
+              </div>
+              <div className="px-2 text-right self-center flex-grow">
+                <ButtonGroup minimal>
+                  <Button 
+                    icon="map-marker"
+                  />
+                  <Button
+                    icon="trash"
+                    intent="danger"
+                  />
+                </ButtonGroup>
+              </div>
+            </div>
+          )
+        }).reverse()
+      }
+
       <Button intent="primary">
           Fetch
       </Button>
