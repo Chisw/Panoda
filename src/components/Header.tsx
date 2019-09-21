@@ -3,7 +3,7 @@ import { ButtonGroup, AnchorButton } from '@blueprintjs/core'
 
 export default function Header() {
   return (
-    <div className="mb-2 pt-6 pb-4">
+    <div className="mb-2 pt-4 pb-2">
       <h3 className="text-4xl font-hairline">
         Panoda
         <ButtonGroup minimal className="float-right mt-3">

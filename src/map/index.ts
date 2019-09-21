@@ -101,9 +101,9 @@ const MAP: MAPState = {
             const info = json.content[0]
             const { Date, Rname } = info
 
-            panos.push({ id, lng, lat, Date, Rname })
-            setPanos([])
-            setPanos(panos)
+            panos.unshift({ id, lng, lat, Date, Rname })
+            const _panos = Array.from(panos)
+            setPanos(_panos)
 
             const p = new BMap.Point(data.position.lng, data.position.lat)
             map.panTo(p)

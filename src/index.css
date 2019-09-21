@@ -52,7 +52,7 @@ code {
 
 .panoda-container {
   min-width: 1200px;
-  min-height: 640px;
+  min-height: 480px;
   overflow: hidden;
 }
 
@@ -130,7 +130,12 @@ code {
 
 .task-wrapper {
   overflow-y: scroll;
-  top: 210px;
+  top: 190px;
+  bottom: 40px;
+}
+
+.task-bottom {
+  height: 40px;
 }
 
 .pano-task {

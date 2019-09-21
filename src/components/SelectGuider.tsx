@@ -15,6 +15,16 @@ export default function SelectGuider(props: SelectGuiderProps) {
     <div className="map-select-guider p-2 absolute left-50">
       <div className="text-center">
         <ButtonGroup fill className="shadow-xl">
+          <Tooltip content="Quit">
+            <Button
+              icon="cross"
+              intent="danger"
+              onClick={() => {
+                setTaskFrom('')
+              }}
+            >
+            </Button>
+          </Tooltip>
           <Tooltip content="Click the blue line">
             <Button
               icon="locate"
@@ -35,15 +45,6 @@ export default function SelectGuider(props: SelectGuiderProps) {
               }}
             >
               Area
-            </Button>
-          </Tooltip>
-          <Tooltip content="Quit">
-            <Button
-              icon="cross"
-              onClick={() => {
-                setTaskFrom('')
-              }}
-            >
             </Button>
           </Tooltip>
         </ButtonGroup>
