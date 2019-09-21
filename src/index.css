@@ -42,6 +42,10 @@ code {
   font-family: 'ablt';
 }
 
+.text-none {
+  font-size: 0;
+}
+
 .right-50 {
   right: 50%;
 }
@@ -128,23 +132,48 @@ code {
   transform-origin: top left;
 }
 
-.task-wrapper {
+.pano-wrapper {
   overflow-y: scroll;
-  top: 190px;
-  bottom: 40px;
+  top: 172px;
 }
 
-.task-bottom {
-  height: 40px;
-}
-
-.pano-task {
+.pano-pano-bar {
   font-family: monospace, Consolas;
   font-variant-numeric: tabular-nums;
 }
 
-.pano-task .task-preview {
+.pano-pano-bar .bp3-control-indicator {
+  margin-top: 16px !important;
+}
+
+.pano-pano-bar .pano-preview {
   width: 100px;
   height: 50px;
   background: #efefef;
+}
+
+.pano-pano-bar .pano-operation,
+.pano-pano-card .pano-operation {
+  opacity: 0;
+}
+
+.pano-pano-bar:hover .pano-operation,
+.pano-pano-card:hover .pano-operation {
+  opacity: 1;
+}
+
+.pano-pano-card {
+  font-family: monospace, Consolas;
+  font-variant-numeric: tabular-nums;
+  width: 240px;
+  height: 120px;
+}
+
+.pano-pano-card .bp3-control-indicator {
+  z-index: 1;
+}
+
+.pano-pano-card .pano-preview {
+  width: 240px;
+  transition: all .23s;
 }

@@ -4,7 +4,7 @@ import { Tabs, Tab } from '@blueprintjs/core'
 import SelectGuider from './components/SelectGuider'
 import Header from './components/Header'
 import ProgressMask from './components/ProgressMask'
-import Task from './components/panels/Task'
+import Pano from './components/panels/Pano'
 import History from './components/panels/History'
 
 import MAP from './map'
@@ -13,11 +13,13 @@ import store from './store'
 const App: React.FC = () => {
 
   const [loading, setLoading] = useState(false)
-  const [tabId, setTabId] = useState('task')
-  const [taskFrom, setTaskFrom] = useState('')
+  const [tabId, setTabId] = useState('pano')
+  const [panoFrom, setPanoFrom] = useState('')
+  const [panoView, setPanoView] = useState(store.get('PANODA_PANO_VIEW') || 'list')
   const [mapSelect, setMapSelect] = useState(false)
   const [selectWith, setSelectWith] = useState('point')
-  const [panos, setPanos] = useState(store.get('PANODA_TASKS') || [])
+  const [panos, setPanos] = useState(store.get('PANODA_PANOS') || [])
+  const [checkedIds, setCheckedIds] = useState([])
 
   MAP.parent.setLoading = setLoading
   MAP.parent.panos = panos
@@ -28,9 +30,9 @@ const App: React.FC = () => {
   }, [])
 
   useEffect(() => {
-    setMapSelect(taskFrom === 'map')
+    setMapSelect(panoFrom === 'map')
     MAP.clear()
-  }, [taskFrom])
+  }, [panoFrom])
 
   useEffect(() => {
     if ( mapSelect ) {
@@ -41,16 +43,20 @@ const App: React.FC = () => {
   }, [mapSelect])
 
   useEffect(() => {
-    store.set('PANODA_TASKS', panos)
+    store.set('PANODA_PANO_VIEW', panoView)
+  }, [panoView])
+
+  useEffect(() => {
+    store.set('PANODA_PANOS', panos)
   }, [panos])
 
   return (
-    <div className={`panoda-container ${taskFrom === 'map' ? 'map-expand' : ''} w-full h-full absolute top-0 right-0 bottom-0 left-0`}>
+    <div className={`panoda-container ${panoFrom === 'map' ? 'map-expand' : ''} w-full h-full absolute top-0 right-0 bottom-0 left-0`}>
 
       <div className="panoda-map absolute top-0 right-50 bottom-0 left-0">
         <div id="map" className="absolute top-0 right-0 bottom-0 left-0"></div>
         <SelectGuider
-          setTaskFrom={setTaskFrom}
+          setPanoFrom={setPanoFrom}
           selectWith={selectWith}
           setSelectWith={setSelectWith}
         />
@@ -60,7 +66,7 @@ const App: React.FC = () => {
         <div className="panel-inner relative h-full">
           <Header />
           <Tabs large animate 
-            className="border-t border-b mb-4"
+            className="mb-2 border-b"
             id="navi" 
             key="horizontal"
             selectedTabId={tabId}
@@ -68,19 +74,24 @@ const App: React.FC = () => {
               setTabId(id)
             }}
           >
-            <Tab id="task" title="Task" />
+            <Tab id="pano" title="Pano" />
             <Tab id="history" title="History" />
             <Tab id="setting" title="Setting" />
+            <Tab id="about" title="About" />
           </Tabs>
           {
             [
-              <Task
+              <Pano
+                panoView={panoView}
+                setPanoView={setPanoView}
                 panos={panos}
                 setPanos={setPanos}
-                setTaskFrom={setTaskFrom}
+                setPanoFrom={setPanoFrom}
+                checkedIds={checkedIds}
+                setCheckedIds={setCheckedIds}
               />,
               <History />
-            ][['task', 'history'].indexOf(tabId)]
+            ][['pano', 'history'].indexOf(tabId)]
           }
         </div>
       </div>

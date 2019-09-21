@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Alert } from '@blueprintjs/core'
 
-export default function DeleteAllPanosDialog() {
+export default function DeleteAllPanosAlert() {
 
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
   

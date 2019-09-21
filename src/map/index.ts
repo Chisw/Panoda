@@ -99,9 +99,8 @@ const MAP: MAPState = {
           })
           .then((json) => {
             const info = json.content[0]
-            const { Date, Rname } = info
 
-            panos.unshift({ id, lng, lat, Date, Rname })
+            panos.unshift({ id, lng, lat, date: info.Date, rname: info.Rname })
             const _panos = Array.from(panos)
             setPanos(_panos)
 

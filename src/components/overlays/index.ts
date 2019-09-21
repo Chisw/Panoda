@@ -1,1 +1,1 @@
-export * from './DeleteAllPanosDialog'
+export * from './DeleteAllPanosAlert'

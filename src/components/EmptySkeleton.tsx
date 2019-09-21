@@ -1,13 +1,13 @@
 import React from 'react'
 import { NonIdealState } from '@blueprintjs/core'
 
-export function EmptyTask() {
+export function EmptyPano() {
   return (
     <NonIdealState
       className="bg-gray-100"
       icon="plus"
-      title="No Task Here"
-      description="Create task by clicking 'New Task' button above"
+      title="No Pano Here"
+      description="Create pano by clicking 'New Pano' button above"
     />
   )
 }

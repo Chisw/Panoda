@@ -2,14 +2,14 @@ import React from 'react'
 import { ButtonGroup, Button, Tooltip } from '@blueprintjs/core'
 
 interface SelectGuiderProps {
-  setTaskFrom(val: string): void
+  setPanoFrom(val: string): void
   selectWith: string
   setSelectWith(val: string): void
 }
 
 export default function SelectGuider(props: SelectGuiderProps) {
 
-  const { setTaskFrom, selectWith, setSelectWith } = props
+  const { setPanoFrom, selectWith, setSelectWith } = props
 
   return (
     <div className="map-select-guider p-2 absolute left-50">
@@ -20,7 +20,7 @@ export default function SelectGuider(props: SelectGuiderProps) {
               icon="cross"
               intent="danger"
               onClick={() => {
-                setTaskFrom('')
+                setPanoFrom('')
               }}
             >
             </Button>
