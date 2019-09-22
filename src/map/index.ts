@@ -1,6 +1,6 @@
 import { Toaster } from "@blueprintjs/core"
 import { SVG_PIN } from '../data'
-// import MapStyle from '../data/custom_map.json'
+// import { CUSTOM_MAP } from '../data'
 
 const toaster = Toaster.create({ position: 'top-left' })
 
@@ -47,7 +47,7 @@ const MAP: MAPState = {
     map = new BMap.Map('map', {enableMapClick: false});
     map.centerAndZoom(new BMap.Point(120.64, 31.31), 14);
     map.enableScrollWheelZoom(true);
-    // map.setMapStyleV2({styleJson: MapStyle});
+    // map.setMapStyleV2({styleJson: CUSTOM_MAP});
 
     var geolocation = new BMap.Geolocation();
     geolocation.getCurrentPosition(function(res: any){

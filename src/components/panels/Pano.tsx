@@ -31,6 +31,8 @@ export default function Pano(props: PanoProps) {
   const [inputDialogOpen, setInputDialogOpen] = useState(false)
   const [inputIds, setInputIds] = useState('')
 
+  const optionalPanoIds = panos.map( pano => pano.id )
+
   const renderInputDialogView = () => {
     return (
       <Dialog
@@ -115,6 +117,13 @@ export default function Pano(props: PanoProps) {
             icon="small-tick"
             intent="primary"
             disabled={panos.length === 0}
+            onClick={() => {
+              setCheckedIds(
+                checkedIds.length < optionalPanoIds.length
+                  ? optionalPanoIds
+                  : []
+              )
+            }}
           />
           <Button className="w-16" intent="primary" active>
             ({checkedIds.length}/{panos.length})
@@ -122,6 +131,7 @@ export default function Pano(props: PanoProps) {
           <Button
             icon="insert"
             intent="primary"
+            disabled={checkedIds.length === 0}
           >
             Fetch
           </Button>
@@ -136,7 +146,11 @@ export default function Pano(props: PanoProps) {
               </Button>
             }
           >
-            <Button icon="caret-down" intent="primary" />
+            <Button 
+              icon="caret-down" 
+              intent="primary" 
+              disabled={checkedIds.length === 0}
+            />
           </Popover>
         </ButtonGroup>
       </div>

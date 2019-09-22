@@ -9,6 +9,7 @@ import History from './components/panels/History'
 
 import MAP from './map'
 import store from './store'
+import { IPano } from './type'
 
 const App: React.FC = () => {
 
@@ -19,7 +20,7 @@ const App: React.FC = () => {
   const [mapSelect, setMapSelect] = useState(false)
   const [selectWith, setSelectWith] = useState('point')
   const [panos, setPanos] = useState(store.get('PANODA_PANOS') || [])
-  const [checkedIds, setCheckedIds] = useState([])
+  const [checkedIds, setCheckedIds] = useState(store.get('PANODA_CHECKED_IDS') || [])
 
   MAP.parent.setLoading = setLoading
   MAP.parent.panos = panos
@@ -48,7 +49,19 @@ const App: React.FC = () => {
 
   useEffect(() => {
     store.set('PANODA_PANOS', panos)
+    
+    // delete checked pano
+    const optionalIds = panos.map((pano: IPano) => (pano.id))
+    const _checkedIds = checkedIds.filter( (id: string) => {
+      return optionalIds.includes(id)
+    })
+    setCheckedIds(_checkedIds)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [panos])
+
+  useEffect(() => {
+    store.set('PANODA_CHECKED_IDS', checkedIds)
+  }, [checkedIds])
 
   return (
     <div className={`panoda-container ${panoFrom === 'map' ? 'map-expand' : ''} w-full h-full absolute top-0 right-0 bottom-0 left-0`}>
