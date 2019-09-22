@@ -1,6 +1,6 @@
 import { Toaster } from "@blueprintjs/core"
 
-import { SVG_PIN, PANO_ID_RE, /*CUSTOM_MAP*/ } from '../data'
+import { SVG_PIN, PANO_ID_REG, /*CUSTOM_MAP*/ } from '../data'
 import { IPano } from '../type'
 
 const toaster = Toaster.create({ position: 'top-left' })
@@ -105,6 +105,12 @@ const MAP: MAPState = {
             map.addOverlay(getPinIcon(p))
 
             MAP.parent.setLoading(false)
+            toaster.show({
+              message: `Get pano ${data.id} successfully`,
+              intent: 'success',
+              timeout: 2000,
+              icon: 'tick'
+            })
           },
           () => {
             toaster.show({
@@ -130,7 +136,7 @@ const MAP: MAPState = {
 
   getPanoInfoByIdAndAppendDom(id, success, failed) {
 
-    if ( !id || !PANO_ID_RE.test(id) ) {
+    if ( !id || !PANO_ID_REG.test(id) ) {
       toaster.show({
         message: `Invalid pano id ${id}`,
         intent: 'danger',

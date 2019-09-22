@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Dialog, TextArea, Button, Classes, Toaster } from '@blueprintjs/core'
 
-import { PANO_ID_RE } from '../../data'
+import { PANO_ID_REG } from '../../data'
 import MAP from '../../map'
 
 const toaster = Toaster.create({ position: 'top-left' })
@@ -30,7 +30,7 @@ export default function InputIdsDialog(props: InputIdsDialogProps) {
 
     let err: boolean = false
     idList.forEach( id => {
-      if ( !PANO_ID_RE.test(id) ) err = true
+      if ( !PANO_ID_REG.test(id) ) err = true
     })
 
     if (err) {
@@ -47,7 +47,7 @@ export default function InputIdsDialog(props: InputIdsDialogProps) {
             return id !== ''
           })
           .map(id => {
-            return !PANO_ID_RE.test(id)
+            return !PANO_ID_REG.test(id)
               ? `!!> ${id} <!!`
               : id
           })
@@ -69,7 +69,7 @@ export default function InputIdsDialog(props: InputIdsDialogProps) {
       } else {
         setLoading(false)
         toaster.show({
-          message: `Generating completed`,
+          message: `Generated`,
           intent: 'success',
           timeout: 3000,
           icon: 'tick'

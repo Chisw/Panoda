@@ -1,8 +1,11 @@
 import React from 'react'
-import { ButtonGroup, Button, Popover, Classes, Checkbox } from '@blueprintjs/core'
+import { ButtonGroup, Button, Popover, Classes, Checkbox, Toaster } from '@blueprintjs/core'
 
 import { IPano } from '../type'
 import MAP from '../map'
+import { getPreviewSrc } from '../data'
+
+const toaster = Toaster.create({ position: 'top-left' })
 
 interface PanoCardProps {
   index: number
@@ -46,7 +49,7 @@ export default function PanoCard(props: PanoCardProps) {
       <img
         alt={id + index}
         className="pano-preview absolute top-0 right-0 bottom-0 left-0 rounded z-0 hover:shadow-lg"
-        src={`https://mapsv1.bdimg.com/?qt=pdata&sid=${id}&pos=0_0&z=1`}
+        src={getPreviewSrc(id)}
       />
       <div 
         className="px-1 leading-tight absolute right-0 bottom-0 left-0 break-words" 
@@ -81,6 +84,12 @@ export default function PanoCard(props: PanoCardProps) {
                       panos.splice(index, 1).reverse()
                       const _panos = Array.from(panos)
                       setPanos(_panos)
+                      toaster.show({
+                        message: `Pano deleted`,
+                        intent: 'success',
+                        timeout: 2000,
+                        icon: 'tick'
+                      })
                     }}
                   >
                     Yes
