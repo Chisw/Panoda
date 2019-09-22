@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
-import { ButtonGroup, Button, Popover, Menu, MenuDivider, MenuItem, Dialog, Classes, TextArea, Divider } from '@blueprintjs/core'
+import { ButtonGroup, Button, Popover, Menu, MenuDivider, MenuItem, Classes, Divider } from '@blueprintjs/core'
 
 import { EmptyPano } from '../EmptySkeleton'
 import PanoBar from '../PanoBar'
 import PanoCard from '../PanoCard'
+import InputIdsDialog from '../overlays/InputIdsDialog'
 import DeleteCheckedPanosAlert from '../overlays/DeleteCheckedPanosAlert'
 
 import { IPano } from '../../type'
@@ -31,41 +32,9 @@ export default function Pano(props: PanoProps) {
   } = props
 
   const [inputDialogOpen, setInputDialogOpen] = useState(false)
-  const [inputIds, setInputIds] = useState('')
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
 
   const optionalPanoIds = panos.map( pano => pano.id )
-
-  const renderInputDialogView = () => {
-    return (
-      <Dialog
-        title="New Pano"
-        icon="text-highlight"
-        canEscapeKeyClose={false}
-        canOutsideClickClose={false}
-        isOpen={inputDialogOpen}
-        onClose={() => {setInputDialogOpen(false)}}
-      >
-        <div className={Classes.DIALOG_BODY}>
-          <TextArea
-            className="w-full"
-            style={{height: '8rem', resize: 'none'}}
-            intent="primary"
-            placeholder="Input pano id(s) here, multiple ids separated by commas"
-            onChange={(value: any) => {setInputIds(value.target.value)}}
-            value={inputIds}
-          />
-        </div>
-        <div className={Classes.DIALOG_FOOTER}>
-          <div className={Classes.DIALOG_FOOTER_ACTIONS}>
-            <Button minimal className="text-xs">How to get pano id(s)?</Button>
-            <Button onClick={() => {setInputDialogOpen(false)}}>Cancel</Button>
-            <Button intent="primary" onClick={() => {}}>Finish</Button>
-          </div>
-        </div>
-      </Dialog>
-    )
-  }
 
   return (
     <div>
@@ -129,8 +98,8 @@ export default function Pano(props: PanoProps) {
               )
             }}
           />
-          <Button className="w-16" intent="primary" active>
-            ({checkedIds.length}/{panos.length})
+          <Button intent="primary" active style={{minWidth: 80}}>
+            {checkedIds.length} / {panos.length}
           </Button>
           <Button
             icon="insert"
@@ -164,7 +133,7 @@ export default function Pano(props: PanoProps) {
         </ButtonGroup>
       </div>
       <div 
-        className={`pano-wrapper absolute bottom-0 w-full border-t ${
+        className={`pano-wrapper absolute bottom-0 w-full border-t pb-4 ${
           panoView === 'grid'
             ? `flex flex-wrap content-start`
             : ''
@@ -200,7 +169,13 @@ export default function Pano(props: PanoProps) {
         }
       </div>
       
-      {renderInputDialogView()}
+      <InputIdsDialog 
+        isOpen={inputDialogOpen}
+        onClose={() => {
+          setInputDialogOpen(false)
+        }}
+      />
+
       <DeleteCheckedPanosAlert 
         checkedIds={checkedIds}
         panos={panos}
