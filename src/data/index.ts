@@ -2,6 +2,10 @@ export const getPreviewSrc = (id: string) => {
   return `https://mapsv1.bdimg.com/?qt=pdata&sid=${id}&pos=0_0&z=1`
 }
 
+export const getPanoTileSrc = (id: string, row: number, col: number) => {
+  return `https://mapsv1.bdimg.com/?qt=pdata&sid=${id}&pos=${row}_${col}&z=4`
+}
+
 export const PANO_ID_REG = /^[0-9]{26}[A-Z]{1}$/
 
 export const SVG_PIN = `M512,64c-185.281,0-336,150.719-336,336c0,70.587,21.958,138.304,63.424,195.891l8.818,12.359l241.363,340.54

@@ -6,6 +6,7 @@ import PanoBar from '../PanoBar'
 import PanoCard from '../PanoCard'
 import InputIdsDialog from '../overlays/InputIdsDialog'
 import DeleteCheckedPanosAlert from '../overlays/DeleteCheckedPanosAlert'
+import Fetcher from '../overlays/Fetcher'
 
 import { IPano } from '../../type'
 
@@ -35,62 +36,17 @@ export default function Pano(props: PanoProps) {
 
   const [inputDialogOpen, setInputDialogOpen] = useState(false)
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
+  const [fetcherDialogOpen, setFetcherDialogOpen] = useState(false)
 
   const optionalPanoIds = panos.map( pano => pano.id )
 
   return (
-    <div>
+    <div className="pano-top-bar">
       <div className="mb-4">
-        <ButtonGroup>
-          <Popover 
-            position="bottom-left"
-            content={
-              <Menu key="menu">
-                <MenuDivider title="From" />
-                <Divider />
-                <MenuItem 
-                  icon="map" 
-                  text="Map"
-                  onClick={() => {
-                    setPanoFrom('map')
-                  }}
-                />
-                <MenuItem 
-                  icon="text-highlight" 
-                  text="Input" 
-                  onClick={() => {
-                    setPanoFrom('input')
-                    setInputDialogOpen(true)
-                  }}
-                />
-            </Menu>
-            }
-          >
-            <Button
-              icon="small-plus"
-              intent="success"
-            >
-              New Pano
-            </Button>
-          </Popover>
-        </ButtonGroup>
-        <ButtonGroup className="ml-4">
-          <Button 
-            icon="list"
-            active={panoView === 'list'}
-            onClick={() => { setPanoView('list') }}
-          />
-          <Button 
-            icon="grid-view"
-            active={panoView === 'grid'}
-            onClick={() => { setPanoView('grid') }}
-          />
-        </ButtonGroup>
 
-        <ButtonGroup className="float-right">
+        <ButtonGroup>
           <Button
             icon="small-tick"
-            intent="primary"
             disabled={panos.length === 0}
             onClick={() => {
               setCheckedIds(
@@ -100,19 +56,55 @@ export default function Pano(props: PanoProps) {
               )
             }}
           />
-          <Button intent="primary" active style={{minWidth: 80}}>
-            {checkedIds.length} / {panos.length}
+          <Button active style={{minWidth: 80 }} className="text-xs font-mono">
+            {checkedIds.length}/{panos.length}
           </Button>
+          <Popover
+            position="bottom"
+            content={
+              <Menu key="menu">
+                <MenuDivider title="From" />
+                <Divider />
+                <MenuItem
+                  icon="map"
+                  text="Map"
+                  onClick={() => {
+                    setPanoFrom('map')
+                  }}
+                />
+                <MenuItem
+                  icon="text-highlight"
+                  text="Input"
+                  onClick={() => {
+                    setPanoFrom('input')
+                    setInputDialogOpen(true)
+                  }}
+                />
+              </Menu>
+            }
+          >
+            <Button
+              icon="small-plus"
+            >
+              New Pano
+            </Button>
+          </Popover>
+        </ButtonGroup>
+
+        <ButtonGroup className="mx-4">
           <Button
-            icon="insert"
+            icon="eject"
             intent="primary"
             disabled={checkedIds.length === 0}
+            onClick={() => {
+              setFetcherDialogOpen(true)
+            }}
           >
             Fetch
           </Button>
           <Popover minimal
             disabled={checkedIds.length === 0}
-            position="bottom-right"
+            position="right"
             content={
               <Button
                 icon="trash"
@@ -126,14 +118,29 @@ export default function Pano(props: PanoProps) {
               </Button>
             }
           >
-            <Button 
-              icon="caret-down" 
-              intent="primary" 
+            <Button
+              icon="more"
+              intent="primary"
               disabled={checkedIds.length === 0}
             />
           </Popover>
         </ButtonGroup>
-      </div>
+
+        {/* view switch */}
+        <ButtonGroup className="float-right">
+          <Button
+            icon="list"
+            active={panoView === 'list'}
+            onClick={() => { setPanoView('list') }}
+          />
+          <Button
+            icon="grid-view"
+            active={panoView === 'grid'}
+            onClick={() => { setPanoView('grid') }}
+          />
+        </ButtonGroup>
+      </div>{/* .pano-top-bar */}
+
       <div 
         className={`pano-wrapper absolute bottom-0 w-full border-t ${
           panoView === 'grid'
@@ -186,6 +193,14 @@ export default function Pano(props: PanoProps) {
         isOpen={deleteDialogOpen}
         onClose={() => {
           setDeleteDialogOpen(false)
+        }}
+      />
+
+      <Fetcher
+        checkedIds={checkedIds}
+        isOpen={fetcherDialogOpen}
+        onClose={() => {
+          setFetcherDialogOpen(false)
         }}
       />
 

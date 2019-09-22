@@ -106,7 +106,7 @@ const MAP: MAPState = {
 
             MAP.parent.setLoading(false)
             toaster.show({
-              message: `Get pano ${data.id} successfully`,
+              message: `Get pano ${data.id}`,
               intent: 'success',
               timeout: 2000,
               icon: 'tick'

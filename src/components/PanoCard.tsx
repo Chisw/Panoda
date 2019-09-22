@@ -31,7 +31,7 @@ export default function PanoCard(props: PanoCardProps) {
 
   return (
     <Checkbox 
-      className="pano-pano-card border mt-6 mr-6 mb-0 ml-0 rounded border-none"
+      className="pano-pano-card border mt-6 mr-6 mb-0 ml-0 rounded border-none font-mono"
       checked={checked}
       onChange={() => {
         let _checkedIds: string[]

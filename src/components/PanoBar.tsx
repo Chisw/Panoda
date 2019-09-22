@@ -31,7 +31,7 @@ export default function PanoBar(props: PanoBarProps) {
 
   return (
     <Checkbox 
-      className="pano-pano-bar py-3 border-b flex hover:bg-gray-100 m-0"
+      className="pano-pano-bar py-3 border-b flex hover:bg-gray-100 m-0 font-mono"
       checked={checked}
       onChange={() => {
         let _checkedIds: string[]
