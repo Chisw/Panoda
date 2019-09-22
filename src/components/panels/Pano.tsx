@@ -1,8 +1,10 @@
 import React, { useState } from 'react'
 import { ButtonGroup, Button, Popover, Menu, MenuDivider, MenuItem, Dialog, Classes, TextArea, Divider } from '@blueprintjs/core'
+
 import { EmptyPano } from '../EmptySkeleton'
 import PanoBar from '../PanoBar'
 import PanoCard from '../PanoCard'
+import DeleteCheckedPanosAlert from '../overlays/DeleteCheckedPanosAlert'
 
 import { IPano } from '../../type'
 
@@ -30,6 +32,7 @@ export default function Pano(props: PanoProps) {
 
   const [inputDialogOpen, setInputDialogOpen] = useState(false)
   const [inputIds, setInputIds] = useState('')
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
 
   const optionalPanoIds = panos.map( pano => pano.id )
 
@@ -93,7 +96,8 @@ export default function Pano(props: PanoProps) {
             }
           >
             <Button
-              icon="plus"
+              icon="small-plus"
+              intent="success"
             >
               New Pano
             </Button>
@@ -136,11 +140,16 @@ export default function Pano(props: PanoProps) {
             Fetch
           </Button>
           <Popover minimal
+            disabled={checkedIds.length === 0}
             position="bottom-right"
             content={
               <Button
                 icon="trash"
                 intent="danger"
+                className={Classes.POPOVER_DISMISS}
+                onClick={() => {
+                  setDeleteDialogOpen(true)
+                }}
               >
                 Delete
               </Button>
@@ -192,6 +201,15 @@ export default function Pano(props: PanoProps) {
       </div>
       
       {renderInputDialogView()}
+      <DeleteCheckedPanosAlert 
+        checkedIds={checkedIds}
+        panos={panos}
+        setPanos={setPanos}
+        isOpen={deleteDialogOpen}
+        onClose={() => {
+          setDeleteDialogOpen(false)
+        }}
+      />
 
     </div>
   )

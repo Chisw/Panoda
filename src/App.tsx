@@ -50,7 +50,7 @@ const App: React.FC = () => {
   useEffect(() => {
     store.set('PANODA_PANOS', panos)
     
-    // delete checked pano
+    // Synchronize
     const optionalIds = panos.map((pano: IPano) => (pano.id))
     const _checkedIds = checkedIds.filter( (id: string) => {
       return optionalIds.includes(id)
