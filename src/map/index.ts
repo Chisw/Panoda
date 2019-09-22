@@ -1,7 +1,7 @@
 import { Toaster } from "@blueprintjs/core"
-import { SVG_PIN } from '../data'
-import { IPano } from "../type"
-// import { CUSTOM_MAP } from '../data'
+
+import { SVG_PIN, PANO_ID_RE, /*CUSTOM_MAP*/ } from '../data'
+import { IPano } from '../type'
 
 const toaster = Toaster.create({ position: 'top-left' })
 
@@ -36,7 +36,11 @@ interface MAPState {
   listen(): void
   unlisten(): void
   getPanoIdByClicking(point: any, cb?: () => void): void
-  getPanoInfoByIdAndAppendDom(id: string): void
+  getPanoInfoByIdAndAppendDom(
+    id: string,
+    success?: (data: any) => void,
+    failed?: () => void,
+  ): void
   panToPoint(point: {lng: number, lat: number}): void
   panoCover: {
     show: () => void
@@ -92,7 +96,26 @@ const MAP: MAPState = {
     PANO_SERVER.getPanoramaByLocation(new BMap.Point(lng, lat), (data: any) => {
       map.clearOverlays()
       if (data !== null) {
-        MAP.getPanoInfoByIdAndAppendDom(data.id)
+        MAP.getPanoInfoByIdAndAppendDom(
+          data.id,
+          (data) => {
+            const { position: { lng, lat } } = data
+            const p = new BMap.Point(lng, lat)
+            map.panTo(p)
+            map.addOverlay(getPinIcon(p))
+
+            MAP.parent.setLoading(false)
+          },
+          () => {
+            toaster.show({
+              message: `Get pano ${data.id} info failed`,
+              intent: 'warning',
+              timeout: 0,
+              icon: 'error'
+            })
+            MAP.parent.setLoading(false)
+          }
+        )
       } else {
         MAP.parent.setLoading(false)
         toaster.show({
@@ -105,7 +128,18 @@ const MAP: MAPState = {
     });
   },
 
-  getPanoInfoByIdAndAppendDom(id) {
+  getPanoInfoByIdAndAppendDom(id, success, failed) {
+
+    if ( !id || !PANO_ID_RE.test(id) ) {
+      toaster.show({
+        message: `Invalid pano id ${id}`,
+        intent: 'danger',
+        timeout: 0,
+        icon: 'error'
+      })
+      return
+    }
+
     const { panos, setPanos } = MAP.parent
 
     if ( panos.map( (pano: IPano) => pano.id).includes(id) ) {
@@ -137,19 +171,9 @@ const MAP: MAPState = {
         const _panos = Array.from(panos)
         setPanos(_panos)
 
-        const p = new BMap.Point(lng, lat)
-        map.panTo(p)
-        map.addOverlay(getPinIcon(p))
-
-        MAP.parent.setLoading(false)
+        success && success(data)
       } else {
-        toaster.show({
-          message: `Get pano ${id} info failed`,
-          intent: 'warning',
-          timeout: 0,
-          icon: 'error'
-        })
-        MAP.parent.setLoading(false)
+        failed && failed()
       }
     })
   },

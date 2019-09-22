@@ -177,3 +177,7 @@ code {
   width: 240px;
   transition: all .23s;
 }
+
+.pano-pano-card:nth-last-child(1) {
+  margin-bottom: 20px;
+}

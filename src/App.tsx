@@ -102,6 +102,7 @@ const App: React.FC = () => {
                 setPanoFrom={setPanoFrom}
                 checkedIds={checkedIds}
                 setCheckedIds={setCheckedIds}
+                setLoading={setLoading}
               />,
               <History />
             ][['pano', 'history'].indexOf(tabId)]

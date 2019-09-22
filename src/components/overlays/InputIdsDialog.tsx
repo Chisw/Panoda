@@ -9,17 +9,24 @@ const toaster = Toaster.create({ position: 'top-left' })
 interface InputIdsDialogProps {
   isOpen: boolean
   onClose(): void
+  setLoading(loading: boolean): void
 }
 
 export default function InputIdsDialog(props: InputIdsDialogProps) {
 
-  const { isOpen, onClose } = props
+  const { isOpen, onClose, setLoading } = props
 
   const [inputIds, setInputIds] = useState('')
 
   const generate = () => {
 
-    const idList = inputIds.replace(/\n/g, '').split(',')
+    const idList = 
+      inputIds
+        .replace(/\n/g, '')
+        .split(',')
+        .filter(id => {
+          return id !== ''
+        })
 
     let err: boolean = false
     idList.forEach( id => {
@@ -28,7 +35,7 @@ export default function InputIdsDialog(props: InputIdsDialogProps) {
 
     if (err) {
       toaster.show({
-        message: 'Exist invalid pano id',
+        message: 'Invalid pano id',
         intent: 'danger',
         timeout: 3000,
         icon: 'error'
@@ -49,10 +56,28 @@ export default function InputIdsDialog(props: InputIdsDialogProps) {
       return
     }
 
-    MAP.getPanoInfoByIdAndAppendDom(idList[0])
-
     setInputIds('')
     onClose()
+
+    setLoading(true)
+    const _handle = () => {
+      if (idList.length) {
+        setTimeout(() => {
+          MAP.getPanoInfoByIdAndAppendDom(idList.shift() || '')
+          _handle()
+        }, 500)
+      } else {
+        setLoading(false)
+        toaster.show({
+          message: `Generating completed`,
+          intent: 'success',
+          timeout: 3000,
+          icon: 'tick'
+        })
+      }
+    }
+    _handle()
+
   }
 
   return (

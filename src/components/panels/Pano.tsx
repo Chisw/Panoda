@@ -17,6 +17,7 @@ interface PanoProps {
   setPanoFrom: (val: string) => void
   checkedIds: string[]
   setCheckedIds(list: any): void
+  setLoading(loading: boolean): void
 }
 
 export default function Pano(props: PanoProps) {
@@ -28,7 +29,8 @@ export default function Pano(props: PanoProps) {
     setPanos, 
     setPanoFrom, 
     checkedIds, 
-    setCheckedIds 
+    setCheckedIds,
+    setLoading,
   } = props
 
   const [inputDialogOpen, setInputDialogOpen] = useState(false)
@@ -133,7 +135,7 @@ export default function Pano(props: PanoProps) {
         </ButtonGroup>
       </div>
       <div 
-        className={`pano-wrapper absolute bottom-0 w-full border-t pb-4 ${
+        className={`pano-wrapper absolute bottom-0 w-full border-t ${
           panoView === 'grid'
             ? `flex flex-wrap content-start`
             : ''
@@ -174,6 +176,7 @@ export default function Pano(props: PanoProps) {
         onClose={() => {
           setInputDialogOpen(false)
         }}
+        setLoading={setLoading}
       />
 
       <DeleteCheckedPanosAlert 
