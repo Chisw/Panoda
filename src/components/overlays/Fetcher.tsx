@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react'
-import { Dialog, ProgressBar, Tag, Callout, Button, Alert } from '@blueprintjs/core'
+import { Dialog, ProgressBar, Tag, Callout, Button, Alert, Toaster } from '@blueprintjs/core'
 import FileSaver from 'file-saver'
 import JSZip from 'jszip'
 import TableGrid from '../TableGrid'
 
 import { getPanoTileSrc, getBaseSize } from '../../data'
+
+const toaster = Toaster.create({position: 'top-left'})
 
 interface FetcherProps {
   fetchResList: any[]
@@ -18,10 +20,10 @@ export default function Fetcher(props: FetcherProps) {
 
   const { fetchResList, setFetchResList, checkedIds, isOpen, onClose } = props
   const [fetching, setFetching] = useState(true)
+  const [error, setError] = useState(false)
   const [tileIndex, setTileIndex] = useState(0)
   const [currentIndex, setCurrentIndex] = useState(0)
   const [confirmAlertOpen, setConfirmAlertOpen] = useState(false)
-
 
   // init
   useEffect(() => {
@@ -90,6 +92,17 @@ export default function Fetcher(props: FetcherProps) {
             _recursive()
           }, 20)
         }
+
+        img.onerror = () => {
+          setFetching(false)
+          setError(true)
+          toaster.show({
+            message: 'Something wrong, please check network and fetch again',
+            icon: 'error',
+            timeout: 0,
+            intent: 'danger'
+          })
+        }
       } else {
         const imgs = pool.querySelectorAll('img')
         imgs.forEach(img => {
@@ -140,6 +153,7 @@ export default function Fetcher(props: FetcherProps) {
           setTileIndex(0)
           setCurrentIndex(0)
           setFetching(true)
+          setError(false)
           setFetchResList([])
           setTimeout(() => {
             setConfirmAlertOpen(false)
@@ -160,7 +174,16 @@ export default function Fetcher(props: FetcherProps) {
         className="bg-white"
         style={{ width: 512 }}
         onClose={() => {
-          setConfirmAlertOpen(true)
+          if ( fetching && !error ) {
+            toaster.show({
+              message: 'The program is running..',
+              icon: 'console',
+              intent: 'primary',
+              timeout: 5000
+            })
+          } else {
+            setConfirmAlertOpen(true)
+          }
         }}
       >
         <div className="fetcher-container w-full">
@@ -205,7 +228,7 @@ export default function Fetcher(props: FetcherProps) {
                         icon="download"
                         intent="success"
                         onClick={() => {
-                          const name = 'Panoda_' + new Date().getTime()
+                          const name = 'Panoda_' + new Date().toLocaleTimeString()
                           const zip = new JSZip()
                           const panodaFolder = zip.folder(name)
 

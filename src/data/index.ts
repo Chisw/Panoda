@@ -6,9 +6,16 @@ export const getPanoTileSrc = (id: string, row: number, col: number) => {
   return `https://mapsv1.bdimg.com/?qt=pdata&sid=${id}&pos=${row}_${col}&z=4`
 }
 
-export const getBaseSize = (base64: string) => {
-  if (!base64) return 0
-  return ( base64.length / 1024 / 1024 ).toFixed(2) + ' MB'
+export const getBaseSize = (base64String: string) => {
+  let padding, inBytes, base64StringLength
+  if (base64String.endsWith("==")) padding = 2
+  else if (base64String.endsWith("=")) padding = 1
+  else padding = 0
+
+  base64StringLength = base64String.length
+  inBytes = (base64StringLength / 4) * 3 - padding
+  const kbytes = inBytes / 1000;
+  return ( kbytes / 1024 ).toFixed(2) + ' MB';
 }
 
 export const PANO_ID_REG = /^[0-9]{26}[A-Z]{1}$/
