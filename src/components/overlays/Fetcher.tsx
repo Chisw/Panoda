@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Dialog, ProgressBar, Tag, Callout, Button, Alert } from '@blueprintjs/core'
+import FileSaver from 'file-saver'
+import JSZip from 'jszip'
 import TableGrid from '../TableGrid'
 
 import { getPanoTileSrc, getBaseSize } from '../../data'
@@ -28,6 +30,7 @@ export default function Fetcher(props: FetcherProps) {
         fillTiles(checkedIds[currentIndex])
       }, 200)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen, currentIndex])
 
   // next pano
@@ -37,6 +40,7 @@ export default function Fetcher(props: FetcherProps) {
         setFetching(false)  // show res
       }, 100)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentIndex])
 
   // generate pano
@@ -94,6 +98,14 @@ export default function Fetcher(props: FetcherProps) {
           ctx!.drawImage(img, 512 * col, 512 * row, 512, 512);
         })
 
+        const text = window.clientInformation.appVersion + ' - panoda.jisuowei.com'
+        ctx.font = '24px monospace';
+        ctx.textAlign = 'right';
+        ctx.fillStyle = '#000';
+        ctx.fillText(text, 4072, 2021);
+        ctx.fillStyle = '#fff';
+        ctx.fillText(text, 4072, 2020);
+
         const base64 = (canvas! as any).toDataURL('image/jpeg', .92)
         const _fetchResList = Array.from(fetchResList)
         _fetchResList.push(base64)
@@ -131,7 +143,7 @@ export default function Fetcher(props: FetcherProps) {
           setFetchResList([])
           setTimeout(() => {
             setConfirmAlertOpen(false)
-          }, 500)
+          }, 100)
         }}
       >
         <div>
@@ -192,6 +204,25 @@ export default function Fetcher(props: FetcherProps) {
                       <Button
                         icon="download"
                         intent="success"
+                        onClick={() => {
+                          const name = 'Panoda_' + new Date().getTime()
+                          const zip = new JSZip()
+                          const panodaFolder = zip.folder(name)
+
+                          fetchResList.forEach( (res, index) => {
+                            panodaFolder
+                              .file(
+                                `PANODA_${checkedIds[index]}.jpg`, 
+                                res.replace('data:image/jpeg;base64,', ''), 
+                                {base64: true})
+                          })
+
+                          zip
+                            .generateAsync({ type: 'blob' })
+                            .then(function (content) {
+                              saveAs(content, name + '.zip');
+                            });
+                        }}
                       >
                         Download All
                       </Button>
@@ -213,7 +244,7 @@ export default function Fetcher(props: FetcherProps) {
                               interactive
                               intent="success"
                               onClick={() => {
-
+                                FileSaver.saveAs(fetchResList[index], `PANODA_${id}.jpg`)
                               }}
                             >
                               Download

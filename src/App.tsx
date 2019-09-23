@@ -5,7 +5,7 @@ import SelectGuider from './components/SelectGuider'
 import Header from './components/Header'
 import ProgressMask from './components/ProgressMask'
 import Pano from './components/panels/Pano'
-import History from './components/panels/History'
+import Setting from './components/panels/Setting'
 
 import MAP from './map'
 import store from './store'
@@ -88,7 +88,6 @@ const App: React.FC = () => {
             }}
           >
             <Tab id="pano" title="Pano" />
-            <Tab id="history" title="History" />
             <Tab id="setting" title="Setting" />
             <Tab id="about" title="About" />
           </Tabs>
@@ -104,8 +103,8 @@ const App: React.FC = () => {
                 setCheckedIds={setCheckedIds}
                 setLoading={setLoading}
               />,
-              <History />
-            ][['pano', 'history'].indexOf(tabId)]
+              <Setting />
+            ][['pano', 'setting', 'about'].indexOf(tabId)]
           }
         </div>
       </div>

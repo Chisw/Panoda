@@ -10,23 +10,6 @@ const BMap = G.BMap
 const PANO_COVER = new BMap.PanoramaCoverageLayer()
 const PANO_SERVER = new BMap.PanoramaService()
 
-const getPinIcon = (point: {lng: number, lat: number}) => {
-  return new BMap.Marker(point, {
-    offset: {
-      width: -16,
-      height: -32
-    },
-    icon: new BMap.Symbol(SVG_PIN, {
-      rotation: 0,
-      fillColor: '#ea2323',
-      fillOpacity: 1,
-      strokeColor: '#dd2323',
-      strokeWeight: 1,
-      scale: .05
-    })
-  });
-}
-
 let map: any
 
 interface MAPState {
@@ -35,6 +18,7 @@ interface MAPState {
   clear(): void
   listen(): void
   unlisten(): void
+  getPinIcon(point: { lng: number, lat: number }): any
   getPanoIdByClicking(point: any, cb?: () => void): void
   getPanoInfoByIdAndAppendDom(
     id: string,
@@ -88,6 +72,23 @@ const MAP: MAPState = {
     MAP.panoCover.hide()
     map.removeEventListener('click', MAP.getPanoIdByClicking)
   },
+
+  getPinIcon(point) {
+    return new BMap.Marker(point, {
+      offset: {
+        width: -16,
+        height: -32
+      },
+      icon: new BMap.Symbol(SVG_PIN, {
+        rotation: 0,
+        fillColor: '#ea2323',
+        fillOpacity: 1,
+        strokeColor: '#dd2323',
+        strokeWeight: 1,
+        scale: .05
+      })
+    });
+  },
   
   getPanoIdByClicking(event: any) {
     const { point: { lng, lat } } = event
@@ -102,7 +103,7 @@ const MAP: MAPState = {
             const { position: { lng, lat } } = data
             const p = new BMap.Point(lng, lat)
             map.panTo(p)
-            map.addOverlay(getPinIcon(p))
+            map.addOverlay(MAP.getPinIcon(p))
 
             MAP.parent.setLoading(false)
             toaster.show({
@@ -189,7 +190,7 @@ const MAP: MAPState = {
     const p = new BMap.Point(lng, lat)
     map.panTo(p)
     map.clearOverlays()
-    map.addOverlay(getPinIcon(p))
+    map.addOverlay(MAP.getPinIcon(p))
   },
 
   panoCover: {

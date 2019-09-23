@@ -7,6 +7,7 @@ export const getPanoTileSrc = (id: string, row: number, col: number) => {
 }
 
 export const getBaseSize = (base64: string) => {
+  if (!base64) return 0
   return ( base64.length / 1024 / 1024 ).toFixed(2) + ' MB'
 }
 
