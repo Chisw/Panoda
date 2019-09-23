@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Dialog, ProgressBar, Tag, Callout, Button } from '@blueprintjs/core'
+import { Dialog, ProgressBar, Tag, Callout, Button, Alert } from '@blueprintjs/core'
 import TableGrid from '../TableGrid'
 
 import { getPanoTileSrc, getBaseSize } from '../../data'
@@ -18,6 +18,7 @@ export default function Fetcher(props: FetcherProps) {
   const [fetching, setFetching] = useState(true)
   const [tileIndex, setTileIndex] = useState(0)
   const [currentIndex, setCurrentIndex] = useState(0)
+  const [confirmAlertOpen, setConfirmAlertOpen] = useState(false)
 
 
   // init
@@ -83,7 +84,7 @@ export default function Fetcher(props: FetcherProps) {
         img.onload = () => {
           setTimeout(() => {
             _recursive()
-          }, 50)
+          }, 20)
         }
       } else {
         const imgs = pool.querySelectorAll('img')
@@ -110,100 +111,125 @@ export default function Fetcher(props: FetcherProps) {
 
   }
 
-
   return (
-    <Dialog
-      title="Fetcher"
-      canEscapeKeyClose={false}
-      canOutsideClickClose={false}
-      isOpen={isOpen}
-      className="bg-white"
-      style={{ width: 512 }}
-      onClose={() => {
-        onClose()
-        setTileIndex(0)
-        setCurrentIndex(0)
-        setFetching(true)
-        setFetchResList([])
-      }}
-    >
-      <div className="fetcher-container w-full">
-        {
-          fetching
-            ? (
-              <>
-                <div className="fetcher-canvas-container relative w-full overflow-hidden text-none">
-                  <TableGrid />
-                  <div
-                    id="fetcher-pool"
-                    className="relative z-10"
-                    style={{ width: 512, height: 256 }}
-                  />
-                </div>
+    <>
 
-                <div className="px-8 py-4">
-                  <p className="text-xs text-gray-600 font-mono mb-2 mt-4">
-                    Current: {checkedIds[currentIndex]}
-                    <span className="float-right">[{tileIndex}/32]</span>
-                  </p>
-                  <ProgressBar value={tileIndex / 32} intent="success" animate={fetching} />
+      <Alert
+        icon="error"
+        intent="danger"
+        isOpen={confirmAlertOpen}
+        cancelButtonText="Cancel"
+        onCancel={() => {
+          setConfirmAlertOpen(false)
+        }}
+        confirmButtonText="Sure"
+        onConfirm={() => {
+          onClose()
+          setTileIndex(0)
+          setCurrentIndex(0)
+          setFetching(true)
+          setFetchResList([])
+          setTimeout(() => {
+            setConfirmAlertOpen(false)
+          }, 500)
+        }}
+      >
+        <div>
+          <p>Are you sure to close?</p>
+          <p className="text-gray-500 mt-2">When the Fetcher closed, the data fetched will be lost.</p>
+        </div>
+      </Alert>
 
-                  <p className="text-xs text-gray-600 font-mono mb-2 mt-4">
-                    Total:
-                    <span className="float-right">[{currentIndex}/{checkedIds.length}]</span>
-                  </p>
-                  <ProgressBar value={(currentIndex) / checkedIds.length} intent="success" animate={fetching} />
-                </div>
-              </>
-            )
-            : (
-              <div className="p-4 pb-0 font-mono">
-                <Callout
-                  icon="tick"
-                  intent="success"
-                  title="Fetching completed!"
-                  className="mb-4"
-                >
-                  <div className="text-right">
-                    <Button
-                      icon="download"
-                      intent="success"
-                    >
-                      Download All
-                    </Button>
+      <Dialog
+        title="Fetcher"
+        canEscapeKeyClose={false}
+        canOutsideClickClose={false}
+        isOpen={isOpen}
+        className="bg-white"
+        style={{ width: 512 }}
+        onClose={() => {
+          setConfirmAlertOpen(true)
+        }}
+      >
+        <div className="fetcher-container w-full">
+          {
+            fetching
+              ? (
+                <>
+                  <div className="fetcher-canvas-container relative w-full overflow-hidden text-none">
+                    <TableGrid />
+                    <div
+                      id="fetcher-pool"
+                      className="relative z-10"
+                      style={{ width: 512, height: 256 }}
+                    />
                   </div>
-                </Callout>
-                {
-                  checkedIds.map( (id, index) => {
-                    return (
-                      <div className="my-1 p-2 rounded flex hover:bg-gray-100">
-                        <div>
-                          {id}
-                        </div>
-                        <div className="flex-grow text-right">
-                          <span className="mr-4 text-gray-500">
-                            {getBaseSize(fetchResList[index])}
-                          </span>
-                          <Tag 
-                            minimal
-                            interactive
-                            intent="success"
-                            onClick={() => {
 
-                            }}
-                          >
-                            Download
-                          </Tag>
+                  <div className="px-8 py-4">
+                    <p className="text-xs text-gray-600 font-mono mb-2 mt-4">
+                      Current: {checkedIds[currentIndex]}
+                      <span className="float-right">[{tileIndex}/32]</span>
+                    </p>
+                    <ProgressBar value={tileIndex / 32} intent="success" animate={fetching} />
+
+                    <p className="text-xs text-gray-600 font-mono mb-2 mt-4">
+                      Total:
+                      <span className="float-right">[{currentIndex}/{checkedIds.length}]</span>
+                    </p>
+                    <ProgressBar value={(currentIndex) / checkedIds.length} intent="success" animate={fetching} />
+                  </div>
+                </>
+              )
+              : (
+                <div className="p-4 pb-0 font-mono">
+                  <Callout
+                    icon="tick"
+                    intent="success"
+                    title="Fetching completed!"
+                    className="mb-4"
+                  >
+                    <div className="text-right">
+                      <Button
+                        icon="download"
+                        intent="success"
+                      >
+                        Download All
+                      </Button>
+                    </div>
+                  </Callout>
+                  {
+                    checkedIds.map( (id, index) => {
+                      return (
+                        <div className="my-1 p-2 rounded flex hover:bg-gray-100" key={index}>
+                          <div>
+                            {id}
+                          </div>
+                          <div className="flex-grow text-right">
+                            <span className="mr-4 text-gray-500">
+                              {getBaseSize(fetchResList[index])}
+                            </span>
+                            <Tag 
+                              minimal
+                              interactive
+                              intent="success"
+                              onClick={() => {
+
+                              }}
+                            >
+                              Download
+                            </Tag>
+                          </div>
                         </div>
-                      </div>
-                    )
-                  })
-                }
-              </div>
-            )
-        }
-        <canvas id="fetcher-canvas" width="4096" height="2048" className="hidden"></canvas>
-      </div>
-    </Dialog>
+                      )
+                    })
+                  }
+                </div>
+              )
+          }
+          <canvas id="fetcher-canvas" width="4096" height="2048" className="hidden"></canvas>
+        </div>
+      </Dialog>
+
+    </>
   )
 }
