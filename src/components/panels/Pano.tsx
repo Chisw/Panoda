@@ -37,6 +37,7 @@ export default function Pano(props: PanoProps) {
   const [inputDialogOpen, setInputDialogOpen] = useState(false)
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
   const [fetcherDialogOpen, setFetcherDialogOpen] = useState(false)
+  const [fetchResList, setFetchResList] = useState([])
 
   const optionalPanoIds = panos.map( pano => pano.id )
 
@@ -198,6 +199,8 @@ export default function Pano(props: PanoProps) {
 
       <Fetcher
         checkedIds={checkedIds}
+        fetchResList={fetchResList}
+        setFetchResList={setFetchResList}
         isOpen={fetcherDialogOpen}
         onClose={() => {
           setFetcherDialogOpen(false)

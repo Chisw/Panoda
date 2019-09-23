@@ -188,12 +188,6 @@ code {
   height: 256px;
 }
 
-#fetch-canvas {
-  z-index: 2;
-  transform-origin: top left;
-  transform: scale(.125);
-}
-
 #fetcher-pool::before {
   content: "";
   display: block;
