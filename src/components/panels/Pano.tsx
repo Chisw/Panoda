@@ -94,7 +94,7 @@ export default function Pano(props: PanoProps) {
 
         <ButtonGroup className="mx-4">
           <Button
-            icon="eject"
+            icon="play"
             intent="primary"
             disabled={checkedIds.length === 0}
             onClick={() => {

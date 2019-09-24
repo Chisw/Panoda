@@ -4,7 +4,7 @@ import FileSaver from 'file-saver'
 import JSZip from 'jszip'
 import TableGrid from '../TableGrid'
 
-import { getPanoTileSrc, getBaseSize, getExifedBase64 } from '../../ts/util'
+import { getPanoTileSrc, getBaseSize, getExifedBase64, getDateStamp } from '../../ts/util'
 import { IPano } from '../../ts/type'
 
 const toaster = Toaster.create({position: 'top-left'})
@@ -114,8 +114,6 @@ export default function Fetcher(props: FetcherProps) {
         })
 
         const pano = panos.find( pano => pano.id === id )
-        const { lng, lat, date, rname } = pano!
-
 
         const text = window.clientInformation.appVersion + ' - panoda.jisuowei.com'
         ctx.font = '24px monospace'
@@ -128,7 +126,7 @@ export default function Fetcher(props: FetcherProps) {
         const base64 = (canvas! as any).toDataURL('image/jpeg', .92)
         const _fetchResList = Array.from(fetchResList)
         _fetchResList.push(
-          getExifedBase64(base64)
+          getExifedBase64(base64, pano!)
         )
         setFetchResList(_fetchResList)
 
@@ -233,10 +231,10 @@ export default function Fetcher(props: FetcherProps) {
                   >
                     <div className="text-right">
                       <Button
-                        icon="download"
+                        icon="compressed"
                         intent="success"
                         onClick={() => {
-                          const name = 'Panoda_' + new Date().toLocaleTimeString()
+                          const name = 'Panoda_' + getDateStamp()
                           const zip = new JSZip()
                           const panodaFolder = zip.folder(name)
 

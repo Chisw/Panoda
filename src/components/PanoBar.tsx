@@ -73,7 +73,7 @@ export default function PanoBar(props: PanoBarProps) {
           ID: {id}
         </p>
         <p className="text-xs text-gray-500">
-          date: {date}
+          Date: {date}
           {
             rname
               ? <span className="ml-4">Road: {rname}</span>

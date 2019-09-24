@@ -1,3 +1,6 @@
+import { DateTime } from 'luxon'
+import { IPano } from "./type"
+
 export const getPreviewSrc = (id: string) => {
   return `https://mapsv1.bdimg.com/?qt=pdata&sid=${id}&pos=0_0&z=1`
 }
@@ -6,7 +9,21 @@ export const getPanoTileSrc = (id: string, row: number, col: number) => {
   return `https://mapsv1.bdimg.com/?qt=pdata&sid=${id}&pos=${row}_${col}&z=4`
 }
 
+export const getDateStamp = (str?: string, format?: string) => {
+  if ( str ) {
+    const list = str.split('')
+    list.splice(4, 0, '/')
+    list.splice(7, 0, '/')
+    return list.join('')
+  } else {
+    return DateTime.local().toFormat(format || 'yyyyMMdd_hhmmss')
+  }
+}
+
 export const getBaseSize = (base64String: string) => {
+
+  if (!base64String) return
+
   let padding, inBytes, base64StringLength
   if (base64String.endsWith("==")) padding = 2
   else if (base64String.endsWith("=")) padding = 1
@@ -19,16 +36,19 @@ export const getBaseSize = (base64String: string) => {
 }
 
 const piexif = (window as any).piexif
+export const getExifedBase64 = (base64: string, pano: IPano) => {
 
-export const getExifedBase64 = (base64: string) => {
-  const lng = 131.43553989213321;
-  const lat = 34.73842144012451;
+  const { id, lng, lat, date, rname } = pano
+
   const exifObj = {
     "0th": {
-      [piexif.ImageIFD.Artist]: 'Baidu.com',
+      [piexif.ImageIFD.Artist]: 'map.baidu.com',
       [piexif.ImageIFD.Software]: 'Panoda - panoda.jisuowei.com',
-      [piexif.ImageIFD.DateTime]: '2018:08:08 00:00:00',
-      [piexif.ImageIFD.ImageDescription]: '009059595952568415552H - ' + encodeURIComponent('沿河路'),
+      [piexif.ImageIFD.DateTime]: getDateStamp('', 'yyyy/MM/dd hh:mm:ss'),
+      [piexif.ImageIFD.ImageDescription]: id + ( rname ? ' - ' + encodeURIComponent(rname) : ''),
+    },
+    "Exif": {
+      [piexif.ExifIFD.DateTimeOriginal]: date,
     },
     "GPS": {
       [piexif.GPSIFD.GPSLongitudeRef]: lng < 0 ? 'W' : 'E',
@@ -38,6 +58,8 @@ export const getExifedBase64 = (base64: string) => {
     }
   }
 
-  const exifStr = piexif.dump(exifObj);
-  return piexif.insert(exifStr, base64)
+  console.log(exifObj)
+  console.log(piexif.dump(exifObj))
+
+  return piexif.insert(piexif.dump(exifObj), base64)
 }

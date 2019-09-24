@@ -2,6 +2,7 @@ import { Toaster } from "@blueprintjs/core"
 
 import { SVG_PIN, PANO_ID_REG, /*CUSTOM_MAP*/ } from './constant'
 import { IPano } from './type'
+import { getDateStamp } from "./util"
 
 const toaster = Toaster.create({ position: 'top-left' })
 
@@ -174,7 +175,7 @@ const MAP: MAPState = {
           }
         } = data
 
-        panos.unshift({ id, lng, lat, date: photoDate, rname: roadName })
+        panos.unshift({ id, lng, lat, date: getDateStamp(photoDate), rname: roadName })
         const _panos = Array.from(panos)
         setPanos(_panos)
 
