@@ -216,3 +216,8 @@ code {
   width: 12.5%;
   font-family: monospace, consolas;
 }
+
+.setting-left {
+  width: 320px;
+  padding-bottom: 20px;
+}

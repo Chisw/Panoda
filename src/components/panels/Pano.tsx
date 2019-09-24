@@ -43,7 +43,7 @@ export default function Pano(props: PanoProps) {
 
   return (
     <div className="pano-top-bar">
-      <div className="mb-4">
+      <div className="mt-2">
 
         <ButtonGroup>
           <Button

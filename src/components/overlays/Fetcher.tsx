@@ -4,7 +4,7 @@ import FileSaver from 'file-saver'
 import JSZip from 'jszip'
 import TableGrid from '../TableGrid'
 
-import { getPanoTileSrc, getBaseSize, getExifedBase64, getDateStamp, fillWaterPrint } from '../../ts/util'
+import { getPanoTileSrc, getBaseSize, getExifedBase64, getDateStamp, fillWatermark } from '../../ts/util'
 import { IPano } from '../../ts/type'
 
 const toaster = Toaster.create({position: 'top-left'})
@@ -115,7 +115,7 @@ export default function Fetcher(props: FetcherProps) {
 
         const pano = panos.find( pano => pano.id === id )
 
-        fillWaterPrint(ctx, pano!)
+        fillWatermark(ctx, pano!)
 
         const base64 = (canvas! as any).toDataURL('image/jpeg', .92)
         const _fetchResList = Array.from(fetchResList)

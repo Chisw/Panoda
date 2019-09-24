@@ -79,7 +79,7 @@ const App: React.FC = () => {
         <div className="panel-inner relative h-full">
           <Header />
           <Tabs large animate 
-            className="mb-2 border-b"
+            className="border-b"
             id="navi" 
             key="horizontal"
             selectedTabId={tabId}
