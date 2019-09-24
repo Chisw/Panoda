@@ -26,8 +26,21 @@ const App: React.FC = () => {
   MAP.parent.panos = panos
   MAP.parent.setPanos = setPanos
 
+  const initSettings = () => {
+    const isSet = store.get('PANO_SETTING_SET')
+    if ( !isSet ) {
+      store.set('PANO_SETTING_SET', true)
+
+      store.set('PANO_SETTING_USEALERT', true)
+      store.set('PANO_SETTING_INSERTEXIF', true)
+      store.set('PANO_SETTING_WATERMARK', ['1id', '2position', '3date', '4rname', '5link'])
+      store.set('PANO_SETTING_IMAGEQUALITY', '.92')
+    }
+  }
+
   useEffect(() => {
     MAP.init()
+    initSettings()
   }, [])
 
   useEffect(() => {
