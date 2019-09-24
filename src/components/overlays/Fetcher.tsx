@@ -244,6 +244,8 @@ export default function Fetcher(props: FetcherProps) {
                         onClick={() => {
                           const name = 'Panoda_' + getDateStamp()
                           const zip = new JSZip()
+                          const currDate = new Date()
+                          const dateWithOffset = new Date(currDate.getTime() - currDate.getTimezoneOffset() * 60000)
                           const panodaFolder = zip.folder(name)
 
                           fetchResList.forEach( (res, index) => {
@@ -251,7 +253,7 @@ export default function Fetcher(props: FetcherProps) {
                               .file(
                                 `PANODA_${checkedIds[index]}.jpg`, 
                                 res.replace('data:image/jpeg;base64,', ''), 
-                                {base64: true})
+                                { base64: true, date: dateWithOffset })
                           })
 
                           zip
