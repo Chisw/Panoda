@@ -8,7 +8,7 @@ import InputIdsDialog from '../overlays/InputIdsDialog'
 import DeleteCheckedPanosAlert from '../overlays/DeleteCheckedPanosAlert'
 import Fetcher from '../overlays/Fetcher'
 
-import { IPano } from '../../type'
+import { IPano } from '../../ts/type'
 
 interface PanoProps {
   panoView: string
@@ -198,6 +198,7 @@ export default function Pano(props: PanoProps) {
       />
 
       <Fetcher
+        panos={panos}
         checkedIds={checkedIds}
         fetchResList={fetchResList}
         setFetchResList={setFetchResList}

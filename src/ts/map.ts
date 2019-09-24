@@ -1,7 +1,7 @@
 import { Toaster } from "@blueprintjs/core"
 
-import { SVG_PIN, PANO_ID_REG, /*CUSTOM_MAP*/ } from '../data'
-import { IPano } from '../type'
+import { SVG_PIN, PANO_ID_REG, /*CUSTOM_MAP*/ } from './constant'
+import { IPano } from './type'
 
 const toaster = Toaster.create({ position: 'top-left' })
 

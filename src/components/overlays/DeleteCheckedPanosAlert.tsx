@@ -1,7 +1,7 @@
 import React from 'react'
 import { Alert, Toaster } from '@blueprintjs/core'
 
-import { IPano } from '../../type'
+import { IPano } from '../../ts/type'
 
 const toaster = Toaster.create({ position: 'top-left' })
 

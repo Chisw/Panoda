@@ -1,9 +1,9 @@
 import React from 'react'
 import { ButtonGroup, Button, Popover, Classes, Checkbox, Toaster } from '@blueprintjs/core'
 
-import { IPano } from '../type'
-import MAP from '../map'
-import { getPreviewSrc } from '../data'
+import { IPano } from '../ts/type'
+import MAP from '../ts/map'
+import { getPreviewSrc } from '../ts/util'
 
 const toaster = Toaster.create({ position: 'top-left' })
 

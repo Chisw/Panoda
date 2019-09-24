@@ -4,11 +4,13 @@ import FileSaver from 'file-saver'
 import JSZip from 'jszip'
 import TableGrid from '../TableGrid'
 
-import { getPanoTileSrc, getBaseSize } from '../../data'
+import { getPanoTileSrc, getBaseSize, getExifedBase64 } from '../../ts/util'
+import { IPano } from '../../ts/type'
 
 const toaster = Toaster.create({position: 'top-left'})
 
 interface FetcherProps {
+  panos: IPano[] | []
   fetchResList: any[]
   setFetchResList(list: any): void 
   checkedIds: string[]
@@ -18,7 +20,7 @@ interface FetcherProps {
 
 export default function Fetcher(props: FetcherProps) {
 
-  const { fetchResList, setFetchResList, checkedIds, isOpen, onClose } = props
+  const { panos, fetchResList, setFetchResList, checkedIds, isOpen, onClose } = props
   const [fetching, setFetching] = useState(true)
   const [error, setError] = useState(false)
   const [tileIndex, setTileIndex] = useState(0)
@@ -75,7 +77,7 @@ export default function Fetcher(props: FetcherProps) {
       setTileIndex(handleTimes)
       handleTimes++
       
-      if ( tiles.length ) {
+      if (tiles.length) {  // filling
         const tile = tiles.shift()
         const { src, row, col } = tile
 
@@ -103,7 +105,7 @@ export default function Fetcher(props: FetcherProps) {
             intent: 'danger'
           })
         }
-      } else {
+      } else {  // filled
         const imgs = pool.querySelectorAll('img')
         imgs.forEach(img => {
           const row = Number(img.getAttribute('row'));
@@ -111,17 +113,23 @@ export default function Fetcher(props: FetcherProps) {
           ctx!.drawImage(img, 512 * col, 512 * row, 512, 512);
         })
 
+        const pano = panos.find( pano => pano.id === id )
+        const { lng, lat, date, rname } = pano!
+
+
         const text = window.clientInformation.appVersion + ' - panoda.jisuowei.com'
-        ctx.font = '24px monospace';
-        ctx.textAlign = 'right';
-        ctx.fillStyle = '#000';
-        ctx.fillText(text, 4072, 2021);
-        ctx.fillStyle = '#fff';
-        ctx.fillText(text, 4072, 2020);
+        ctx.font = '24px monospace'
+        ctx.textAlign = 'right'
+        ctx.fillStyle = '#000'
+        ctx.fillText(text, 4072, 2021)
+        ctx.fillStyle = '#fff'
+        ctx.fillText(text, 4072, 2020)
 
         const base64 = (canvas! as any).toDataURL('image/jpeg', .92)
         const _fetchResList = Array.from(fetchResList)
-        _fetchResList.push(base64)
+        _fetchResList.push(
+          getExifedBase64(base64)
+        )
         setFetchResList(_fetchResList)
 
         setTimeout(() => {

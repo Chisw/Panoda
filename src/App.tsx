@@ -7,9 +7,9 @@ import ProgressMask from './components/ProgressMask'
 import Pano from './components/panels/Pano'
 import Setting from './components/panels/Setting'
 
-import MAP from './map'
-import store from './store'
-import { IPano } from './type'
+import MAP from './ts/map'
+import store from './ts/store'
+import { IPano } from './ts/type'
 
 const App: React.FC = () => {
 

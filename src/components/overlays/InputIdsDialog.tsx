@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { Dialog, TextArea, Button, Classes, Toaster } from '@blueprintjs/core'
 
-import { PANO_ID_REG } from '../../data'
-import MAP from '../../map'
+import { PANO_ID_REG } from '../../ts/constant'
+import MAP from '../../ts/map'
 
 const toaster = Toaster.create({ position: 'top-left' })
 
