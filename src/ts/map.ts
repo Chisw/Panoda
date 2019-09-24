@@ -108,7 +108,7 @@ const MAP: MAPState = {
 
             MAP.parent.setLoading(false)
             toaster.show({
-              message: `Get pano ${data.id}`,
+              message: `Get successfully`,
               intent: 'success',
               timeout: 2000,
               icon: 'tick'
@@ -175,7 +175,7 @@ const MAP: MAPState = {
           }
         } = data
 
-        panos.unshift({ id, lng, lat, date: getDateStamp(photoDate), rname: roadName })
+        panos.unshift({ id, lng, lat, date: getDateStamp(photoDate), rname: roadName || '无道路信息' })
         const _panos = Array.from(panos)
         setPanos(_panos)
 

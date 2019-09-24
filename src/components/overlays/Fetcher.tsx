@@ -4,7 +4,7 @@ import FileSaver from 'file-saver'
 import JSZip from 'jszip'
 import TableGrid from '../TableGrid'
 
-import { getPanoTileSrc, getBaseSize, getExifedBase64, getDateStamp } from '../../ts/util'
+import { getPanoTileSrc, getBaseSize, getExifedBase64, getDateStamp, fillWaterPrint } from '../../ts/util'
 import { IPano } from '../../ts/type'
 
 const toaster = Toaster.create({position: 'top-left'})
@@ -115,13 +115,7 @@ export default function Fetcher(props: FetcherProps) {
 
         const pano = panos.find( pano => pano.id === id )
 
-        const text = window.clientInformation.appVersion + ' - panoda.jisuowei.com'
-        ctx.font = '24px monospace'
-        ctx.textAlign = 'right'
-        ctx.fillStyle = '#000'
-        ctx.fillText(text, 4072, 2021)
-        ctx.fillStyle = '#fff'
-        ctx.fillText(text, 4072, 2020)
+        fillWaterPrint(ctx, pano!)
 
         const base64 = (canvas! as any).toDataURL('image/jpeg', .92)
         const _fetchResList = Array.from(fetchResList)

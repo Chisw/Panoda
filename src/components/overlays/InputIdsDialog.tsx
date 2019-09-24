@@ -94,7 +94,7 @@ export default function InputIdsDialog(props: InputIdsDialogProps) {
           className="w-full"
           style={{ height: '8rem', resize: 'none' }}
           intent="primary"
-          placeholder="Paste pano id(s) here, separated by commas"
+          placeholder="Paste pano id(s) here, separate value by commas"
           onChange={(value: any) => { 
             setInputIds(value.target.value) 
           }}
