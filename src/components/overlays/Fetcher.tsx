@@ -6,6 +6,7 @@ import TableGrid from '../TableGrid'
 
 import { getPanoTileSrc, getBaseSize, getExifedBase64, getDateStamp, fillWatermark } from '../../ts/util'
 import { IPano } from '../../ts/type'
+import store from '../../ts/store'
 
 const toaster = Toaster.create({position: 'top-left'})
 
@@ -117,10 +118,15 @@ export default function Fetcher(props: FetcherProps) {
 
         fillWatermark(ctx, pano!)
 
-        const base64 = (canvas! as any).toDataURL('image/jpeg', .92)
+        const base64 = (canvas! as any).toDataURL(
+          'image/jpeg',
+          +store.get('PANO_SETTING_IMAGEQUALITY')
+        )
         const _fetchResList = Array.from(fetchResList)
         _fetchResList.push(
-          getExifedBase64(base64, pano!)
+          store.get('PANO_SETTING_INSERTEXIF')
+            ? getExifedBase64(base64, pano!)
+            : base64
         )
         setFetchResList(_fetchResList)
 
@@ -136,6 +142,15 @@ export default function Fetcher(props: FetcherProps) {
 
   }
 
+  const handleClose = () => {
+    onClose()
+    setTileIndex(0)
+    setCurrentIndex(0)
+    setFetching(true)
+    setError(false)
+    setFetchResList([])
+  }
+
   return (
     <>
 
@@ -149,12 +164,7 @@ export default function Fetcher(props: FetcherProps) {
         }}
         confirmButtonText="Sure"
         onConfirm={() => {
-          onClose()
-          setTileIndex(0)
-          setCurrentIndex(0)
-          setFetching(true)
-          setError(false)
-          setFetchResList([])
+          handleClose()
           setTimeout(() => {
             setConfirmAlertOpen(false)
           }, 100)
@@ -182,7 +192,11 @@ export default function Fetcher(props: FetcherProps) {
               timeout: 5000
             })
           } else {
-            setConfirmAlertOpen(true)
+            if ( store.get('PANO_SETTING_USEALERT')) {
+              setConfirmAlertOpen(true)
+            } else {
+              handleClose()
+            }
           }
         }}
       >
