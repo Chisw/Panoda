@@ -1,8 +1,7 @@
 import { Toaster } from "@blueprintjs/core"
 
-// import SVG_RECT from '../images/rect.svg'
 import SVG_PIN from '../images/pin.svg'
-import SVG_RECT from '../images/rect-dots.svg'
+import SVG_RECT from '../images/rect.svg'
 
 import { PANO_ID_REG, /*CUSTOM_MAP*/ } from './constant'
 import { IPano } from './type'
@@ -42,16 +41,17 @@ interface MAPState {
 const MAP: MAPState = {
   parent: {},
   init() {
-    map = new BMap.Map('map', {enableMapClick: false});
-    map.centerAndZoom(new BMap.Point(120.64, 31.31), 14);
-    map.enableScrollWheelZoom(true);
-    // map.setMapStyleV2({styleJson: CUSTOM_MAP});
+    map = new BMap.Map('map', {enableMapClick: false})
+    map.centerAndZoom(new BMap.Point(120.64, 31.31), 14)
+    map.enableScrollWheelZoom(true)
+    // map.setMapStyleV2({styleJson: CUSTOM_MAP})
     
     const navigationControl = new BMap.NavigationControl({
       anchor: G.BMAP_ANCHOR_TOP_LEFT,
       type: G.BMAP_NAVIGATION_CONTROL_LARGE,
-    });
-    map.addControl(navigationControl);
+    })
+    map.addControl(navigationControl)
+    map.setMinZoom(5)
   },
 
   clear() {
@@ -69,9 +69,17 @@ const MAP: MAPState = {
     } else if (selectWith === 'area' ){
       map.removeEventListener('click', MAP.getPanoIdByClicking)
 
+      map.addEventListener('click', (e: any) => {
+        console.log(e.point)
+        console.log(map.getZoom())
+      })
+
       const marker = MAP.getRectMarker(map.getCenter())
       map.addOverlay(marker)
       marker.enableDragging()
+      marker.addEventListener('dragend', (e: any) => {
+        // console.log(e)
+      })
     }
   },
 

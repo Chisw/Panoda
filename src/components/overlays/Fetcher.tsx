@@ -202,7 +202,7 @@ export default function Fetcher(props: FetcherProps) {
       >
         <div className="fetcher-container w-full">
           {
-            fetching && ( fetchResList.length === checkedIds.length )
+            fetching && ( fetchResList.length !== checkedIds.length )
               ? (  // progress
                 <>
                   <div className="fetcher-canvas-container relative w-full overflow-hidden text-none">
