@@ -99,6 +99,7 @@ export default function Pano(props: PanoProps) {
             disabled={checkedIds.length === 0}
             onClick={() => {
               setFetcherDialogOpen(true)
+              setPanoFrom('')
             }}
           >
             Fetch

@@ -92,11 +92,11 @@ export default function Setting() {
         <div className="flex-grow bg-gray-100 pt-4 pb-1 pl-4">
           {
             [
-              { label: 'PanoID', value: '1id' },
+              { label: 'Pano ID', value: '1id' },
               { label: 'Position', value: '2position' },
               { label: 'Date', value: '3date' },
-              { label: 'RoadName', value: '4rname' },
-              { label: 'Panoda Link', value: '5link' },
+              { label: 'Road name', value: '4rname' },
+              { label: 'Panoda link', value: '5link' },
             ].map( item => {
               const { label, value } = item
               return (
@@ -135,9 +135,9 @@ export default function Setting() {
               setImageQuality(value)
             }}
           >
+            <Radio label="High" value=".92" />
+            <Radio label="Middle" value=".64" />
             <Radio label="Low" value=".46"/>
-            <Radio label="Middle" value=".64"/>
-            <Radio label="High" value=".92"/>
           </RadioGroup>
         </div>
       </div>

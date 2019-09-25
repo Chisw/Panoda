@@ -33,7 +33,7 @@ export default function Fetcher(props: FetcherProps) {
     if ( isOpen ) {
       setTimeout(() => {
         fillTiles(checkedIds[currentIndex])
-      }, 200)
+      }, 100)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen, currentIndex])
@@ -43,7 +43,7 @@ export default function Fetcher(props: FetcherProps) {
     if (currentIndex === checkedIds.length ) {
       setTimeout(() => {
         setFetching(false)  // show res
-      }, 100)
+      }, 50)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentIndex])
@@ -93,7 +93,7 @@ export default function Fetcher(props: FetcherProps) {
         img.onload = () => {
           setTimeout(() => {
             _recursive()
-          }, 20)
+          }, 10)
         }
 
         img.onerror = () => {
@@ -143,12 +143,12 @@ export default function Fetcher(props: FetcherProps) {
   }
 
   const handleClose = () => {
-    onClose()
     setTileIndex(0)
     setCurrentIndex(0)
     setFetching(true)
     setError(false)
     setFetchResList([])
+    onClose()
   }
 
   return (
@@ -203,7 +203,7 @@ export default function Fetcher(props: FetcherProps) {
         <div className="fetcher-container w-full">
           {
             fetching
-              ? (
+              ? (  // progress
                 <>
                   <div className="fetcher-canvas-container relative w-full overflow-hidden text-none">
                     <TableGrid />
@@ -229,7 +229,7 @@ export default function Fetcher(props: FetcherProps) {
                   </div>
                 </>
               )
-              : (
+              : (  // result
                 <div className="p-4 pb-0 font-mono">
                   <Callout
                     icon="tick"
