@@ -44,6 +44,10 @@ const App: React.FC = () => {
   }, [])
 
   useEffect(() => {
+    setPanoFrom('')
+  }, [tabId])
+
+  useEffect(() => {
     setMapSelect(panoFrom === 'map')
     MAP.clear()
   }, [panoFrom])

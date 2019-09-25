@@ -73,8 +73,8 @@ code {
   z-index: 15;
   bottom: -46px;
   box-sizing: border-box;
-  margin-left: -120px;
-  width: 240px;
+  margin-left: -140px;
+  width: 280px;
   height: 46px;
   transition: all 1.2s;
 }

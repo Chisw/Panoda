@@ -19,6 +19,7 @@ interface MAPState {
   clear(): void
   listen(): void
   unlisten(): void
+  locate(): void
   getPinIcon(point: { lng: number, lat: number }): any
   getPanoIdByClicking(point: any, cb?: () => void): void
   getPanoInfoByIdAndAppendDom(
@@ -40,18 +41,6 @@ const MAP: MAPState = {
     map.centerAndZoom(new BMap.Point(120.64, 31.31), 14);
     map.enableScrollWheelZoom(true);
     // map.setMapStyleV2({styleJson: CUSTOM_MAP});
-
-    var geolocation = new BMap.Geolocation();
-    geolocation.getCurrentPosition(
-      (res: any) => {
-        if(geolocation.getStatus() === 0){
-          // map.panTo(res.point);
-        }      
-      },
-      {
-        enableHighAccuracy: true
-      }
-    )
     
     const navigationControl = new BMap.NavigationControl({
       anchor: G.BMAP_ANCHOR_TOP_LEFT,
@@ -72,6 +61,35 @@ const MAP: MAPState = {
   unlisten() {
     MAP.panoCover.hide()
     map.removeEventListener('click', MAP.getPanoIdByClicking)
+  },
+
+  locate() {
+    MAP.parent.setLoading(true)
+    var geolocation = new BMap.Geolocation();
+    geolocation.getCurrentPosition(
+      (res: any) => {
+        MAP.parent.setLoading(false)
+        if (geolocation.getStatus() === 0) {
+          map.panTo(res.point);
+          toaster.show({
+            message: 'Locate successfully',
+            icon: 'tick',
+            intent: 'success',
+            timeout: 2000
+          })
+        } else {
+          toaster.show({
+            message: 'Locate failed, try later',
+            icon: 'tick',
+            intent: 'danger',
+            timeout: 2000
+          })
+        }
+      },
+      {
+        enableHighAccuracy: true
+      }
+    )
   },
 
   getPinIcon(point) {
