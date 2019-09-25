@@ -1,9 +1,10 @@
 import { Toaster } from "@blueprintjs/core"
 
 // import SVG_RECT from '../images/rect.svg'
+import SVG_PIN from '../images/pin.svg'
 import SVG_RECT from '../images/rect-dots.svg'
 
-import { SVG_PIN, PANO_ID_REG, /*CUSTOM_MAP*/ } from './constant'
+import { PANO_ID_REG, /*CUSTOM_MAP*/ } from './constant'
 import { IPano } from './type'
 import { getDateStamp } from "./util"
 
@@ -110,30 +111,28 @@ const MAP: MAPState = {
   },
 
   getPinMarker(point) {
+    const size = { width: 18, height: 24 }
     return new BMap.Marker(point, {
       offset: {
-        width: -16,
-        height: -32
+        width: 0,
+        height: - size.height / 2
       },
-      icon: new BMap.Symbol(SVG_PIN, {
-        rotation: 0,
-        fillColor: '#ea2323',
-        fillOpacity: 1,
-        strokeColor: '#882323',
-        strokeWeight: 2,
-        scale: .05
-      })
+      icon: new BMap.Icon(
+        SVG_PIN,
+        size,
+        { imageSize: size }
+      )
     });
   },
 
   getRectMarker(point) {
+    const size = { width: 200, height: 200 }
     return new BMap.Marker(point, {
+      draggingCursor: 'move',
       icon: new BMap.Icon(
         SVG_RECT,
-        { width: 200, height: 200 },
-        {
-          imageSize: { width: 200, height: 200 }
-        }
+        size,
+        { imageSize: size }
       )
     });
   },
@@ -204,6 +203,7 @@ const MAP: MAPState = {
         timeout: 0,
         icon: 'error'
       })
+      MAP.parent.setLoading(false)
       return
     }
 

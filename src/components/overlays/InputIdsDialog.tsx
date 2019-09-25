@@ -69,7 +69,7 @@ export default function InputIdsDialog(props: InputIdsDialogProps) {
       } else {
         setLoading(false)
         toaster.show({
-          message: `Generated`,
+          message: `Finished`,
           intent: 'success',
           timeout: 3000,
           icon: 'tick'
@@ -87,7 +87,10 @@ export default function InputIdsDialog(props: InputIdsDialogProps) {
       canEscapeKeyClose={false}
       canOutsideClickClose={false}
       isOpen={isOpen}
-      onClose={() => { onClose() }}
+      onClose={() => {
+        setInputIds('')
+        onClose() 
+      }}
     >
       <div className={Classes.DIALOG_BODY}>
         <TextArea
@@ -109,7 +112,7 @@ export default function InputIdsDialog(props: InputIdsDialogProps) {
             disabled={inputIds.length === 0}
             onClick={generate}
           >
-            Generate
+            Continue
           </Button>
         </div>
       </div>

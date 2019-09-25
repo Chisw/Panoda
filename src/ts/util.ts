@@ -85,8 +85,9 @@ export const fillWatermark = (ctx: any, pano: IPano) => {
         store.get('PANO_SETTING_WATERMARK').sort()
       )
     ).join('  |  ')
-
-  ctx.font = '24px monospace'
+  
+  const isWindows = window.clientInformation.appVersion.toLowerCase().indexOf('windows') > 0
+  ctx.font = '24px ' + ( isWindows ? 'Consolas' : 'monospace' )
   ctx.textAlign = 'left'
   ctx.fillStyle = '#000'
   ctx.fillText(text, 20, 2021)
