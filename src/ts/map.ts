@@ -1,5 +1,8 @@
 import { Toaster } from "@blueprintjs/core"
 
+// import SVG_RECT from '../images/rect.svg'
+import SVG_RECT from '../images/rect-dots.svg'
+
 import { SVG_PIN, PANO_ID_REG, /*CUSTOM_MAP*/ } from './constant'
 import { IPano } from './type'
 import { getDateStamp } from "./util"
@@ -17,10 +20,11 @@ interface MAPState {
   parent: any
   init(): void
   clear(): void
-  listen(): void
+  listen(selectWith: string): void
   unlisten(): void
   locate(): void
-  getPinIcon(point: { lng: number, lat: number }): any
+  getPinMarker(point: { lng: number, lat: number }): any
+  getRectMarker(point: { lng: number, lat: number }): any
   getPanoIdByClicking(point: any, cb?: () => void): void
   getPanoInfoByIdAndAppendDom(
     id: string,
@@ -53,13 +57,26 @@ const MAP: MAPState = {
     map.clearOverlays();
   },
 
-  listen() {
+  listen(selectWith) {
+    map.clearOverlays()
+
     MAP.panoCover.show()
-    map.addEventListener('click', MAP.getPanoIdByClicking)
+    // point
+    if (selectWith === 'point') {
+      map.addEventListener('click', MAP.getPanoIdByClicking)
+    // area
+    } else if (selectWith === 'area' ){
+      map.removeEventListener('click', MAP.getPanoIdByClicking)
+
+      const marker = MAP.getRectMarker(map.getCenter())
+      map.addOverlay(marker)
+      marker.enableDragging()
+    }
   },
 
   unlisten() {
     MAP.panoCover.hide()
+    map.clearOverlays();
     map.removeEventListener('click', MAP.getPanoIdByClicking)
   },
 
@@ -92,7 +109,7 @@ const MAP: MAPState = {
     )
   },
 
-  getPinIcon(point) {
+  getPinMarker(point) {
     return new BMap.Marker(point, {
       offset: {
         width: -16,
@@ -102,10 +119,22 @@ const MAP: MAPState = {
         rotation: 0,
         fillColor: '#ea2323',
         fillOpacity: 1,
-        strokeColor: '#dd2323',
-        strokeWeight: 1,
+        strokeColor: '#882323',
+        strokeWeight: 2,
         scale: .05
       })
+    });
+  },
+
+  getRectMarker(point) {
+    return new BMap.Marker(point, {
+      icon: new BMap.Icon(
+        SVG_RECT,
+        { width: 200, height: 200 },
+        {
+          imageSize: { width: 200, height: 200 }
+        }
+      )
     });
   },
   
@@ -122,7 +151,7 @@ const MAP: MAPState = {
             const { position: { lng, lat } } = data
             const p = new BMap.Point(lng, lat)
             map.panTo(p)
-            map.addOverlay(MAP.getPinIcon(p))
+            map.addOverlay(MAP.getPinMarker(p))
 
             MAP.parent.setLoading(false)
             toaster.show({
@@ -194,7 +223,7 @@ const MAP: MAPState = {
         } = data
 
         panos.unshift({ id, lng, lat, date: getDateStamp(photoDate), rname: roadName || '无道路信息' })
-        const _panos = Array.from(panos)
+        const _panos = [...panos]
         setPanos(_panos)
 
         success && success(data)
@@ -209,7 +238,7 @@ const MAP: MAPState = {
     const p = new BMap.Point(lng, lat)
     map.panTo(p)
     map.clearOverlays()
-    map.addOverlay(MAP.getPinIcon(p))
+    map.addOverlay(MAP.getPinMarker(p))
   },
 
   panoCover: {

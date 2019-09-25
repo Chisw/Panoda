@@ -38,10 +38,10 @@ export default function PanoCard(props: PanoCardProps) {
         if (checked) {
           const index = checkedIds.findIndex( _id => _id === id)
           checkedIds.splice(index, 1)
-          _checkedIds = Array.from(checkedIds)
+          _checkedIds = [...checkedIds]
         } else {
           checkedIds.push(id)
-          _checkedIds = Array.from(checkedIds)
+          _checkedIds = [...checkedIds]
         }
         setCheckedIds(_checkedIds)
       }}
@@ -82,7 +82,7 @@ export default function PanoCard(props: PanoCardProps) {
                       const index = panos.findIndex(pano => pano.id === id)
                       if (index === -1) return
                       panos.splice(index, 1).reverse()
-                      const _panos = Array.from(panos)
+                      const _panos = [...panos]
                       setPanos(_panos)
                       toaster.show({
                         message: `Pano deleted`,

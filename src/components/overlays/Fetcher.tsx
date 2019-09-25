@@ -122,7 +122,7 @@ export default function Fetcher(props: FetcherProps) {
           'image/jpeg',
           +store.get('PANO_SETTING_IMAGEQUALITY')
         )
-        const _fetchResList = Array.from(fetchResList)
+        const _fetchResList = [...fetchResList]
         _fetchResList.push(
           store.get('PANO_SETTING_INSERTEXIF')
             ? getExifedBase64(base64, pano!)
@@ -202,7 +202,7 @@ export default function Fetcher(props: FetcherProps) {
       >
         <div className="fetcher-container w-full">
           {
-            fetching
+            fetching && ( fetchResList.length === checkedIds.length )
               ? (  // progress
                 <>
                   <div className="fetcher-canvas-container relative w-full overflow-hidden text-none">

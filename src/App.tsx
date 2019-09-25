@@ -54,11 +54,11 @@ const App: React.FC = () => {
 
   useEffect(() => {
     if ( mapSelect ) {
-      MAP.listen()
+      MAP.listen(selectWith)
     } else {
       MAP.unlisten()
     }
-  }, [mapSelect])
+  }, [mapSelect, selectWith])
 
   useEffect(() => {
     store.set('PANODA_PANO_VIEW', panoView)
@@ -81,7 +81,11 @@ const App: React.FC = () => {
   }, [checkedIds])
 
   return (
-    <div className={`panoda-container ${panoFrom === 'map' ? 'map-expand' : ''} w-full h-full absolute top-0 right-0 bottom-0 left-0`}>
+    <div className={
+      `panoda-container 
+      ${panoFrom === 'map' ? 'map-expand' : ''} 
+      w-full h-full absolute top-0 right-0 bottom-0 left-0`
+    }>
 
       <div className="panoda-map absolute top-0 right-50 bottom-0 left-0">
         <div id="map" className="absolute top-0 right-0 bottom-0 left-0"></div>

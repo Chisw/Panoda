@@ -1,0 +1,29 @@
+<svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="200" height="200" rx="4" fill="#FF5959" fill-opacity="0.1"/>
+<rect x="1" y="1" width="198" height="198" rx="3" stroke="#CC0000" stroke-opacity="0.1" stroke-width="2"/>
+<circle cx="2" cy="2" r="2" fill="#D10000"/>
+<circle cx="102" cy="2" r="2" fill="#D10000"/>
+<circle cx="198" cy="2" r="2" fill="#D10000"/>
+<circle cx="152" cy="2" r="2" fill="#D10000"/>
+<circle cx="52" cy="2" r="2" fill="#D10000"/>
+<circle cx="2" cy="152" r="2" fill="#D10000"/>
+<circle cx="102" cy="152" r="2" fill="#D10000"/>
+<circle cx="198" cy="152" r="2" fill="#D10000"/>
+<circle cx="152" cy="152" r="2" fill="#D10000"/>
+<circle cx="52" cy="152" r="2" fill="#D10000"/>
+<circle cx="2" cy="52" r="2" fill="#D10000"/>
+<circle cx="102" cy="52" r="2" fill="#D10000"/>
+<circle cx="198" cy="52" r="2" fill="#D10000"/>
+<circle cx="152" cy="52" r="2" fill="#D10000"/>
+<circle cx="52" cy="52" r="2" fill="#D10000"/>
+<circle cx="2" cy="102" r="2" fill="#D10000"/>
+<circle cx="102" cy="102" r="2" fill="#D10000"/>
+<circle cx="198" cy="102" r="2" fill="#D10000"/>
+<circle cx="152" cy="102" r="2" fill="#D10000"/>
+<circle cx="52" cy="102" r="2" fill="#D10000"/>
+<circle cx="2" cy="198" r="2" fill="#D10000"/>
+<circle cx="102" cy="198" r="2" fill="#D10000"/>
+<circle cx="198" cy="198" r="2" fill="#D10000"/>
+<circle cx="152" cy="198" r="2" fill="#D10000"/>
+<circle cx="52" cy="198" r="2" fill="#D10000"/>
+</svg>
