@@ -6,3 +6,8 @@ export interface IPano {
   rname: string
 }
 
+export interface IPoint {
+  lng: number,
+  lat: number
+}
+

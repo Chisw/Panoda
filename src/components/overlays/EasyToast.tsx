@@ -1,4 +1,3 @@
-import React from 'react'
 import { Toaster, IconName, Intent } from '@blueprintjs/core'
 
 const toaster = Toaster.create({ position: 'top-left'})

@@ -17,7 +17,7 @@ const App: React.FC = () => {
   const [tabId, setTabId] = useState('pano')  // 'pano' | 'setting' | 'about'
   const [panoFrom, setPanoFrom] = useState('')  // '' | 'map' | 'input'
   const [selectWith, setSelectWith] = useState('point')  // 'point' | 'line' | 'area'
-  const [selectAreaCenter, setSelectAreaCenter] = useState({lng: 0, lat: 0})
+  const [areaCenter, setAreaCenter] = useState({lng: 0, lat: 0})
   const [zoomLevel, setZoomLevel] = useState(14)  // 5-19
   const [panoView, setPanoView] = useState(store.get('PANODA_PANO_VIEW') || 'list')  // 'list' | 'grid'
   const [panos, setPanos] = useState(store.get('PANODA_PANOS') || [])
@@ -26,7 +26,7 @@ const App: React.FC = () => {
   MAP.parent.setLoading = setLoading
   MAP.parent.panos = panos
   MAP.parent.setPanos = setPanos
-  MAP.parent.setSelectAreaCenter = setSelectAreaCenter
+  MAP.parent.setAreaCenter = setAreaCenter
   MAP.parent.setZoomLevel = setZoomLevel
 
   const initSettings = () => {
@@ -60,7 +60,7 @@ const App: React.FC = () => {
   }, [panoFrom, selectWith])
 
   useEffect(() => {
-    setSelectAreaCenter({ lng: 0, lat: 0 })
+    setAreaCenter({ lng: 0, lat: 0 })
   }, [selectWith])
 
   useEffect(() => {
@@ -97,7 +97,7 @@ const App: React.FC = () => {
           setPanoFrom={setPanoFrom}
           selectWith={selectWith}
           setSelectWith={setSelectWith}
-          selectAreaCenter={selectAreaCenter}
+          areaCenter={areaCenter}
           zoomLevel={zoomLevel}
         />
       </div>

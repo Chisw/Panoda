@@ -4,16 +4,14 @@ import PanoIdSelectDrawer from './PanoIdSelectDrawer'
 
 import MAP from '../../ts/map'
 import TOAST from './EasyToast'
+import { IPoint } from '../../ts/type'
 
 interface SelectGuiderProps {
   panoFrom: string
   setPanoFrom(val: string): void
   selectWith: string
   setSelectWith(val: string): void
-  selectAreaCenter: {
-    lng: number
-    lat: number
-  }
+  areaCenter: IPoint
   zoomLevel: number
 }
 
@@ -24,7 +22,7 @@ export default function SelectGuider(props: SelectGuiderProps) {
     setPanoFrom,
     selectWith,
     setSelectWith,
-    selectAreaCenter,
+    areaCenter,
     zoomLevel,
   } = props
 
@@ -46,7 +44,7 @@ export default function SelectGuider(props: SelectGuiderProps) {
               Area<br/>Center
             </p>
             <p className="mx-2" style={{minWidth: 138}}>
-              {selectAreaCenter.lng}<br />{selectAreaCenter.lat}
+              {areaCenter.lng}<br />{areaCenter.lat}
             </p>
             <p className="text-gray-500 text-center ml-4">
               Zoom<br/>Level
@@ -58,14 +56,18 @@ export default function SelectGuider(props: SelectGuiderProps) {
           <Tag
             interactive
             onClick={() => {
-              if (selectAreaCenter.lng === 0) {
+              if (zoomLevel < 13) {
+                TOAST.danger('Zoom map to level 13-19.')
+                return
+              }
+              if (areaCenter.lng === 0) {
                 TOAST.danger('Invalid area center point.')
               } else {
                 setDrawerOpen(true)
               }
             }}
           >
-            Select
+            Run
           </Tag>
         </div>
 
@@ -125,6 +127,8 @@ export default function SelectGuider(props: SelectGuiderProps) {
       <PanoIdSelectDrawer
         isOpen={drawerOpen}
         onClose={() => {setDrawerOpen(false)}}
+        areaCenter={areaCenter}
+        zoomLevel={zoomLevel}
       />
     </div>
   )

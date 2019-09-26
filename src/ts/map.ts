@@ -219,17 +219,16 @@ const MAP: MAPState = {
   },
 
   setAreaSelector(event: any) {
-    console.log(event.point)
     map.clearOverlays()
 
-    MAP.parent.setSelectAreaCenter(event.point)
+    MAP.parent.setAreaCenter(event.point)
 
     const marker = MAP.getRectMarker(event.point)
     map.addOverlay(marker)
     marker.enableDragging()
 
     marker.addEventListener('dragend', (event: any) => {
-      MAP.parent.setSelectAreaCenter(event.point)
+      MAP.parent.setAreaCenter(event.point)
     })
 
   },
