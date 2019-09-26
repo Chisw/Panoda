@@ -1,13 +1,10 @@
-import { Toaster } from "@blueprintjs/core"
-
 import SVG_PIN from '../images/pin.svg'
 import SVG_RECT from '../images/rect.svg'
 
 import { PANO_ID_REG, /*CUSTOM_MAP*/ } from './constant'
 import { IPano } from './type'
 import { getDateStamp } from "./util"
-
-const toaster = Toaster.create({ position: 'top-left' })
+import TOAST from "../components/overlays/EasyToast"
 
 const G = window as any
 const BMap = G.BMap
@@ -66,7 +63,6 @@ const MAP: MAPState = {
   },
 
   listen(selectWith) {
-    console.log(selectWith)
     MAP.panoCover.show()
     map.clearOverlays()
     map.removeEventListener('click', MAP.getPanoIdByClicking)
@@ -96,19 +92,9 @@ const MAP: MAPState = {
         MAP.parent.setLoading(false)
         if (geolocation.getStatus() === 0) {
           map.panTo(res.point);
-          toaster.show({
-            message: 'Locate successfully',
-            icon: 'tick',
-            intent: 'success',
-            timeout: 2000
-          })
+          TOAST.success('Locate successfully')
         } else {
-          toaster.show({
-            message: 'Locate failed, try later',
-            icon: 'tick',
-            intent: 'danger',
-            timeout: 2000
-          })
+          TOAST.danger('Locate failed, try later..')
         }
       },
       {
@@ -160,31 +146,16 @@ const MAP: MAPState = {
             map.addOverlay(MAP.getPinMarker(p))
 
             MAP.parent.setLoading(false)
-            toaster.show({
-              message: `Get pano successfully`,
-              intent: 'success',
-              timeout: 2000,
-              icon: 'tick'
-            })
+            TOAST.success(`Get pano successfully`)
           },
           () => {
-            toaster.show({
-              message: `Get pano ${data.id} info failed`,
-              intent: 'warning',
-              timeout: 0,
-              icon: 'error'
-            })
+            TOAST.warning(`Get pano ${data.id} info failed`)
             MAP.parent.setLoading(false)
           }
         )
       } else {
         MAP.parent.setLoading(false)
-        toaster.show({
-          message: 'No point matched, try again',
-          intent: 'danger',
-          timeout: 2000,
-          icon: 'error'
-        })
+        TOAST.danger('No point matched, try again')
       }
     });
   },
@@ -192,24 +163,14 @@ const MAP: MAPState = {
   getPanoInfoByIdAndAppendDom(id, success, failed) {
 
     if ( !id || !PANO_ID_REG.test(id) ) {
-      toaster.show({
-        message: `Invalid pano id ${id}`,
-        intent: 'danger',
-        timeout: 0,
-        icon: 'error'
-      })
+      TOAST.danger(`Invalid pano id ${id}`)
       return
     }
 
     const { panos, setPanos } = MAP.parent
 
     if ( panos.map( (pano: IPano) => pano.id).includes(id) ) {
-      toaster.show({
-        message: `Pano ${id} already exist`,
-        intent: 'warning',
-        timeout: 0,
-        icon: 'error'
-      })
+      TOAST.warning(`Pano ${id} already exist`)
       MAP.parent.setLoading(false)
       return
     }

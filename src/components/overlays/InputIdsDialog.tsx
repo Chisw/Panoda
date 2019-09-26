@@ -1,10 +1,9 @@
 import React, { useState } from 'react'
-import { Dialog, TextArea, Button, Classes, Toaster } from '@blueprintjs/core'
+import { Dialog, TextArea, Button, Classes } from '@blueprintjs/core'
 
 import { PANO_ID_REG } from '../../ts/constant'
 import MAP from '../../ts/map'
-
-const toaster = Toaster.create({ position: 'top-left' })
+import TOAST from './EasyToast'
 
 interface InputIdsDialogProps {
   isOpen: boolean
@@ -34,12 +33,7 @@ export default function InputIdsDialog(props: InputIdsDialogProps) {
     })
 
     if (err) {
-      toaster.show({
-        message: 'Invalid pano id',
-        intent: 'danger',
-        timeout: 3000,
-        icon: 'error'
-      })
+      TOAST.danger('Invalid pano id.')
 
       const _idList = 
         idList
@@ -68,12 +62,7 @@ export default function InputIdsDialog(props: InputIdsDialogProps) {
         }, 500)
       } else {
         setLoading(false)
-        toaster.show({
-          message: `Finished`,
-          intent: 'success',
-          timeout: 3000,
-          icon: 'tick'
-        })
+        TOAST.success('Finished')
       }
     }
     _handle()

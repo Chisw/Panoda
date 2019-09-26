@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Dialog, ProgressBar, Tag, Callout, Button, Alert, Toaster } from '@blueprintjs/core'
+import { Dialog, ProgressBar, Tag, Callout, Button, Alert } from '@blueprintjs/core'
 import FileSaver from 'file-saver'
 import JSZip from 'jszip'
 import TableGrid from '../TableGrid'
@@ -7,8 +7,7 @@ import TableGrid from '../TableGrid'
 import { getPanoTileSrc, getBaseSize, getExifedBase64, getDateStamp, fillWatermark } from '../../ts/util'
 import { IPano } from '../../ts/type'
 import store from '../../ts/store'
-
-const toaster = Toaster.create({position: 'top-left'})
+import TOAST from './EasyToast'
 
 interface FetcherProps {
   panos: IPano[] | []
@@ -99,12 +98,7 @@ export default function Fetcher(props: FetcherProps) {
         img.onerror = () => {
           setFetching(false)
           setError(true)
-          toaster.show({
-            message: 'Something wrong, please check network and fetch again',
-            icon: 'error',
-            timeout: 0,
-            intent: 'danger'
-          })
+          TOAST.danger('Something wrong, please check network and fetch again', 0)
         }
       } else {  // filled
         const imgs = pool.querySelectorAll('img')
@@ -185,12 +179,7 @@ export default function Fetcher(props: FetcherProps) {
         style={{ width: 512 }}
         onClose={() => {
           if ( fetching && !error ) {
-            toaster.show({
-              message: 'The program is running..',
-              icon: 'console',
-              intent: 'primary',
-              timeout: 5000
-            })
+            TOAST.primary('The program is running..')
           } else {
             if ( store.get('PANO_SETTING_USEALERT')) {
               setConfirmAlertOpen(true)

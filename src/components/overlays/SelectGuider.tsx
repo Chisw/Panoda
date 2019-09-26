@@ -1,6 +1,9 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { ButtonGroup, Button, Tooltip, Tag } from '@blueprintjs/core'
+import PanoIdSelectDrawer from './PanoIdSelectDrawer'
+
 import MAP from '../../ts/map'
+import TOAST from './EasyToast'
 
 interface SelectGuiderProps {
   panoFrom: string
@@ -24,6 +27,8 @@ export default function SelectGuider(props: SelectGuiderProps) {
     selectAreaCenter,
     zoomLevel,
   } = props
+
+  const [drawerOpen, setDrawerOpen] = useState(false)
 
   const isArea = panoFrom === 'map' && selectWith === 'area';
 
@@ -51,8 +56,14 @@ export default function SelectGuider(props: SelectGuiderProps) {
             </p>
           </div>
           <Tag
-            round
             interactive
+            onClick={() => {
+              if (selectAreaCenter.lng === 0) {
+                TOAST.danger('Invalid area center point.')
+              } else {
+                setDrawerOpen(true)
+              }
+            }}
           >
             Select
           </Tag>
@@ -110,6 +121,11 @@ export default function SelectGuider(props: SelectGuiderProps) {
           </Button>
         </Tooltip>
       </ButtonGroup>
+
+      <PanoIdSelectDrawer
+        isOpen={drawerOpen}
+        onClose={() => {setDrawerOpen(false)}}
+      />
     </div>
   )
 }

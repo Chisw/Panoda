@@ -4,7 +4,7 @@ import { ButtonGroup, AnchorButton } from '@blueprintjs/core'
 export default function Header() {
   return (
     <div className="pt-4 pb-2">
-      <h3 className="text-4xl font-hairline">
+      <h3 className="text-4xl font-ablt">
         Panoda
         <ButtonGroup minimal className="float-right mt-3">
           <AnchorButton icon="video" href="https://github.com/Chisw/Panoda" target="_blank" />

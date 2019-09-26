@@ -33,6 +33,14 @@ code {
     monospace;
 }
 
+.right-50 {
+  right: 50%;
+}
+
+.left-50 {
+  left: 50%;
+}
+
 @font-face {
   font-family: 'ablt';
   src: url('./fonts/ablt.woff');
@@ -54,12 +62,8 @@ code {
   font-size: 0;
 }
 
-.right-50 {
-  right: 50%;
-}
-
-.left-50 {
-  left: 50%;
+.text-green-code {
+  color: #3ddc84;
 }
 
 .panoda-container {

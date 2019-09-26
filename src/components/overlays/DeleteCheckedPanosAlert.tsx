@@ -1,9 +1,8 @@
 import React from 'react'
-import { Alert, Toaster } from '@blueprintjs/core'
+import { Alert } from '@blueprintjs/core'
 
 import { IPano } from '../../ts/type'
-
-const toaster = Toaster.create({ position: 'top-left' })
+import TOAST from './EasyToast'
 
 interface DeleteCheckedPanosAlertProps {
   checkedIds: string[]
@@ -35,12 +34,7 @@ export default function DeleteCheckedPanosAlert(props: DeleteCheckedPanosAlertPr
           }
         })
         setPanos(_panos)
-        toaster.show({
-          message: `Deleted`,
-          intent: 'success',
-          timeout: 2000,
-          icon: 'tick'
-        })
+        TOAST.success('Deleted')
       }}
     >
       <p className="text-base text-gray-800">

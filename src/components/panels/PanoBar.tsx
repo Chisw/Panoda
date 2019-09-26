@@ -1,11 +1,10 @@
 import React from 'react'
-import { ButtonGroup, Button, Popover, Classes, Checkbox, Toaster } from '@blueprintjs/core'
+import { ButtonGroup, Button, Popover, Classes, Checkbox } from '@blueprintjs/core'
 
 import { IPano } from '../../ts/type'
 import MAP from '../../ts/map'
 import { getPreviewSrc } from '../../ts/util'
-
-const toaster = Toaster.create({ position: 'top-left' })
+import TOAST from '../overlays/EasyToast'
 
 interface PanoBarProps {
   index: number
@@ -107,12 +106,7 @@ export default function PanoBar(props: PanoBarProps) {
                       panos.splice(index, 1).reverse()
                       const _panos = [...panos]
                       setPanos(_panos)
-                      toaster.show({
-                        message: `Pano deleted`,
-                        intent: 'success',
-                        timeout: 2000,
-                        icon: 'tick'
-                      })
+                      TOAST.success(`Pano deleted.`)
                     }}
                   >
                     Yes
