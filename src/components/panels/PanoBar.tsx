@@ -1,13 +1,13 @@
 import React from 'react'
 import { ButtonGroup, Button, Popover, Classes, Checkbox, Toaster } from '@blueprintjs/core'
 
-import { IPano } from '../ts/type'
-import MAP from '../ts/map'
-import { getPreviewSrc } from '../ts/util'
+import { IPano } from '../../ts/type'
+import MAP from '../../ts/map'
+import { getPreviewSrc } from '../../ts/util'
 
 const toaster = Toaster.create({ position: 'top-left' })
 
-interface PanoCardProps {
+interface PanoBarProps {
   index: number
   pano: IPano
   panos: IPano[] | []
@@ -16,9 +16,9 @@ interface PanoCardProps {
   setCheckedIds(list: any): void
 }
 
-export default function PanoCard(props: PanoCardProps) {
+export default function PanoBar(props: PanoBarProps) {
 
-  const {
+  const { 
     index, 
     pano: { id, lng, lat, date, rname }, 
     panos, 
@@ -31,7 +31,7 @@ export default function PanoCard(props: PanoCardProps) {
 
   return (
     <Checkbox 
-      className="pano-pano-card border mt-6 mr-6 mb-0 ml-0 rounded border-none font-mono"
+      className="pano-pano-bar py-3 border-b flex hover:bg-gray-100 m-0 font-mono"
       checked={checked}
       onChange={() => {
         let _checkedIds: string[]
@@ -46,23 +46,46 @@ export default function PanoCard(props: PanoCardProps) {
         setCheckedIds(_checkedIds)
       }}
     >
-      <img
-        alt={id + index}
-        className="pano-preview absolute top-0 right-0 bottom-0 left-0 rounded z-0 hover:shadow-lg"
-        src={getPreviewSrc(id)}
-      />
-      <div 
-        className="px-1 leading-tight absolute right-0 bottom-0 left-0 break-words" 
-        style={{ textShadow: '0 0 2px rgba(0,0,0, 1),0 0 1px rgba(0,0,0, 1)'}}
-      >
-        <p className="text-xs text-white text-right">
-          {rname} {date}<br />
-          {id}   
-          {/* <br /> {lng + ', ' + lat} */}
+      <div className="w-8 flex items-center">
+        <span className="text-xs text-gray-700">{index + 1}</span>
+      </div>
+      <div className="text-none">
+        <Popover
+          position="top-left"
+          interactionKind="hover"
+          content={
+            <img
+              alt={id}
+              style={{width: 300, height: 150}}
+              src={getPreviewSrc(id)}
+            />
+          }
+        >
+          <img
+            alt={id}
+            className="pano-preview rounded-sm"
+            src={getPreviewSrc(id)}
+          />
+        </Popover>
+      </div>
+      <div className="px-3 leading-snug" style={{ width: 380 }}>
+        <p className="text-xs">
+          ID: {id}
+        </p>
+        <p className="text-xs text-gray-500">
+          Date: {date}
+          {
+            rname
+              ? <span className="ml-4">Road: {rname}</span>
+              : ''
+          }
+        </p>
+        <p className="text-xs text-gray-500">
+          Pin: {lng + ',' + lat}
         </p>
       </div>
-      <div className="pano-operation text-right absolute top-0 right-0 left-0">
-        <ButtonGroup>
+      <div className="pano-operation px-2 text-right self-center flex-grow">
+        <ButtonGroup minimal>
           <Button
             icon="map-marker"
             onClick={() => {
@@ -70,7 +93,7 @@ export default function PanoCard(props: PanoCardProps) {
             }}
           />
           <Popover
-            position="top"
+            position="left"
             content={
               <div className="px-4 py-2">
                 <p>

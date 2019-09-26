@@ -46,6 +46,10 @@ code {
   font-family: monospace, Consolas;
 }
 
+.text-monospaced {
+  font-variant-numeric: tabular-nums;
+}
+
 .text-none {
   font-size: 0;
 }
@@ -70,13 +74,25 @@ code {
 }
 
 .panoda-container .map-select-guider {
+  box-sizing: border-box;
+  padding: 4px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, .6);
   z-index: 15;
   bottom: -46px;
-  box-sizing: border-box;
-  margin-left: -140px;
-  width: 280px;
-  height: 46px;
+  margin-left: -180px;
+  width: 360px;
   transition: all 1.2s;
+}
+
+.panoda-container .map-select-guider .guider-top {
+  height: 0;
+  transition: all .23s;
+}
+
+.panoda-container .map-select-guider .guider-top.expand {
+  margin-bottom: 4px;
+  height: 32px;
 }
 
 .panoda-container .panoda-panel {
@@ -131,18 +147,9 @@ code {
   display: none;
 }
 
-.BMap_Marker canvas {
-  transform: scale(.5);
-  transform-origin: top left;
-}
-
 .pano-wrapper {
   overflow-y: scroll;
   top: 172px;
-}
-
-.pano-pano-bar {
-  font-variant-numeric: tabular-nums;
 }
 
 .pano-pano-bar .bp3-control-indicator {
@@ -166,7 +173,6 @@ code {
 }
 
 .pano-pano-card {
-  font-variant-numeric: tabular-nums;
   width: 240px;
   height: 120px;
 }

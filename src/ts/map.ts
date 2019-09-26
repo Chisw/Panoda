@@ -36,6 +36,7 @@ interface MAPState {
     show: () => void
     hide: () => void
   },
+  setAreaSelector(event: any): void
 }
 
 const MAP: MAPState = {
@@ -44,14 +45,20 @@ const MAP: MAPState = {
     map = new BMap.Map('map', {enableMapClick: false})
     map.centerAndZoom(new BMap.Point(120.64, 31.31), 14)
     map.enableScrollWheelZoom(true)
-    // map.setMapStyleV2({styleJson: CUSTOM_MAP})
-    
+    map.setMinZoom(5)
+
     const navigationControl = new BMap.NavigationControl({
       anchor: G.BMAP_ANCHOR_TOP_LEFT,
       type: G.BMAP_NAVIGATION_CONTROL_LARGE,
     })
     map.addControl(navigationControl)
-    map.setMinZoom(5)
+
+    map.addEventListener('tilesloaded', () => {
+      const lv = map.getZoom()
+      MAP.parent.setZoomLevel(lv)
+    })
+
+    // map.setMapStyleV2({styleJson: CUSTOM_MAP})
   },
 
   clear() {
@@ -59,27 +66,18 @@ const MAP: MAPState = {
   },
 
   listen(selectWith) {
-    map.clearOverlays()
-
+    console.log(selectWith)
     MAP.panoCover.show()
-    // point
+    map.clearOverlays()
+    map.removeEventListener('click', MAP.getPanoIdByClicking)
+    map.removeEventListener('click', MAP.setAreaSelector)
+
     if (selectWith === 'point') {
       map.addEventListener('click', MAP.getPanoIdByClicking)
-    // area
+    } else if (selectWith === 'line') {
+
     } else if (selectWith === 'area' ){
-      map.removeEventListener('click', MAP.getPanoIdByClicking)
-
-      map.addEventListener('click', (e: any) => {
-        console.log(e.point)
-        console.log(map.getZoom())
-      })
-
-      const marker = MAP.getRectMarker(map.getCenter())
-      map.addOverlay(marker)
-      marker.enableDragging()
-      marker.addEventListener('dragend', (e: any) => {
-        // console.log(e)
-      })
+      map.addEventListener('click', MAP.setAreaSelector)
     }
   },
 
@@ -87,6 +85,7 @@ const MAP: MAPState = {
     MAP.panoCover.hide()
     map.clearOverlays();
     map.removeEventListener('click', MAP.getPanoIdByClicking)
+    map.removeEventListener('click', MAP.setAreaSelector)
   },
 
   locate() {
@@ -256,6 +255,22 @@ const MAP: MAPState = {
     hide() {
       map.removeTileLayer(PANO_COVER)
     }
+  },
+
+  setAreaSelector(event: any) {
+    console.log(event.point)
+    map.clearOverlays()
+
+    MAP.parent.setSelectAreaCenter(event.point)
+
+    const marker = MAP.getRectMarker(event.point)
+    map.addOverlay(marker)
+    marker.enableDragging()
+
+    marker.addEventListener('dragend', (event: any) => {
+      MAP.parent.setSelectAreaCenter(event.point)
+    })
+
   },
 }
 

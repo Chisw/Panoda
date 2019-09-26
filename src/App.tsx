@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { Tabs, Tab } from '@blueprintjs/core'
 
-import SelectGuider from './components/SelectGuider'
+import SelectGuider from './components/overlays/SelectGuider'
 import Header from './components/Header'
-import ProgressMask from './components/ProgressMask'
+import ProgressMask from './components/overlays/ProgressMask'
 import Pano from './components/panels/Pano'
 import Setting from './components/panels/Setting'
 
@@ -14,17 +14,20 @@ import { IPano } from './ts/type'
 const App: React.FC = () => {
 
   const [loading, setLoading] = useState(false)
-  const [tabId, setTabId] = useState('pano')
-  const [panoFrom, setPanoFrom] = useState('')
-  const [panoView, setPanoView] = useState(store.get('PANODA_PANO_VIEW') || 'list')
-  const [mapSelect, setMapSelect] = useState(false)
-  const [selectWith, setSelectWith] = useState('point')
+  const [tabId, setTabId] = useState('pano')  // 'pano' | 'setting' | 'about'
+  const [panoFrom, setPanoFrom] = useState('')  // '' | 'map' | 'input'
+  const [selectWith, setSelectWith] = useState('point')  // 'point' | 'line' | 'area'
+  const [selectAreaCenter, setSelectAreaCenter] = useState({lng: 0, lat: 0})
+  const [zoomLevel, setZoomLevel] = useState(14)  // 5-19
+  const [panoView, setPanoView] = useState(store.get('PANODA_PANO_VIEW') || 'list')  // 'list' | 'grid'
   const [panos, setPanos] = useState(store.get('PANODA_PANOS') || [])
   const [checkedIds, setCheckedIds] = useState(store.get('PANODA_CHECKED_IDS') || [])
 
   MAP.parent.setLoading = setLoading
   MAP.parent.panos = panos
   MAP.parent.setPanos = setPanos
+  MAP.parent.setSelectAreaCenter = setSelectAreaCenter
+  MAP.parent.setZoomLevel = setZoomLevel
 
   const initSettings = () => {
     const isSet = store.get('PANO_SETTING_SET')
@@ -48,17 +51,17 @@ const App: React.FC = () => {
   }, [tabId])
 
   useEffect(() => {
-    setMapSelect(panoFrom === 'map')
-    MAP.clear()
-  }, [panoFrom])
-
-  useEffect(() => {
-    if ( mapSelect ) {
+    if (panoFrom === 'map') {
       MAP.listen(selectWith)
     } else {
       MAP.unlisten()
     }
-  }, [mapSelect, selectWith])
+    MAP.clear()
+  }, [panoFrom, selectWith])
+
+  useEffect(() => {
+    setSelectAreaCenter({ lng: 0, lat: 0 })
+  }, [selectWith])
 
   useEffect(() => {
     store.set('PANODA_PANO_VIEW', panoView)
@@ -90,9 +93,12 @@ const App: React.FC = () => {
       <div className="panoda-map absolute top-0 right-50 bottom-0 left-0">
         <div id="map" className="absolute top-0 right-0 bottom-0 left-0"></div>
         <SelectGuider
+          panoFrom={panoFrom}
           setPanoFrom={setPanoFrom}
           selectWith={selectWith}
           setSelectWith={setSelectWith}
+          selectAreaCenter={selectAreaCenter}
+          zoomLevel={zoomLevel}
         />
       </div>
 
