@@ -17,7 +17,7 @@ export default function InputIdsDialog(props: InputIdsDialogProps) {
 
   const [inputIds, setInputIds] = useState('')
 
-  const generate = () => {
+  const importing = () => {
 
     const idList = 
       inputIds
@@ -54,18 +54,18 @@ export default function InputIdsDialog(props: InputIdsDialogProps) {
     onClose()
 
     setLoading(true)
-    const _handle = () => {
+    const _recursion = () => {
       if (idList.length) {
         setTimeout(() => {
           MAP.getPanoInfoByIdAndAppendDom(idList.shift() || '')
-          _handle()
+          _recursion()
         }, 500)
       } else {
         setLoading(false)
         TOAST.success('Finished')
       }
     }
-    _handle()
+    _recursion()
 
   }
 
@@ -99,7 +99,7 @@ export default function InputIdsDialog(props: InputIdsDialogProps) {
           <Button 
             intent="primary" 
             disabled={inputIds.length === 0}
-            onClick={generate}
+            onClick={importing}
           >
             Continue
           </Button>

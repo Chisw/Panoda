@@ -23,6 +23,7 @@ interface MAPState {
   getPinMarker(point: { lng: number, lat: number }): any
   getRectMarker(point: { lng: number, lat: number }): any
   getPanoIdByClicking(point: any, cb?: () => void): void
+  getPanoramaByPoint(point: any, cb: (data: any) => void): void
   getPanoInfoByIdAndAppendDom(
     id: string,
     success?: (data: any) => void,
@@ -157,6 +158,13 @@ const MAP: MAPState = {
         MAP.parent.setLoading(false)
         TOAST.danger('No point matched, try again')
       }
+    });
+  },
+
+  getPanoramaByPoint(point, cb) {
+    const { lng, lat } = point
+    PANO_SERVER.getPanoramaByLocation(new BMap.Point(lng, lat), (data: any) => {
+      cb(data)
     });
   },
 

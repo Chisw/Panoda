@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { ButtonGroup, Button, Tooltip } from '@blueprintjs/core'
-import PanoIdSelectDrawer from './PanoIdSelectDrawer'
+import IdScanner from './IdScanner'
 
 import MAP from '../../ts/map'
 import TOAST from './EasyToast'
@@ -123,7 +123,7 @@ export default function SelectGuider(props: SelectGuiderProps) {
         </Tooltip>
       </ButtonGroup>
 
-      <PanoIdSelectDrawer
+      <IdScanner
         isOpen={drawerOpen}
         onClose={() => {setDrawerOpen(false)}}
         areaCenter={areaCenter}

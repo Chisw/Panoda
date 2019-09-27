@@ -231,3 +231,26 @@ code {
   width: 320px;
   padding-bottom: 20px;
 }
+
+
+
+#cmd-scroll::-webkit-scrollbar,
+#cmd-scroll::-webkit-scrollbar-button,
+#cmd-scroll::-webkit-scrollbar-track,
+#cmd-scroll::-webkit-scrollbar-track-piece,
+#cmd-scroll::-webkit-scrollbar-corner,
+#cmd-scroll::-webkit-resizer {
+  background: none;
+}
+
+#cmd-scroll::-webkit-scrollbar {
+  width: 4px;
+}
+
+#cmd-scroll::-webkit-scrollbar-thumb {
+  background: #3ddc84;
+}
+
+#cmd {
+  user-select: none;
+}

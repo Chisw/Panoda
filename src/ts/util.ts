@@ -1,7 +1,8 @@
 import { DateTime } from 'luxon'
 import { pick, values } from 'lodash'
-import { IPano } from './type'
+import { IPano, IPoint } from './type'
 import store from './store'
+import MAP from './map'
 
 // getPreviewSrc
 export const getPreviewSrc = (id: string) => {
@@ -106,7 +107,7 @@ const spaces: string[] = []
 for (var i = 0; i < 24; i++) { spaces.push('&nbsp;') }
 
 export const CMD = {
-  echo(label: string, value?: string) {
+  echo(label: string, value?: string | number) {
 
     const cmd = document.getElementById('cmd')
     if (!cmd) return
@@ -120,13 +121,41 @@ export const CMD = {
     const index = label.length + 1
     const space = spaces.slice(index).join('')
     const _label = space + label
+    const _value = value || ''
 
     const p = document.createElement('p')
-    p.innerHTML = _label + ': &nbsp;' + value
+    p.innerHTML = _label + '&nbsp;&nbsp;' + _value
 
     cmd.appendChild(p)
 
     const scroll = document.getElementById('cmd-scroll')
-    scroll && scroll.scrollTo({top: 1e5})
+    scroll && scroll.scrollTo({ top: 1e4 })
   },
+}
+
+// scanIdsByPoints
+export const scanIdsByPoints = (
+  points: IPoint[], 
+  success: (data: any, index: number) => void,
+  fail: (index: number) => void,
+  end: () => void
+) => {
+  let index = 0
+  const _recursion = () => {
+    setTimeout(() => {
+      if ( index === points.length ) {
+        end()
+        return
+      }
+      MAP.getPanoramaByPoint(points[index], (data: any) => {
+
+        data !== null ? success(data, index + 1) : fail(index + 1)
+
+        index++
+        _recursion()
+      })
+    }, 200)
+  }
+  _recursion()
+
 }
