@@ -1,8 +1,7 @@
 import { DateTime } from 'luxon'
 import { pick, values } from 'lodash'
-import { IPano, IPoint } from './type'
+import { IPano } from './type'
 import store from './store'
-import MAP from './map'
 
 // getPreviewSrc
 export const getPreviewSrc = (id: string) => {
@@ -131,31 +130,4 @@ export const CMD = {
     const scroll = document.getElementById('cmd-scroll')
     scroll && scroll.scrollTo({ top: 1e4 })
   },
-}
-
-// scanIdsByPoints
-export const scanIdsByPoints = (
-  points: IPoint[], 
-  success: (data: any, index: number) => void,
-  fail: (index: number) => void,
-  end: () => void
-) => {
-  let index = 0
-  const _recursion = () => {
-    setTimeout(() => {
-      if ( index === points.length ) {
-        end()
-        return
-      }
-      MAP.getPanoramaByPoint(points[index], (data: any) => {
-
-        data !== null ? success(data, index + 1) : fail(index + 1)
-
-        index++
-        _recursion()
-      })
-    }, 100)
-  }
-  _recursion()
-
 }

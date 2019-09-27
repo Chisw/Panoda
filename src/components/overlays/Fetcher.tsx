@@ -72,7 +72,7 @@ export default function Fetcher(props: FetcherProps) {
 
     let handleTimes = 0;
 
-    const _recursive = () => {
+    const _recursion = () => {
 
       setTileIndex(handleTimes)
       handleTimes++
@@ -90,9 +90,7 @@ export default function Fetcher(props: FetcherProps) {
         pool!.appendChild(img)
 
         img.onload = () => {
-          setTimeout(() => {
-            _recursive()
-          }, 10)
+          _recursion()
         }
 
         img.onerror = () => {
@@ -132,7 +130,7 @@ export default function Fetcher(props: FetcherProps) {
         }, 10)
       }
     }
-    _recursive()
+    _recursion()
 
   }
 

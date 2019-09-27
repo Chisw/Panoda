@@ -59,8 +59,8 @@ export default function SelectGuider(props: SelectGuiderProps) {
             intent="primary"
             disabled={areaCenter.lng === 0}
             onClick={() => {
-              if (zoomLevel < 13) {
-                TOAST.danger('Zoom map to level 13-19.')
+              if (zoomLevel < 15) {
+                TOAST.danger('Zoom map to level 15-19.')
                 return
               }
               setDrawerOpen(true)

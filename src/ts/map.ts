@@ -34,6 +34,12 @@ interface MAPState {
     show: () => void
     hide: () => void
   },
+  scanIdsByPoints(
+    points: IPoint[],
+    success: (data: any, index: number) => void,
+    fail: (index: number) => void,
+    end: () => void
+  ): void
   markPoints(points: IPoint[]): void
   setAreaSelector(event: any): void
 }
@@ -224,6 +230,26 @@ const MAP: MAPState = {
     hide() {
       map.removeTileLayer(PANO_COVER)
     }
+  },
+
+  scanIdsByPoints(points, success, fail, end) {
+    let index = 0
+    const _recursion = () => {
+      if (!MAP.parent.scannerRunning) return
+      setTimeout(() => {
+        if (index < points.length) {
+          MAP.getPanoramaByPoint(points[index], (data: any) => {
+            const no = index + 1
+            data !== null ? success(data, no) : fail(no)
+            index++
+            _recursion()
+          })
+        } else {
+          end()
+        }
+      }, 20)
+    }
+    _recursion()
   },
 
   markPoints(points: IPoint[]) {

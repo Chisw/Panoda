@@ -3,7 +3,7 @@ import { Drawer } from '@blueprintjs/core'
 import { DateTime } from 'luxon'
 import CodeButton from '../CodeButon'
 import { IPoint } from '../../ts/type'
-import { CMD, scanIdsByPoints } from '../../ts/util'
+import { CMD } from '../../ts/util'
 import { LEVEL_OFFSETS } from '../../ts/constant'
 import _ from 'lodash'
 import TOAST from './EasyToast'
@@ -38,6 +38,7 @@ export default function IdScanner(props: IdScannerProps) {
   useEffect(() => {
     if (isOpen) {
       setTimeout(() => {
+        MAP.parent.scannerRunning = true
         startComputingPoints()
       }, 100)
     }
@@ -80,13 +81,13 @@ export default function IdScanner(props: IdScannerProps) {
 
         index++
 
-        if (index === 36) {
+        if (index < 36 ) {
+          _recursion()
+        } else {
           CMD.echo('br')
           CMD.echo('<<', 'Computing end')
           CMD.echo('br')
-          startMatchingPanos(points)
-        } else {
-          _recursion()
+          startScanningPanos(points)
         }
       }, 50)
     }
@@ -94,8 +95,8 @@ export default function IdScanner(props: IdScannerProps) {
     _recursion()
   }
 
-  // startMatchingPanos
-  const startMatchingPanos = (points: IPoint[]) => {
+  // startScanningPanos
+  const startScanningPanos = (points: IPoint[]) => {
 
     CMD.echo('>>', 'Start scanning panos')
     CMD.echo('br')
@@ -104,17 +105,20 @@ export default function IdScanner(props: IdScannerProps) {
 
     // points = points.slice(1,5)  // test code
     
-    scanIdsByPoints(
+    MAP.scanIdsByPoints(
       points,
+      // success
       (data, _index) => {
         CMD.echo('Point ' + _index + ':', 'Scanned ' + (data.links.length + 1) + ' panos')
 
         ids.push(data.id)
         ids = ids.concat(data.links.map((link: any) => link.id))
       },
+      // fail
       (_index) => {
         CMD.echo('Point ' + _index + ':', 'None')
       },
+      // end
       () => {
         const uniquedIds = _.uniq(ids)
         const repeated = ids.length - uniquedIds.length
@@ -122,14 +126,14 @@ export default function IdScanner(props: IdScannerProps) {
         CMD.echo('br')
         CMD.echo('<<', 'Scanning end')
         CMD.echo('br')
-        CMD.echo('Scanned Res:', ids.length + ' panos total, ' + repeated + ' repeated.' )
+        CMD.echo('Scanned Res:', uniquedIds.length + ' panos, removed ' + repeated + ' repeated.' )
         CMD.echo('br')
         setTimeout(() => {
           ids.forEach((id, index) => {
-            CMD.echo(index + 1 + ':', id)
+            CMD.echo('Pano ' + ( index + 1 ) + ':', id)
           })
           CMD.echo('br')
-          startImportingPanos(ids)
+          startImportingPanos(uniquedIds)
         }, 1000)
       }
     )
@@ -195,6 +199,7 @@ export default function IdScanner(props: IdScannerProps) {
                         className="mx-2"
                         content="Yes"
                         onClick={() => {
+                          MAP.parent.scannerRunning = false
                           onClose()
                           setCloseConfirm(false)
                         }}
