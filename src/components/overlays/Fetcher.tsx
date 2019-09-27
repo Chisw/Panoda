@@ -21,7 +21,8 @@ interface FetcherProps {
 export default function Fetcher(props: FetcherProps) {
 
   const { panos, fetchResList, setFetchResList, checkedIds, isOpen, onClose } = props
-  const [fetching, setFetching] = useState(true)
+
+  const [fetching, setFetching] = useState(false)
   const [error, setError] = useState(false)
   const [tileIndex, setTileIndex] = useState(0)
   const [currentIndex, setCurrentIndex] = useState(0)
@@ -31,18 +32,19 @@ export default function Fetcher(props: FetcherProps) {
   useEffect(() => {
     if ( isOpen ) {
       setTimeout(() => {
+        setFetching(true)
         fillTiles(checkedIds[currentIndex])
-      }, 100)
+      }, 1)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isOpen, currentIndex])
+  }, [isOpen, currentIndex])  // next pano
 
-  // next pano
+  // show res
   useEffect(() => {
     if (currentIndex === checkedIds.length ) {
       setTimeout(() => {
-        setFetching(false)  // show res
-      }, 50)
+        setFetching(false)  
+      }, 20)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentIndex])
@@ -73,7 +75,7 @@ export default function Fetcher(props: FetcherProps) {
     let handleTimes = 0;
 
     const _recursion = () => {
-
+      
       setTileIndex(handleTimes)
       handleTimes++
       
@@ -131,13 +133,12 @@ export default function Fetcher(props: FetcherProps) {
       }
     }
     _recursion()
-
   }
 
   const handleClose = () => {
     setTileIndex(0)
     setCurrentIndex(0)
-    setFetching(true)
+    setFetching(false)
     setError(false)
     setFetchResList([])
     onClose()
@@ -190,7 +191,7 @@ export default function Fetcher(props: FetcherProps) {
         <div className="fetcher-container w-full">
           {
             fetching && ( fetchResList.length !== checkedIds.length )
-              ? (  // progress
+              ? (  // process
                 <>
                   <div className="fetcher-canvas-container relative w-full overflow-hidden text-none">
                     <TableGrid />

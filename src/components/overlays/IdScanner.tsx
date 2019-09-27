@@ -126,7 +126,7 @@ export default function IdScanner(props: IdScannerProps) {
         CMD.echo('br')
         CMD.echo('<<', 'Scanning end')
         CMD.echo('br')
-        CMD.echo('Scanned Res:', uniquedIds.length + ' panos, removed ' + repeated + ' repeated.' )
+        CMD.echo('Scanned Res:', uniquedIds.length + ' unique panos, removed ' + repeated + ' repeated.' )
         CMD.echo('br')
         setTimeout(() => {
           ids.forEach((id, index) => {
