@@ -102,7 +102,7 @@ export default function IdScanner(props: IdScannerProps) {
 
     let ids: string[] = []
 
-    points = points.slice(1,5)
+    // points = points.slice(1,5)  // test code
     
     scanIdsByPoints(
       points,

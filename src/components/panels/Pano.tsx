@@ -9,6 +9,7 @@ import DeleteCheckedPanosAlert from '../overlays/DeleteCheckedPanosAlert'
 import Fetcher from '../overlays/Fetcher'
 
 import { IPano } from '../../ts/type'
+import MAP from '../../ts/map'
 
 interface PanoProps {
   panoView: string
@@ -104,20 +105,35 @@ export default function Pano(props: PanoProps) {
           >
             Fetch
           </Button>
-          <Popover minimal
+          <Popover
             disabled={checkedIds.length === 0}
-            position="right"
+            position="bottom-right"
             content={
-              <Button
-                icon="trash"
-                intent="danger"
-                className={Classes.POPOVER_DISMISS}
-                onClick={() => {
-                  setDeleteDialogOpen(true)
-                }}
-              >
-                Delete
-              </Button>
+              <div className="p-1">
+                <Button
+                  fill
+                  icon="map-marker"
+                  className={Classes.POPOVER_DISMISS + ' mb-1'}
+                  onClick={() => {
+                    MAP.markPoints(
+                      panos.filter( pano => checkedIds.includes(pano.id))
+                    )
+                  }}
+                >
+                  Mark
+                </Button>
+                <Button
+                  fill
+                  icon="trash"
+                  intent="danger"
+                  className={Classes.POPOVER_DISMISS}
+                  onClick={() => {
+                    setDeleteDialogOpen(true)
+                  }}
+                >
+                  Delete
+                </Button>
+              </div>
             }
           >
             <Button

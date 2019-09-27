@@ -2,7 +2,7 @@ import SVG_PIN from '../images/pin.svg'
 import SVG_RECT from '../images/rect.svg'
 
 import { PANO_ID_REG, /*CUSTOM_MAP*/ } from './constant'
-import { IPano } from './type'
+import { IPano, IPoint } from './type'
 import { getDateStamp } from "./util"
 import TOAST from "../components/overlays/EasyToast"
 
@@ -34,6 +34,7 @@ interface MAPState {
     show: () => void
     hide: () => void
   },
+  markPoints(points: IPoint[]): void
   setAreaSelector(event: any): void
 }
 
@@ -41,7 +42,8 @@ const MAP: MAPState = {
   parent: {},
   init() {
     map = new BMap.Map('map', {enableMapClick: false})
-    map.centerAndZoom(new BMap.Point(120.64, 31.31), 14)
+    
+    map.centerAndZoom(new BMap.Point(119.48, 32.79), 13)
     map.enableScrollWheelZoom(true)
     map.setMinZoom(5)
 
@@ -179,34 +181,32 @@ const MAP: MAPState = {
 
     if ( panos.map( (pano: IPano) => pano.id).includes(id) ) {
       TOAST.warning(`Pano ${id} already exist`)
-      MAP.parent.setLoading(false)
-      return
+    } else {
+      PANO_SERVER.getPanoramaById(id, (data: any) => {
+
+        if (data !== null) {
+          const {
+            id,
+            position: {
+              lng,
+              lat
+            },
+            copyright: {
+              photoDate,
+              roadName
+            }
+          } = data
+
+          panos.unshift({ id, lng, lat, date: getDateStamp(photoDate), rname: roadName || '无道路信息' })
+          const _panos = [...panos]
+          setPanos(_panos)
+
+          success && success(data)
+        } else {
+          failed && failed()
+        }
+      })
     }
-
-    PANO_SERVER.getPanoramaById(id, (data: any) => {
-
-      if ( data !== null ) {
-        const {
-          id,
-          position: {
-            lng,
-            lat
-          },
-          copyright: {
-            photoDate,
-            roadName
-          }
-        } = data
-
-        panos.unshift({ id, lng, lat, date: getDateStamp(photoDate), rname: roadName || '无道路信息' })
-        const _panos = [...panos]
-        setPanos(_panos)
-
-        success && success(data)
-      } else {
-        failed && failed()
-      }
-    })
   },
 
   panToPoint(point) {
@@ -224,6 +224,16 @@ const MAP: MAPState = {
     hide() {
       map.removeTileLayer(PANO_COVER)
     }
+  },
+
+  markPoints(points: IPoint[]) {
+    map.clearOverlays()
+    points.forEach( point => {
+      const { lng, lat } = point
+      const p = new BMap.Point(lng, lat)
+      const marker = MAP.getPinMarker(p)
+      map.addOverlay(marker)
+    })
   },
 
   setAreaSelector(event: any) {
