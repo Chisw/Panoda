@@ -1,7 +1,10 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Drawer } from '@blueprintjs/core'
+import { DateTime } from 'luxon'
 import CodeButton from '../CodeButon'
 import { IPoint } from '../../ts/type'
+import { CMD } from '../../ts/util'
+import { LEVEL_OFFSETS } from '../../ts/constant'
 
 interface PanoIdSelectDrawerProps {
   isOpen: boolean
@@ -20,27 +23,58 @@ export default function PanoIdSelectDrawer(props: PanoIdSelectDrawerProps) {
   } = props
 
   const { lng, lat } = areaCenter
-  const lv = zoomLevel
 
-  const steps = [
-    'Compute points..',
-  ]
+  const lvOffset       = LEVEL_OFFSETS[zoomLevel]
+  const lvOffsetCenter = lvOffset * 2.5
 
-  const lvOffset = [
-    0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12,
-    0.01024,  // 13
-    0.00512,  // 14
-    0.00256,  // 15
-    0.00128,  // 16
-    0.00064,  // 17
-    0.00032,  // 18
-    0.00016,  // 19
-  ]
-  const _lvOffset = lvOffset[lv]
-  const _lvOffsetCorner = _lvOffset * 2.5
+  const topLeftLng     = lng - lvOffsetCenter
+  const topLeftLat     = lat + lvOffsetCenter
+  const bottomRightLng = lng + lvOffsetCenter
+  const bottomRightLat = lat - lvOffsetCenter
   
-  const [step, setStep] = useState(0)
-  const [cancelConfirm, setCancelConfirm] = useState(false)
+  const [closeConfirm, setCloseConfirm] = useState(false)
+
+  useEffect(() => {
+    if ( isOpen ) {
+      setTimeout(() => {
+        const points: IPoint[] = []
+
+        for ( let row = 0, len = 6; row < len; row++ ) {
+          for ( let col = 0, lon = 6; col < lon; col++ ) {
+            points.push({
+              lng: topLeftLng + lvOffset * row, 
+              lat: topLeftLat - lvOffset * col
+            })
+          }
+        }
+
+        CMD.echo('br')
+        
+        let index = 0
+        const _recursive = () => {
+          setTimeout(() => {
+            const point = points[index]
+            CMD.echo(
+              'Point ' + (index + 1),
+              point.lng.toFixed(14) + ', ' + point.lat.toFixed(14)
+            )
+
+            index++
+
+            if ( index === 36 ) {
+              CMD.echo('br')
+
+            } else {
+              _recursive()
+            }
+          }, 100)
+        }
+
+        _recursive()
+
+      }, 100)
+    }
+  }, [isOpen])
 
   return (
     <div>
@@ -50,6 +84,7 @@ export default function PanoIdSelectDrawer(props: PanoIdSelectDrawerProps) {
           background: 'rgba(0,0,0, .8)',
           right: '50%',
           marginRight: -200,
+          minWidth: 800
         }}
         isOpen={isOpen}
         canOutsideClickClose={false}
@@ -64,26 +99,26 @@ export default function PanoIdSelectDrawer(props: PanoIdSelectDrawerProps) {
           className="absolute top-0 right-0 bottom-0 left-0 text-green-code font-mono text-xs"
         >
           <h3 className="px-5 py-3">
-            {steps[step]}
+            <span>Scanner</span>
             <span className="float-right">
               {
-                cancelConfirm
+                closeConfirm
                   ? (
                     <span>
-                      <span>Are you sure to cancel?</span>
+                      <span>Are you sure to close?</span>
                       <CodeButton
                         className="mx-2"
                         content="Yes"
                         onClick={() => {
                           onClose()
-                          setCancelConfirm(false)
+                          setCloseConfirm(false)
                         }}
                       />
                       <CodeButton
                         content="No"
                         onClick={
                           () => {
-                            setCancelConfirm(false)
+                            setCloseConfirm(false)
                           }
                         }
                       />
@@ -92,10 +127,10 @@ export default function PanoIdSelectDrawer(props: PanoIdSelectDrawerProps) {
                   )
                   : (
                     <CodeButton 
-                      content = "cancel"
+                      content = "Close"
                       onClick = {
                         () => {
-                          setCancelConfirm(true)
+                          setCloseConfirm(true)
                         }
                       }
                     />
@@ -104,8 +139,9 @@ export default function PanoIdSelectDrawer(props: PanoIdSelectDrawerProps) {
             </span>
           </h3>
 
-          <div 
-            className="absolute py-6 border border-dashed border-green-900"
+          <div
+            id="cmd-scroll"
+            className="absolute py-6 border border-dashed border-green-900 overflow-y-scroll"
             style={{
               top: 40,
               right: 20,
@@ -114,14 +150,15 @@ export default function PanoIdSelectDrawer(props: PanoIdSelectDrawerProps) {
             }}
           >
             <div>
-<pre>
-<p>     Area Center Point:  {lng + ', ' + lat}</p>
-<p>        Map Zoom Level:  {lv}</p>
-<p>          Level Offect:  {lvOffset[lv]}</p>
-<br/>
-<p>        Top Left Point:  {( lng - _lvOffsetCorner ) + ', ' + ( lat + _lvOffsetCorner )}</p>
-<p>    Bottom Right Point:  {( lng + _lvOffsetCorner ) + ', ' + ( lat - _lvOffsetCorner )}</p>
-</pre>
+              <pre id="cmd" className="font-mono">
+                <p>          Scan Datetime:  {DateTime.local().toFormat('yyyy/MM/dd hh:mm:ss')}</p>
+                <p>      Area Center Point:  {lng + ', ' + lat}</p>
+                <p>         Map Zoom Level:  {zoomLevel}</p>
+                <p>           Level Offect:  {lvOffset}</p>
+                <br />
+                <p>         Top Left Point:  {topLeftLng + ', ' + topLeftLat}</p>
+                <p>     Bottom Right Point:  {bottomRightLng + ', ' + bottomRightLat}</p>
+              </pre>
             </div>
           </div>
         </div>

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { ButtonGroup, Button, Tooltip, Tag } from '@blueprintjs/core'
+import { ButtonGroup, Button, Tooltip } from '@blueprintjs/core'
 import PanoIdSelectDrawer from './PanoIdSelectDrawer'
 
 import MAP from '../../ts/map'
@@ -53,22 +53,21 @@ export default function SelectGuider(props: SelectGuiderProps) {
               {zoomLevel}
             </p>
           </div>
-          <Tag
-            interactive
+          <Button
+            small
+            className="text-xs"
+            intent="primary"
+            disabled={areaCenter.lng === 0}
             onClick={() => {
               if (zoomLevel < 13) {
                 TOAST.danger('Zoom map to level 13-19.')
                 return
               }
-              if (areaCenter.lng === 0) {
-                TOAST.danger('Invalid area center point.')
-              } else {
-                setDrawerOpen(true)
-              }
+              setDrawerOpen(true)
             }}
           >
-            Run
-          </Tag>
+            Scan
+          </Button>
         </div>
 
       </div>
