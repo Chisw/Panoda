@@ -154,7 +154,7 @@ export const scanIdsByPoints = (
         index++
         _recursion()
       })
-    }, 200)
+    }, 100)
   }
   _recursion()
 

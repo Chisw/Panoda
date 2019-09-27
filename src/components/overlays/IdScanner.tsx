@@ -130,7 +130,7 @@ export default function IdScanner(props: IdScannerProps) {
           })
           CMD.echo('br')
           startImportingPanos(ids)
-        }, 2000)
+        }, 1000)
       }
     )
   }
@@ -148,7 +148,7 @@ export default function IdScanner(props: IdScannerProps) {
         setTimeout(() => {
           MAP.getPanoInfoByIdAndAppendDom(idList.shift() || '')
           _recursion()
-        }, 500)
+        }, 200)
       } else {
         MAP.parent.setLoading(false)
         TOAST.success('Finished')
