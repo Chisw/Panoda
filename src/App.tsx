@@ -6,6 +6,7 @@ import Header from './components/Header'
 import ProgressMask from './components/overlays/ProgressMask'
 import Pano from './components/panels/Pano'
 import Setting from './components/panels/Setting'
+import About from './components/panels/About'
 
 import MAP from './ts/map'
 import store from './ts/store'
@@ -129,8 +130,10 @@ const App: React.FC = () => {
                 checkedIds={checkedIds}
                 setCheckedIds={setCheckedIds}
                 setLoading={setLoading}
+                setTabId={setTabId}
               />,
-              <Setting />
+              <Setting />,
+              <About />
             ][['pano', 'setting', 'about'].indexOf(tabId)]
           }
         </div>

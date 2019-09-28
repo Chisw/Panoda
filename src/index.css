@@ -41,15 +41,6 @@ code {
   left: 50%;
 }
 
-@font-face {
-  font-family: 'ablt';
-  src: url('./fonts/ablt.woff');
-}
-
-.font-ablt {
-  font-family: 'ablt';
-}
-
 .font-mono {
   font-family: monospace, Consolas;
 }
@@ -79,13 +70,13 @@ code {
 
 .panoda-container .map-select-guider {
   box-sizing: border-box;
-  padding: 3px;
+  padding: 4px;
   border-radius: 4px;
-  background: rgba(255, 255, 255, .6);
+  background: rgba(0, 0, 0, .1);
   z-index: 15;
   bottom: -46px;
-  margin-left: -180px;
-  width: 360px;
+  margin-left: -160px;
+  width: 320px;
   transition: all 1.2s;
 }
 
@@ -95,7 +86,7 @@ code {
 }
 
 .panoda-container .map-select-guider .guider-top.expand {
-  margin-bottom: 3px;
+  margin-bottom: 4px;
   height: 32px;
 }
 
@@ -231,8 +222,6 @@ code {
   width: 320px;
   padding-bottom: 20px;
 }
-
-
 
 #cmd-scroll::-webkit-scrollbar,
 #cmd-scroll::-webkit-scrollbar-button,

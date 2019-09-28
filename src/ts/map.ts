@@ -27,7 +27,7 @@ interface MAPState {
   getPanoInfoByIdAndAppendDom(
     id: string,
     success?: (data: any) => void,
-    failed?: () => void,
+    failed?: (id?: string) => void,
   ): void
   panToPoint(point: {lng: number, lat: number}): void
   panoCover: {
@@ -188,6 +188,7 @@ const MAP: MAPState = {
 
     if ( panos.map( (pano: IPano) => pano.id).includes(id) ) {
       TOAST.warning(`Pano ${id} already exist`)
+      failed && failed()
     } else {
       PANO_SERVER.getPanoramaById(id, (data: any) => {
 
@@ -210,7 +211,7 @@ const MAP: MAPState = {
 
           success && success(data)
         } else {
-          failed && failed()
+          failed && failed(id)
         }
       })
     }

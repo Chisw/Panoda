@@ -9,11 +9,12 @@ interface InputIdsDialogProps {
   isOpen: boolean
   onClose(): void
   setLoading(loading: boolean): void
+  setTabId(id: string): void
 }
 
 export default function InputIdsDialog(props: InputIdsDialogProps) {
 
-  const { isOpen, onClose, setLoading } = props
+  const { isOpen, onClose, setLoading, setTabId } = props
 
   const [inputIds, setInputIds] = useState('')
 
@@ -57,16 +58,23 @@ export default function InputIdsDialog(props: InputIdsDialogProps) {
     const _recursion = () => {
       if (idList.length) {
         setTimeout(() => {
-          MAP.getPanoInfoByIdAndAppendDom(idList.shift() || '')
-          _recursion()
-        }, 500)
+          MAP.getPanoInfoByIdAndAppendDom(
+            idList.shift() || '',
+            _recursion,
+            (id) => {
+              if ( id ) {
+                TOAST.warning(`Get ${id} failed`)
+              }
+              _recursion()
+            }
+          )
+        }, 20)
       } else {
         setLoading(false)
-        TOAST.success('Finished')
+        // TOAST.success('Import finished')
       }
     }
     _recursion()
-
   }
 
   return (
@@ -95,7 +103,16 @@ export default function InputIdsDialog(props: InputIdsDialogProps) {
       </div>
       <div className={Classes.DIALOG_FOOTER}>
         <div className={Classes.DIALOG_FOOTER_ACTIONS}>
-          <Button minimal className="text-xs">How to get pano id(s)?</Button>
+          <Button
+            minimal
+            className="text-xs"
+            onClick={() => {
+              onClose()
+              setTabId('about')
+            }}
+          >
+            How to get pano id(s)?
+          </Button>
           <Button 
             intent="primary" 
             disabled={inputIds.length === 0}

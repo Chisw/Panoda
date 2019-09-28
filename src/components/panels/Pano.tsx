@@ -20,6 +20,7 @@ interface PanoProps {
   checkedIds: string[]
   setCheckedIds(list: any): void
   setLoading(loading: boolean): void
+  setTabId(id: string): void
 }
 
 export default function Pano(props: PanoProps) {
@@ -33,6 +34,7 @@ export default function Pano(props: PanoProps) {
     checkedIds, 
     setCheckedIds,
     setLoading,
+    setTabId,
   } = props
 
   const [inputDialogOpen, setInputDialogOpen] = useState(false)
@@ -203,6 +205,7 @@ export default function Pano(props: PanoProps) {
           setInputDialogOpen(false)
         }}
         setLoading={setLoading}
+        setTabId={setTabId}
       />
 
       <DeleteCheckedPanosAlert 

@@ -44,10 +44,10 @@ export default function SelectGuider(props: SelectGuiderProps) {
             <p className="text-gray-500 text-right">
               Area<br/>Center
             </p>
-            <p className="mx-2" style={{minWidth: 140}}>
+            <p className="mx-2" style={{minWidth: 128}}>
               {areaCenter.lng}<br />{areaCenter.lat}
             </p>
-            <p className="text-gray-500 text-right ml-4">
+            <p className="text-gray-500 text-right ml-1">
               Zoom<br/>Level
             </p>
             <p className={`mx-2 ${zoomLevel < 17 ? 'text-red-600' : ''}`}>
