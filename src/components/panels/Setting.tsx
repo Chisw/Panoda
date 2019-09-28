@@ -59,7 +59,7 @@ export default function Setting() {
                   Artist: 'map.baidu.com'<br />
                   Software: 'Panoda - panoda.jisuowei.com'<br />
                   DateTime: [generated datetime]<br />
-                  ImageDescription: [pano id] - [roadname]<br />
+                  ImageDescription: [pano id]-[roadname]<br />
                   DateTimeOriginal: [pano date]<br />
                   GPSLongitudeRef: ['W' or 'E']<br />
                   GPSLongitude: [lng value]<br />
