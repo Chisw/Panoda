@@ -8,6 +8,7 @@ import { getPanoTileSrc, getBaseSize, getExifedBase64, getDateStamp, fillWaterma
 import { IPano } from '../../ts/type'
 import store from '../../ts/store'
 import TOAST from './EasyToast'
+import MAP from '../../ts/map'
 
 interface FetcherProps {
   panos: IPano[] | []
@@ -23,7 +24,6 @@ export default function Fetcher(props: FetcherProps) {
   const { panos, fetchResList, setFetchResList, checkedIds, isOpen, onClose } = props
 
   const [fetching, setFetching] = useState(false)
-  const [error, setError] = useState(false)
   const [tileIndex, setTileIndex] = useState(0)
   const [currentIndex, setCurrentIndex] = useState(0)
   const [confirmAlertOpen, setConfirmAlertOpen] = useState(false)
@@ -75,7 +75,9 @@ export default function Fetcher(props: FetcherProps) {
     let handleTimes = 0;
 
     const _recursion = () => {
-      
+
+      if (!MAP.parent.fetcherRunning) return
+
       setTileIndex(handleTimes)
       handleTimes++
       
@@ -84,20 +86,17 @@ export default function Fetcher(props: FetcherProps) {
         const { src, row, col } = tile
 
         const img: any = document.createElement('img')
-        img.src = src
+        img.setAttribute('crossOrigin', 'Anonymous')
         img.setAttribute('row', row)
         img.setAttribute('col', col)
-        img.setAttribute('crossOrigin', 'Anonymous')
+        img.src = src
 
         pool!.appendChild(img)
 
-        img.onload = () => {
-          _recursion()
-        }
+        img.onload = _recursion
 
         img.onerror = () => {
           setFetching(false)
-          setError(true)
           TOAST.danger('Something wrong, please check network and fetch again', 0)
         }
       } else {  // filled
@@ -136,10 +135,10 @@ export default function Fetcher(props: FetcherProps) {
   }
 
   const handleClose = () => {
+    MAP.parent.fetcherRunning = false
     setTileIndex(0)
     setCurrentIndex(0)
     setFetching(false)
-    setError(false)
     setFetchResList([])
     onClose()
   }
@@ -177,15 +176,15 @@ export default function Fetcher(props: FetcherProps) {
         className="bg-white"
         style={{ width: 512 }}
         onClose={() => {
-          if ( fetching && !error ) {
-            TOAST.primary('The program is running..')
-          } else {
+          // if ( fetching && !error ) {
+          //   TOAST.primary('The program is running..')
+          // } else {
             if ( store.get('PANO_SETTING_USEALERT')) {
               setConfirmAlertOpen(true)
             } else {
               handleClose()
             }
-          }
+          // }
         }}
       >
         <div className="fetcher-container w-full">

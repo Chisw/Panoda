@@ -99,8 +99,9 @@ export default function Pano(props: PanoProps) {
             intent="primary"
             disabled={checkedIds.length === 0}
             onClick={() => {
-              setFetcherDialogOpen(true)
               setPanoFrom('')
+              setFetcherDialogOpen(true)
+              MAP.parent.fetcherRunning = true
             }}
           >
             Fetch

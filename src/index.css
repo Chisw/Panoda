@@ -250,7 +250,3 @@ code {
 #cmd-scroll::-webkit-scrollbar-thumb {
   background: #3ddc84;
 }
-
-#cmd {
-  user-select: none;
-}

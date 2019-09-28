@@ -45,7 +45,10 @@ interface MAPState {
 }
 
 const MAP: MAPState = {
-  parent: {},
+  parent: {
+    scannerRunning: false,
+    fetcherRunning: false,
+  },
   init() {
     map = new BMap.Map('map', {enableMapClick: false})
     
