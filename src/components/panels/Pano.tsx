@@ -19,7 +19,6 @@ interface PanoProps {
   setPanoFrom: (val: string) => void
   checkedIds: string[]
   setCheckedIds(list: any): void
-  setLoading(loading: boolean): void
   setTabId(id: string): void
 }
 
@@ -33,7 +32,6 @@ export default function Pano(props: PanoProps) {
     setPanoFrom, 
     checkedIds, 
     setCheckedIds,
-    setLoading,
     setTabId,
   } = props
 
@@ -70,7 +68,7 @@ export default function Pano(props: PanoProps) {
                 <MenuDivider title="From" />
                 <Divider />
                 <MenuItem
-                  icon="map"
+                  icon="map-create"
                   text="Map"
                   onClick={() => {
                     setPanoFrom('map')
@@ -204,7 +202,6 @@ export default function Pano(props: PanoProps) {
         onClose={() => {
           setInputDialogOpen(false)
         }}
-        setLoading={setLoading}
         setTabId={setTabId}
       />
 

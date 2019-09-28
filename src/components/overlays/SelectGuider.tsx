@@ -11,6 +11,8 @@ interface SelectGuiderProps {
   setPanoFrom(val: string): void
   selectWith: string
   setSelectWith(val: string): void
+  sameRoadPanos: string[]
+  setSameRoadPanos(list: []): void
   areaCenter: IPoint
   zoomLevel: number
 }
@@ -22,16 +24,50 @@ export default function SelectGuider(props: SelectGuiderProps) {
     setPanoFrom,
     selectWith,
     setSelectWith,
+    sameRoadPanos,
+    setSameRoadPanos,
     areaCenter,
     zoomLevel,
   } = props
 
+  const otherLen = sameRoadPanos.length
+
   const [drawerOpen, setDrawerOpen] = useState(false)
 
-  const isArea = panoFrom === 'map' && selectWith === 'area'
+  const isPoint = panoFrom === 'map' && selectWith === 'point'
+  const isArea  = panoFrom === 'map' && selectWith === 'area'
 
   return (
     <div className="map-select-guider absolute left-50 shadow-lg">
+
+      {/* point */}
+      <div
+        className={`guider-top w-full h-8 rounded bg-white overflow-hidden
+          ${isPoint && otherLen  ? ' expand' : ''}`
+        }
+      >
+        <div className="px-1 w-full h-full flex items-center">
+          <div className="text-xs font-mono flex items-center flex-grow leading-none">
+            <p className="pl-2">Annother {otherLen} pano{otherLen === 1 ? '' : 's'} on this road.</p>
+          </div>
+          <Tag
+            interactive
+            className="text-xs"
+            intent="primary"
+            onClick={() => {
+              MAP.importPanosByIdList(
+                sameRoadPanos,
+                () => {
+                  setSameRoadPanos([])
+                }
+              )
+            }}
+          >
+            Import
+          </Tag>
+        </div>
+
+      </div>{/* point */}
 
       {/* area */}
       <div

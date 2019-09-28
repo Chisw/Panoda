@@ -40,6 +40,7 @@ interface MAPState {
     fail: (index: number) => void,
     end: () => void
   ): void
+  importPanosByIdList(list: string[], end?: () => void): void
   markPoints(points: IPoint[]): void
   setAreaSelector(event: any): void
 }
@@ -152,8 +153,18 @@ const MAP: MAPState = {
           (data) => {
             const { position: { lng, lat } } = data
             const p = new BMap.Point(lng, lat)
+            const marker = MAP.getPinMarker(p)
             map.panTo(p)
-            map.addOverlay(MAP.getPinMarker(p))
+            map.addOverlay(marker)
+
+            if (data.roads) {
+              let list: any[] = []
+              Object.values(data.roads).forEach((road: any) => {
+                list = list.concat(road.map((node: any) => node.id))
+              })
+              list = list.filter( item => item !== data.id)
+              MAP.parent.setSameRoadPanos(list)
+            }
 
             MAP.parent.setLoading(false)
             TOAST.success(`Get pano successfully`)
@@ -207,7 +218,7 @@ const MAP: MAPState = {
             }
           } = data
 
-          panos.unshift({ id, lng, lat, date: getDateStamp(photoDate), rname: roadName || '无道路信息' })
+          panos.unshift({ id, lng, lat, date: getDateStamp(photoDate), rname: roadName || 'Unnamed Road' })
           const _panos = [...panos]
           setPanos(_panos)
 
@@ -252,6 +263,31 @@ const MAP: MAPState = {
           end()
         }
       }, 20)
+    }
+    _recursion()
+  },
+
+  importPanosByIdList(list, end) {
+    MAP.parent.setLoading(true)
+    const _recursion = () => {
+      if (list.length) {
+        setTimeout(() => {
+          MAP.getPanoInfoByIdAndAppendDom(
+            list.shift() || '',
+            _recursion,
+            (id) => {
+              if (id) {
+                TOAST.warning(`Get ${id} info failed`)
+              }
+              _recursion()
+            }
+          )
+        }, 20)
+      } else {
+        MAP.parent.setLoading(false)
+        TOAST.success('Importing finished')
+        end && end()
+      }
     }
     _recursion()
   },

@@ -8,13 +8,12 @@ import TOAST from './EasyToast'
 interface InputIdsDialogProps {
   isOpen: boolean
   onClose(): void
-  setLoading(loading: boolean): void
   setTabId(id: string): void
 }
 
 export default function InputIdsDialog(props: InputIdsDialogProps) {
 
-  const { isOpen, onClose, setLoading, setTabId } = props
+  const { isOpen, onClose, setTabId } = props
 
   const [inputIds, setInputIds] = useState('')
 
@@ -54,27 +53,7 @@ export default function InputIdsDialog(props: InputIdsDialogProps) {
     setInputIds('')
     onClose()
 
-    setLoading(true)
-    const _recursion = () => {
-      if (idList.length) {
-        setTimeout(() => {
-          MAP.getPanoInfoByIdAndAppendDom(
-            idList.shift() || '',
-            _recursion,
-            (id) => {
-              if ( id ) {
-                TOAST.warning(`Get ${id} failed`)
-              }
-              _recursion()
-            }
-          )
-        }, 20)
-      } else {
-        setLoading(false)
-        // TOAST.success('Import finished')
-      }
-    }
-    _recursion()
+    MAP.importPanosByIdList(idList)
   }
 
   return (
@@ -118,7 +97,7 @@ export default function InputIdsDialog(props: InputIdsDialogProps) {
             disabled={inputIds.length === 0}
             onClick={importing}
           >
-            Continue
+            Import
           </Button>
         </div>
       </div>

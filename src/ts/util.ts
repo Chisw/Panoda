@@ -96,8 +96,7 @@ export const fillWatermark = (ctx: any, pano: IPano) => {
       )
     ).join('  |  ')
   
-  const isWindows = window.clientInformation.appVersion.toLowerCase().indexOf('windows') > 0
-  ctx.font = '24px ' + ( isWindows ? 'Consolas' : 'monospace' )
+  ctx.font = '24px font-mono'
   ctx.textAlign = 'left'
   ctx.fillStyle = '#000'
   ctx.fillText(text, 20, 2021)

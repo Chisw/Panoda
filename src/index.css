@@ -33,16 +33,21 @@ code {
     monospace;
 }
 
+@font-face {
+  font-family: 'font-mono';
+  src: url('./font/mono.woff');
+}
+
+.font-mono {
+  font-family: 'font-mono';
+}
+
 .right-50 {
   right: 50%;
 }
 
 .left-50 {
   left: 50%;
-}
-
-.font-mono {
-  font-family: monospace, Consolas;
 }
 
 .text-monospaced {

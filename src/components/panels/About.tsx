@@ -36,7 +36,7 @@ export default function About() {
         defaultValue={GET_PANO_ID_CODE}
       />
 
-      <h3 className="pt-4 text-base font-light mb-2">Thanks</h3>
+      <h3 className="pt-4 text-base font-light mb-2">Thanks to</h3>
       <div className="pt-1 pb-2">
         {
           [
