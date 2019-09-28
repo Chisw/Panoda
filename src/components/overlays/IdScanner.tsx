@@ -67,7 +67,7 @@ export default function IdScanner(props: IdScannerProps) {
     }
 
     CMD.echo('br')
-    CMD.echo('>>', 'Start computing points')
+    CMD.echo('>>', 'Start computing 6*6 points')
     CMD.echo('br')
 
     let index = 0
@@ -109,29 +109,53 @@ export default function IdScanner(props: IdScannerProps) {
       points,
       // success
       (data, _index) => {
-        CMD.echo('Point ' + _index + ':', 'Scanned ' + (data.links.length + 1) + ' panos')
 
         ids.push(data.id)
         ids = ids.concat(data.links.map((link: any) => link.id))
+        
+        /* data
+          {
+            roads: {
+              23: { id: '', ... },
+              714: { id: '', ... }
+            }
+          }
+        */
+        let roadsList: any[] = []
+        if ( data.roads ) {
+          Object.values(data.roads).forEach((road: any) => {
+            roadsList = roadsList.concat(road.map((node: any) => node.id ))
+          })
+        }
+
+        ids = ids.concat(roadsList)
+
+        CMD.echo(`Point ${_index}:`, `Scanned ${ 1 + data.links.length + roadsList.length } panos`)
       },
       // fail
       (_index) => {
-        CMD.echo('Point ' + _index + ':', 'None')
+        CMD.echo(`Point ${_index}:`, 'None')
       },
       // end
       () => {
         const uniquedIds = _.uniq(ids)
-        const repeated = ids.length - uniquedIds.length
+        const totalLen = ids.length
+        const uniqueLen = uniquedIds.length
+        const repeatedLen = totalLen - uniqueLen
 
         CMD.echo('br')
         CMD.echo('<<', 'Scanning end')
         CMD.echo('br')
-        CMD.echo('Scanned Res:', uniquedIds.length + ' unique panos, removed ' + repeated + ' repeated.' )
+        CMD.echo('>>', 'Start printing result')
         CMD.echo('br')
         setTimeout(() => {
-          ids.forEach((id, index) => {
+          uniquedIds.forEach((id, index) => {
             CMD.echo('Pano ' + ( index + 1 ) + ':', id)
           })
+          CMD.echo('br')
+          CMD.echo('Scanned Result:', `${totalLen} total, ${repeatedLen} repeated, ${uniqueLen} remained.`)
+          CMD.echo('br')
+          CMD.echo('<<', 'Printing result end')
           CMD.echo('br')
           startImportingPanos(uniquedIds)
         }, 1000)
@@ -150,9 +174,12 @@ export default function IdScanner(props: IdScannerProps) {
     const _recursion = () => {
       if (idList.length) {
         setTimeout(() => {
-          MAP.getPanoInfoByIdAndAppendDom(idList.shift() || '')
-          _recursion()
-        }, 200)
+          MAP.getPanoInfoByIdAndAppendDom(
+            idList.shift() || '',
+            _recursion,
+            _recursion
+          )
+        }, 20)
       } else {
         MAP.parent.setLoading(false)
         TOAST.success('Finished')

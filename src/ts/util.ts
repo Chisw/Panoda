@@ -132,6 +132,6 @@ export const CMD = {
     cmd.appendChild(p)
 
     const scroll = document.getElementById('cmd-scroll')
-    scroll && scroll.scrollTo({ top: 1e4 })
+    scroll && scroll.scrollTo({ top: 1e4, behavior: 'smooth' })
   },
 }

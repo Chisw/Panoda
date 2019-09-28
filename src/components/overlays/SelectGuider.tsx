@@ -28,28 +28,29 @@ export default function SelectGuider(props: SelectGuiderProps) {
 
   const [drawerOpen, setDrawerOpen] = useState(false)
 
-  const isArea = panoFrom === 'map' && selectWith === 'area';
+  const isArea = panoFrom === 'map' && selectWith === 'area'
 
   return (
-    <div className="map-select-guider absolute left-50">
+    <div className="map-select-guider absolute left-50 shadow-lg">
 
-      <div 
-        className={`guider-top w-full h-8 rounded-sm bg-white overflow-hidden
+      {/* area */}
+      <div
+        className={`guider-top w-full h-8 rounded bg-white overflow-hidden
           ${isArea ? ' expand' : ''}`
         }
       >
         <div className="px-1 w-full h-full flex items-center">
           <div className="text-xs font-mono flex items-center flex-grow leading-none">
-            <p className="text-gray-500 text-center">
+            <p className="text-gray-500 text-right">
               Area<br/>Center
             </p>
-            <p className="mx-2" style={{minWidth: 138}}>
+            <p className="mx-2" style={{minWidth: 140}}>
               {areaCenter.lng}<br />{areaCenter.lat}
             </p>
-            <p className="text-gray-500 text-center ml-4">
+            <p className="text-gray-500 text-right ml-4">
               Zoom<br/>Level
             </p>
-            <p className="mx-2">
+            <p className={`mx-2 ${zoomLevel < 17 ? 'text-red-600' : ''}`}>
               {zoomLevel}
             </p>
           </div>
@@ -59,8 +60,8 @@ export default function SelectGuider(props: SelectGuiderProps) {
             intent="primary"
             disabled={areaCenter.lng === 0}
             onClick={() => {
-              if (zoomLevel < 15) {
-                TOAST.danger('Zoom map to level 15-19.')
+              if (zoomLevel < 17) {
+                TOAST.danger('Zoom map to level 17-19.')
                 return
               }
               setDrawerOpen(true)
@@ -70,9 +71,9 @@ export default function SelectGuider(props: SelectGuiderProps) {
           </Button>
         </div>
 
-      </div>
+      </div>{/* area */}
 
-      <ButtonGroup className="shadow-large" fill>
+      <ButtonGroup fill>
         <Tooltip content="Locate your position">
           <Button
             icon="locate"
@@ -82,7 +83,7 @@ export default function SelectGuider(props: SelectGuiderProps) {
           />
         </Tooltip>
         <Button
-          className="px-4"
+          className="px-8"
           icon="map-marker"
           active={selectWith === 'point'}
           onClick={() => {
@@ -92,17 +93,7 @@ export default function SelectGuider(props: SelectGuiderProps) {
           Point
         </Button>
         <Button
-          className="px-4"
-          icon="trending-up"
-          active={selectWith === 'line'}
-          onClick={() => {
-            setSelectWith('line')
-          }}
-        >
-          Line
-        </Button>
-        <Button
-          className="px-4"
+          className="px-8"
           icon="widget"
           active={selectWith === 'area'}
           onClick={() => {

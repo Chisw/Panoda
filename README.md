@@ -1,2 +1,19 @@
 # Panoda
-panoda.jisuowei.com
+
+http://panoda.jisuowei.com 
+
+or short
+
+http://p.jsw.im
+
+# Start
+
+```
+yarn start
+```
+
+# Build
+
+```
+yarn build
+```

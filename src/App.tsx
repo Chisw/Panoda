@@ -13,21 +13,21 @@ import { IPano } from './ts/type'
 
 const App: React.FC = () => {
 
-  const [loading, setLoading] = useState(false)
-  const [tabId, setTabId] = useState('pano')  // 'pano' | 'setting' | 'about'
-  const [panoFrom, setPanoFrom] = useState('')  // '' | 'map' | 'input'
+  const [loading,    setLoading]    = useState(false)
+  const [tabId,      setTabId]      = useState('pano')  // 'pano' | 'setting' | 'about'
+  const [panoFrom,   setPanoFrom]   = useState('')  // '' | 'map' | 'input'
   const [selectWith, setSelectWith] = useState('point')  // 'point' | 'line' | 'area'
   const [areaCenter, setAreaCenter] = useState({lng: 0, lat: 0})
-  const [zoomLevel, setZoomLevel] = useState(14)  // 5-19
-  const [panoView, setPanoView] = useState(store.get('PANODA_PANO_VIEW') || 'list')  // 'list' | 'grid'
-  const [panos, setPanos] = useState(store.get('PANODA_PANOS') || [])
+  const [zoomLevel,  setZoomLevel]  = useState(14)  // 5-19
+  const [panoView,   setPanoView]   = useState(store.get('PANODA_PANO_VIEW') || 'list')  // 'list' | 'grid'
+  const [panos,      setPanos]      = useState(store.get('PANODA_PANOS') || [])
   const [checkedIds, setCheckedIds] = useState(store.get('PANODA_CHECKED_IDS') || [])
 
-  MAP.parent.setLoading = setLoading
-  MAP.parent.panos = panos
-  MAP.parent.setPanos = setPanos
+  MAP.parent.setLoading    = setLoading
+  MAP.parent.panos         = panos
+  MAP.parent.setPanos      = setPanos
   MAP.parent.setAreaCenter = setAreaCenter
-  MAP.parent.setZoomLevel = setZoomLevel
+  MAP.parent.setZoomLevel  = setZoomLevel
 
   const initSettings = () => {
     const isSet = store.get('PANO_SETTING_SET')

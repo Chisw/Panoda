@@ -82,8 +82,6 @@ const MAP: MAPState = {
 
     if (selectWith === 'point') {
       map.addEventListener('click', MAP.getPanoIdByClicking)
-    } else if (selectWith === 'line') {
-
     } else if (selectWith === 'area' ){
       map.addEventListener('click', MAP.setAreaSelector)
     }

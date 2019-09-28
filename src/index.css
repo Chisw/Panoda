@@ -79,7 +79,7 @@ code {
 
 .panoda-container .map-select-guider {
   box-sizing: border-box;
-  padding: 4px;
+  padding: 3px;
   border-radius: 4px;
   background: rgba(255, 255, 255, .6);
   z-index: 15;
@@ -95,7 +95,7 @@ code {
 }
 
 .panoda-container .map-select-guider .guider-top.expand {
-  margin-bottom: 4px;
+  margin-bottom: 3px;
   height: 32px;
 }
 
