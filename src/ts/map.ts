@@ -27,7 +27,7 @@ interface MAPState {
   getPanoInfoByIdAndAppendDom(
     id: string,
     success?: (data: any) => void,
-    failed?: (id?: string) => void,
+    failed?: (id?: string) => void,  // no id if repeat
   ): void
   panToPoint(point: {lng: number, lat: number}): void
   panoCover: {
@@ -158,8 +158,10 @@ const MAP: MAPState = {
             MAP.parent.setLoading(false)
             TOAST.success(`Get pano successfully`)
           },
-          () => {
-            TOAST.warning(`Get pano ${data.id} info failed`)
+          (id) => {
+            if ( id ) {
+              TOAST.warning(`Get pano ${id} info failed`)
+            }
             MAP.parent.setLoading(false)
           }
         )

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { ButtonGroup, Button, Tooltip } from '@blueprintjs/core'
+import { ButtonGroup, Button, Tooltip, Tag } from '@blueprintjs/core'
 import IdScanner from './IdScanner'
 
 import MAP from '../../ts/map'
@@ -54,12 +54,15 @@ export default function SelectGuider(props: SelectGuiderProps) {
               {zoomLevel}
             </p>
           </div>
-          <Button
-            small
+          <Tag
+            interactive
             className="text-xs"
             intent="primary"
-            disabled={areaCenter.lng === 0}
             onClick={() => {
+              if (areaCenter.lng === 0) {
+                TOAST.danger('Invalid area center point.')
+                return
+              }
               if (zoomLevel < 17) {
                 TOAST.danger('Zoom map to level 17-19.')
                 return
@@ -68,7 +71,7 @@ export default function SelectGuider(props: SelectGuiderProps) {
             }}
           >
             Scan
-          </Button>
+          </Tag>
         </div>
 
       </div>{/* area */}

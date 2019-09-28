@@ -10,7 +10,7 @@ export default function About() {
       <p className="text-sm text-gray-500">
         Copy the following code and paste it to the console of Baidu map page.
         <Tag
-          minimal
+          intent="primary"
           interactive
           className="float-right"
           onClick={() => {
@@ -28,7 +28,7 @@ export default function About() {
         id="get-pano-id-code"
         className="my-2 w-full overflow-y-scroll p-2 rounded resize-none font-mono"
         style={{
-          height: 200,
+          height: 120,
           color: '#3ddc84',
           background: '#0a1d1a',
           fontSize: 12
@@ -46,10 +46,14 @@ export default function About() {
             { label: 'FileSaver', link: 'https://github.com/eligrey/FileSaver.js' },
             { label: 'Piexifjs', link: 'https://github.com/hMatoba/piexifjs' },
           ].map((a, index) => {
-            return <Tag minimal interactive key={index} className="mr-2" onClick={() => { window.open(a.link) }} >{a.label}</Tag>
+            return <Tag minimal interactive key={index} intent="primary" className="mr-2" onClick={() => { window.open(a.link) }} >{a.label}</Tag>
           })
         }
       </div>
+      <p className="mt-12 pt-4 text-xs text-gray-500 border-t">
+        Panoda - http://panoda.jisuowei.com - http://p.jsw.im
+        <span className="float-right">Email: i@jisuowei.com</span>
+      </p>
     </div>
   )
 }
