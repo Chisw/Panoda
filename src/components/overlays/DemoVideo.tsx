@@ -23,7 +23,7 @@ export default function DemoVideo(props: DemoVideoProps) {
       <div>
         <iframe 
           title="demo video"
-          src="//player.bilibili.com/player.html?aid=67624282&cid=117238129&page=1"
+          src="//player.bilibili.com/player.html?aid=69382774&cid=120251707&page=1"
           style={{
             width: 640,
             height: 430
