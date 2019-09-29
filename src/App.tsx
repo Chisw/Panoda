@@ -11,6 +11,7 @@ import About from './components/panels/About'
 import MAP from './ts/map'
 import store from './ts/store'
 import { IPano } from './ts/type'
+import DemoVideo from './components/overlays/DemoVideo'
 
 const App: React.FC = () => {
 
@@ -24,6 +25,7 @@ const App: React.FC = () => {
   const [panoView,      setPanoView]      = useState(store.get('PANODA_PANO_VIEW') || 'list')  // 'list' | 'grid'
   const [panos,         setPanos]         = useState(store.get('PANODA_PANOS') || [])
   const [checkedIds,    setCheckedIds]    = useState(store.get('PANODA_CHECKED_IDS') || [])
+  const [videoOpen,     setVideoOpen]     = useState(false)
 
   MAP.parent.setLoading       = setLoading
   MAP.parent.panos            = panos
@@ -110,7 +112,9 @@ const App: React.FC = () => {
 
       <div className="panoda-panel absolute top-0 right-0 bottom-0 left-50 px-10 shadow-md">
         <div className="panel-inner relative h-full">
-          <Header />
+          <Header
+            openVideo={() => { setVideoOpen(true) }}
+          />
           <Tabs large animate 
             className="border-b"
             id="navi" 
@@ -142,6 +146,11 @@ const App: React.FC = () => {
           }
         </div>
       </div>
+
+      <DemoVideo 
+        isOpen={videoOpen}
+        onClose={() => { setVideoOpen(false) }}
+      />
 
       <ProgressMask loading={loading} />
 

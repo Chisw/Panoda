@@ -50,9 +50,9 @@ export default function About() {
           })
         }
       </div>
-      <p className="mt-12 pt-4 text-xs text-gray-500 border-t">
-        Panoda - http://panoda.jisuowei.com - http://p.jsw.im
-        <span className="float-right">Email: i@jisuowei.com</span>
+      <p className="absolute bottom-0 w-full py-4 text-xs text-gray-600 border-t bg-white">
+        Panoda - http://p.jsw.im          
+        <span className="float-right text-blue-500 cursor-pointer" onClick={() => { window.open('http://jisuowei.com') }}>© jisuowei.com</span>
       </p>
     </div>
   )

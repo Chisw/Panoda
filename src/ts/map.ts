@@ -53,7 +53,7 @@ const MAP: MAPState = {
   init() {
     map = new BMap.Map('map', {enableMapClick: false})
     
-    map.centerAndZoom(new BMap.Point(119.48, 32.79), 13)
+    map.centerAndZoom(new BMap.Point(119.52, 32.79), 12)
     map.enableScrollWheelZoom(true)
     map.setMinZoom(5)
 
@@ -178,6 +178,7 @@ const MAP: MAPState = {
         )
       } else {
         MAP.parent.setLoading(false)
+        MAP.parent.setSameRoadPanos([])
         TOAST.danger('No point matched, try again')
       }
     });
@@ -233,7 +234,11 @@ const MAP: MAPState = {
   panToPoint(point) {
     const { lng, lat } = point
     const p = new BMap.Point(lng, lat)
-    map.panTo(p)
+    if ( map.getZoom() < 16 ) {
+      map.centerAndZoom(p, 16)
+    } else {
+      map.panTo(p)
+    }
     map.clearOverlays()
     map.addOverlay(MAP.getPinMarker(p))
   },

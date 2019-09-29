@@ -1,14 +1,32 @@
 import React from 'react'
-import { ButtonGroup, AnchorButton } from '@blueprintjs/core'
+import { ButtonGroup, AnchorButton, Tooltip } from '@blueprintjs/core'
 
-export default function Header() {
+interface HeaderProps {
+  openVideo(): void
+}
+
+export default function Header(props: HeaderProps) {
+
+  const{ openVideo } = props
+
   return (
     <div className="pt-4 pb-2">
       <h3 className="text-4xl font-mono">
         Panoda
         <ButtonGroup minimal className="float-right mt-2">
-          <AnchorButton icon="video" href="https://github.com/Chisw/Panoda" target="_blank" />
-          <AnchorButton icon="git-repo" href="https://github.com/Chisw/Panoda" target="_blank" />
+          <Tooltip content="Demo video">
+            <AnchorButton
+              icon="video"
+              onClick={openVideo}
+            />
+          </Tooltip>
+          <Tooltip content="GitHub">
+            <AnchorButton
+              icon="git-repo"
+              href="https://github.com/Chisw/Panoda"
+              target="_blank" 
+            />
+          </Tooltip>
         </ButtonGroup>
       </h3>
       <h3 className="text-xs text-gray-500 font-hairline">

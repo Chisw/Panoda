@@ -113,7 +113,7 @@ export default function SelectGuider(props: SelectGuiderProps) {
       </div>{/* area */}
 
       <ButtonGroup fill>
-        <Tooltip content="Locate your position">
+        <Tooltip content="Locate your position" position="left">
           <Button
             icon="locate"
             onClick={() => {
@@ -141,7 +141,7 @@ export default function SelectGuider(props: SelectGuiderProps) {
         >
           Area
         </Button>
-        <Tooltip content="Quit">
+        <Tooltip content="Quit" position="right">
           <Button
             icon="cross"
             intent="danger"
