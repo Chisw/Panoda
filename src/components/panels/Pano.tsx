@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { ButtonGroup, Button, Popover, Menu, MenuDivider, MenuItem, Classes, Divider } from '@blueprintjs/core'
 
 import { EmptyPano } from '../EmptySkeleton'
@@ -39,6 +39,22 @@ export default function Pano(props: PanoProps) {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
   const [fetcherDialogOpen, setFetcherDialogOpen] = useState(false)
   const [fetchResList, setFetchResList] = useState([])
+  const [shift1, setShift1] = useState(-1)
+  const [shift2, setShift2] = useState(-1)
+
+  useEffect(() => {
+    if (shift2 !== -1) {
+      const start = Math.min(shift1, shift2)
+      const end = Math.max(shift1, shift2)
+      setCheckedIds(
+        panos
+          .filter((pano, index) => start <= index && index <= end)
+          .map( pano => pano.id )
+      )
+      setShift1(-1)
+      setShift2(-1)
+    }
+  }, [shift1, shift2])
 
   const optionalPanoIds = panos.map( pano => pano.id )
 
@@ -180,6 +196,10 @@ export default function Pano(props: PanoProps) {
                   setPanos={setPanos}
                   checkedIds={checkedIds}
                   setCheckedIds={setCheckedIds}
+                  shift1={shift1}
+                  shift2={shift2}
+                  setShift1={setShift1}
+                  setShift2={setShift2}
                 />
               )
               : (
@@ -191,6 +211,10 @@ export default function Pano(props: PanoProps) {
                   setPanos={setPanos}
                   checkedIds={checkedIds}
                   setCheckedIds={setCheckedIds}
+                  shift1={shift1}
+                  shift2={shift2}
+                  setShift1={setShift1}
+                  setShift2={setShift2}
                 />
               )
           })

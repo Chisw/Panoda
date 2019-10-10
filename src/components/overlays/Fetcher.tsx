@@ -128,7 +128,7 @@ export default function Fetcher(props: FetcherProps) {
           if (currentIndex < checkedIds.length) {
             setCurrentIndex(currentIndex + 1)
           }
-        }, 10)
+        }, 1)
       }
     }
     _recursion()
@@ -258,6 +258,7 @@ export default function Fetcher(props: FetcherProps) {
                     checkedIds.map( (id, index) => {
                       return (
                         <div className="my-1 p-2 rounded flex hover:bg-gray-100" key={index}>
+                          <div className="text-gray-500">{(index < 10 ? '00' : '0') + (index + 1) + '.'}</div>
                           <div>
                             {id}
                           </div>

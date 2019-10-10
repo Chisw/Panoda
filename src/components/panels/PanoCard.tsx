@@ -13,6 +13,10 @@ interface PanoCardProps {
   setPanos(panos: IPano[] | []): void
   checkedIds: string[]
   setCheckedIds(list: any): void
+  shift1: number
+  shift2: number
+  setShift1(index: number): void
+  setShift2(index: number): void
 }
 
 export default function PanoCard(props: PanoCardProps) {
@@ -24,13 +28,20 @@ export default function PanoCard(props: PanoCardProps) {
     setPanos,
     checkedIds,
     setCheckedIds,
+    shift1,
+    shift2,
+    setShift1,
+    setShift2,
   } = props
 
   const checked = checkedIds.includes(id)
 
   return (
     <Checkbox 
-      className="pano-pano-card border mt-6 mr-6 mb-0 ml-0 rounded border-none font-mono"
+      className={`
+        pano-pano-card border mt-6 mr-6 mb-0 ml-0 rounded border-none font-mono 
+        ${index === shift1 ? 'opacity-50' : ''}
+      `}
       checked={checked}
       onChange={() => {
         let _checkedIds: string[]
@@ -43,6 +54,18 @@ export default function PanoCard(props: PanoCardProps) {
           _checkedIds = [...checkedIds]
         }
         setCheckedIds(_checkedIds)
+      }}
+      onClick={(event: any) => {
+        if (event.shiftKey) {
+          if (shift1 === -1) {
+            setShift1(index)
+          } else if (shift2 === -1) {
+            setShift2(index)
+          }
+        } else {
+          setShift1(-1)
+          setShift2(-1)
+        }
       }}
     >
       <img

@@ -40,8 +40,9 @@ export default function About() {
       <div className="pt-1 pb-2">
         {
           [
-            { label: 'BaiduMap', link: 'http://lbsyun.baidu.com/' },
-            { label: 'Blueprint', link: 'https://blueprintjs.com/' },
+            { label: 'BaiduMap', link: 'http://lbsyun.baidu.com' },
+            { label: 'Blueprint', link: 'https://blueprintjs.com' },
+            { label: 'Tailwind', link: 'https://next.tailwindcss.com' },
             { label: 'JSZip', link: 'https://github.com/Stuk/jszip' },
             { label: 'FileSaver', link: 'https://github.com/eligrey/FileSaver.js' },
             { label: 'Piexifjs', link: 'https://github.com/hMatoba/piexifjs' },

@@ -13,6 +13,10 @@ interface PanoBarProps {
   setPanos(panos: IPano[] | []): void
   checkedIds: string[]
   setCheckedIds(list: any): void
+  shift1: number
+  shift2: number
+  setShift1(index: number): void
+  setShift2(index: number): void
 }
 
 export default function PanoBar(props: PanoBarProps) {
@@ -24,13 +28,20 @@ export default function PanoBar(props: PanoBarProps) {
     setPanos,
     checkedIds,
     setCheckedIds,
+    shift1,
+    shift2,
+    setShift1,
+    setShift2,
   } = props
 
   const checked = checkedIds.includes(id)
 
   return (
     <Checkbox 
-      className="pano-pano-bar py-3 border-b flex hover:bg-gray-100 m-0 font-mono"
+      className={`
+        pano-pano-bar py-3 border-b flex hover:bg-gray-100 m-0 font-mono select-none 
+        ${index === shift1 ? 'bg-gray-300 hover:bg-gray-300' : ''}
+      `}
       checked={checked}
       onChange={() => {
         let _checkedIds: string[]
@@ -43,6 +54,18 @@ export default function PanoBar(props: PanoBarProps) {
           _checkedIds = [...checkedIds]
         }
         setCheckedIds(_checkedIds)
+      }}
+      onClick={(event: any) => {
+        if (event.shiftKey) {
+          if (shift1 === -1) {
+            setShift1(index)
+          } else if (shift2 === -1) {
+            setShift2(index)
+          }
+        } else {
+          setShift1(-1)
+          setShift2(-1)
+        }
       }}
     >
       <div className="w-8 flex items-center">
