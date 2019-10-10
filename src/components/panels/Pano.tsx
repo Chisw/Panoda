@@ -54,6 +54,7 @@ export default function Pano(props: PanoProps) {
       setShift1(-1)
       setShift2(-1)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [shift1, shift2])
 
   const optionalPanoIds = panos.map( pano => pano.id )
