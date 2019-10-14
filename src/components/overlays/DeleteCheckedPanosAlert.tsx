@@ -1,8 +1,8 @@
 import React from 'react'
 import { Alert } from '@blueprintjs/core'
-
 import { IPano } from '../../ts/type'
 import TOAST from './EasyToast'
+import MAP from '../../ts/map'
 
 interface DeleteCheckedPanosAlertProps {
   checkedIds: string[]
@@ -34,6 +34,7 @@ export default function DeleteCheckedPanosAlert(props: DeleteCheckedPanosAlertPr
           }
         })
         setPanos(_panos)
+        MAP.clear()
         TOAST.success('Deleted')
       }}
     >

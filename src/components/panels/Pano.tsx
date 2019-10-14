@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { ButtonGroup, Button, Popover, Menu, MenuDivider, MenuItem, Classes, Divider } from '@blueprintjs/core'
+import { ButtonGroup, Button, Popover, Menu, MenuDivider, MenuItem, Classes, Divider, Tooltip } from '@blueprintjs/core'
 
 import { EmptyPano } from '../EmptySkeleton'
 import PanoBar from './PanoBar'
@@ -10,6 +10,7 @@ import Fetcher from '../overlays/Fetcher'
 
 import { IPano } from '../../ts/type'
 import MAP from '../../ts/map'
+import TOAST from '../overlays/EasyToast'
 
 interface PanoProps {
   panoView: string
@@ -78,6 +79,17 @@ export default function Pano(props: PanoProps) {
           <Button active style={{minWidth: 80 }} className="text-xs font-mono">
             {checkedIds.length}/{panos.length}
           </Button>
+          <Tooltip content="Sort by id">
+            <Button
+              icon="sort-numerical"
+              disabled={panos.length <= 1}
+              onClick={() => {
+                const _panos = [...panos]
+                setPanos(_panos.sort((a, b) => a.id > b.id ? 1 : -1))
+                TOAST.success('Sorted')
+              }}
+            />
+          </Tooltip>
           <Popover
             position="bottom"
             content={
@@ -125,7 +137,7 @@ export default function Pano(props: PanoProps) {
           </Button>
           <Popover
             disabled={checkedIds.length === 0}
-            position="bottom-right"
+            position="bottom"
             content={
               <div className="p-1">
                 <Button

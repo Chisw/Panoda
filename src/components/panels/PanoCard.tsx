@@ -106,6 +106,7 @@ export default function PanoCard(props: PanoCardProps) {
                       panos.splice(index, 1).reverse()
                       const _panos = [...panos]
                       setPanos(_panos)
+                      MAP.clear()
                       TOAST.success(`Pano deleted.`)
                     }}
                   >

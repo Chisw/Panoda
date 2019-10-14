@@ -1,6 +1,5 @@
 import React from 'react'
 import { ButtonGroup, Button, Popover, Classes, Checkbox } from '@blueprintjs/core'
-
 import { IPano } from '../../ts/type'
 import MAP from '../../ts/map'
 import { getPreviewSrc } from '../../ts/util'
@@ -129,6 +128,7 @@ export default function PanoBar(props: PanoBarProps) {
                       panos.splice(index, 1).reverse()
                       const _panos = [...panos]
                       setPanos(_panos)
+                      MAP.clear()
                       TOAST.success(`Pano deleted.`)
                     }}
                   >
