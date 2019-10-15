@@ -102,7 +102,7 @@ export default function PanoBar(props: PanoBarProps) {
           }
         </p>
         <p className="text-xs text-gray-500">
-          Pin: {lng + ',' + lat}
+          Position: {lng + ',' + lat}
         </p>
       </div>
       <div className="pano-operation px-2 text-right self-center flex-grow">

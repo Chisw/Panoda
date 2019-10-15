@@ -79,7 +79,7 @@ export default function Pano(props: PanoProps) {
           <Button active style={{minWidth: 80 }} className="text-xs font-mono">
             {checkedIds.length}/{panos.length}
           </Button>
-          <Tooltip content="Sort by id">
+          <Tooltip content="Sort by ID">
             <Button
               icon="sort-numerical"
               disabled={panos.length <= 1}

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Dialog, TextArea, Button, Classes } from '@blueprintjs/core'
+import { Dialog, TextArea, Button, Classes, Tooltip } from '@blueprintjs/core'
 
 import { PANO_ID_REG } from '../../ts/constant'
 import MAP from '../../ts/map'
@@ -17,7 +17,7 @@ export default function InputIdsDialog(props: InputIdsDialogProps) {
 
   const [inputIds, setInputIds] = useState('')
 
-  const importing = () => {
+  const importPanos = (isHistory?: boolean) => {
 
     const idList = 
       inputIds
@@ -53,7 +53,9 @@ export default function InputIdsDialog(props: InputIdsDialogProps) {
     setInputIds('')
     onClose()
 
-    MAP.importPanosByIdList(idList)
+    isHistory
+      ? MAP.importHistoryPanosByIdList(idList)
+      : MAP.importPanosByIdList(idList)
   }
 
   return (
@@ -92,10 +94,18 @@ export default function InputIdsDialog(props: InputIdsDialogProps) {
           >
             How to get pano id(s)?
           </Button>
+          <Tooltip content="Search and then import history panos by current ids" position="bottom">
+            <Button
+              disabled={inputIds.length === 0}
+              onClick={() => { importPanos(true) }}
+            >
+              Import history
+            </Button>
+          </Tooltip>
           <Button 
             intent="primary" 
             disabled={inputIds.length === 0}
-            onClick={importing}
+            onClick={() => { importPanos() }}
           >
             Import
           </Button>

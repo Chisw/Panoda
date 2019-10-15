@@ -176,15 +176,11 @@ export default function Fetcher(props: FetcherProps) {
         className="bg-white"
         style={{ width: 512 }}
         onClose={() => {
-          // if ( fetching && !error ) {
-          //   TOAST.primary('The program is running..')
-          // } else {
-            if ( store.get('PANO_SETTING_USEALERT')) {
-              setConfirmAlertOpen(true)
-            } else {
-              handleClose()
-            }
-          // }
+          if ( store.get('PANO_SETTING_USEALERT')) {
+            setConfirmAlertOpen(true)
+          } else {
+            handleClose()
+          }
         }}
       >
         <div className="fetcher-container w-full">

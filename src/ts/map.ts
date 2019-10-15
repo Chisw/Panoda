@@ -41,6 +41,7 @@ interface MAPState {
     end: () => void
   ): void
   importPanosByIdList(list: string[], end?: () => void): void
+  importHistoryPanosByIdList(list: string[], end?: () => void): void
   markPoints(points: IPoint[]): void
   setAreaSelector(event: any): void
 }
@@ -287,11 +288,41 @@ const MAP: MAPState = {
               _recursion()
             }
           )
-        }, 20)
+        }, 10)
       } else {
         MAP.parent.setLoading(false)
         TOAST.success('Importing finished')
         end && end()
+      }
+    }
+    _recursion()
+  },
+
+  importHistoryPanosByIdList(list, end) {
+    MAP.parent.setLoading(true)
+    let historyIds: string[] = []
+    const _recursion = () => {
+      if (list.length) {
+        setTimeout(() => {
+          fetch(`https://mapsv0.bdimg.com/?qt=sdata&sid=${ list.shift() || ''}`)
+            .then((response) => response.json())
+            .then((res) => {
+              const data = ( res ? res.content || [{}] : [{}] )[0]
+              const { TimeLine } = data
+              const ids = 
+                TimeLine
+                  ? TimeLine
+                      .filter((item: any) => item.IsCurrent === 0 )
+                      .map((item: any) => item.ID )
+                  : []
+              historyIds = historyIds.concat(ids)
+              _recursion()
+            })
+        })
+      } else {
+        TOAST.success(historyIds.length + ` history pano${historyIds.length>1?'s':''} found`, 4000)
+        MAP.parent.setLoading(true)
+        MAP.importPanosByIdList(historyIds)
       }
     }
     _recursion()
