@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { ButtonGroup, Button, Popover, Menu, MenuDivider, MenuItem, Classes, Divider, Tooltip } from '@blueprintjs/core'
+import { ButtonGroup, Button, Popover, Menu, MenuDivider, MenuItem, Classes, Divider } from '@blueprintjs/core'
 
 import { EmptyPano } from '../EmptySkeleton'
 import PanoBar from './PanoBar'
