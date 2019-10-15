@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { GET_PANO_ID_CODE, PANO_ID_REG_G } from '../../ts/constant'
 import { Tag, Icon, FileInput } from '@blueprintjs/core'
 import TOAST from '../overlays/EasyToast'
+import { copyStr } from '../../ts/util'
 
 export default function About() {
 
@@ -71,12 +72,7 @@ export default function About() {
                 .filter(Boolean)
             const len = ids.length
             if (len) {
-              const input = document.createElement('input')
-              document.body.appendChild(input)
-              input.value = ids.join(',')
-              input.select()
-              document.execCommand('Copy')
-              document.body.removeChild(input)
+              copyStr(ids.join(','))
               TOAST.success(len + ` pano id${len>1?'s':''} matched and copied.`, 3000)
             } else {
               TOAST.danger('No pano id matched.')

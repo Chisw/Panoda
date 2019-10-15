@@ -25,6 +25,17 @@ export const getDateStamp = (str?: string, format?: string) => {
   }
 }
 
+export const copyStr = (str: string) => {
+  const input = document.createElement('input')
+  document.body.appendChild(input)
+  input.value = str
+  input.select()
+  document.execCommand('Copy')
+  setTimeout(() => {
+    document.body.removeChild(input)
+  }, 1)
+}
+
 // getBaseSize
 export const getBaseSize = (base64String: string) => {
 

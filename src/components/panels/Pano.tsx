@@ -11,6 +11,7 @@ import Fetcher from '../overlays/Fetcher'
 import { IPano } from '../../ts/type'
 import MAP from '../../ts/map'
 import TOAST from '../overlays/EasyToast'
+import { copyStr } from '../../ts/util'
 
 interface PanoProps {
   panoView: string
@@ -79,17 +80,15 @@ export default function Pano(props: PanoProps) {
           <Button active style={{minWidth: 80 }} className="text-xs font-mono">
             {checkedIds.length}/{panos.length}
           </Button>
-          <Tooltip content="Sort by ID">
-            <Button
-              icon="sort-numerical"
-              disabled={panos.length <= 1}
-              onClick={() => {
-                const _panos = [...panos]
-                setPanos(_panos.sort((a, b) => a.id > b.id ? 1 : -1))
-                TOAST.success('Sorted')
-              }}
-            />
-          </Tooltip>
+          <Button
+            icon="sort-numerical"
+            onClick={() => {
+              if (panos.length <= 1) return
+              const _panos = [...panos]
+              setPanos(_panos.sort((a, b) => a.id > b.id ? 1 : -1))
+              TOAST.success('Sorted')
+            }}
+          />
           <Popover
             position="bottom"
             content={
@@ -137,9 +136,20 @@ export default function Pano(props: PanoProps) {
           </Button>
           <Popover
             disabled={checkedIds.length === 0}
-            position="bottom"
+            position="right"
             content={
               <div className="p-1">
+                <Button
+                  fill
+                  className={Classes.POPOVER_DISMISS + ' mb-1'}
+                  icon="duplicate"
+                  onClick={() => {
+                    copyStr(checkedIds.join(','))
+                    TOAST.success('Copy successfully')
+                  }}
+                >
+                  <span className="inline-block w-16 text-center">Copy ID</span>
+                </Button>
                 <Button
                   fill
                   icon="map-marker"
@@ -150,7 +160,7 @@ export default function Pano(props: PanoProps) {
                     )
                   }}
                 >
-                  Mark
+                  <span className="inline-block w-16 text-center">Mark</span>
                 </Button>
                 <Button
                   fill
@@ -161,7 +171,7 @@ export default function Pano(props: PanoProps) {
                     setDeleteDialogOpen(true)
                   }}
                 >
-                  Delete
+                  <span className="inline-block w-16 text-center">Delete</span>
                 </Button>
               </div>
             }
