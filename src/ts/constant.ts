@@ -1,4 +1,5 @@
 export const PANO_ID_REG = /^[0-9]{26}[A-Z]{1}$/
+export const PANO_ID_REG_G = /[0-9]{26}[A-Z]{1}/g
 
 export const LEVEL_OFFSETS = [
   0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12,

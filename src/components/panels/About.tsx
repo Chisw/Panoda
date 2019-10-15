@@ -1,9 +1,18 @@
-import React from 'react'
-import { GET_PANO_ID_CODE } from '../../ts/constant'
-import { Tag, Button, Icon } from '@blueprintjs/core'
+import React, { useEffect, useState } from 'react'
+import { GET_PANO_ID_CODE, PANO_ID_REG_G } from '../../ts/constant'
+import { Tag, Icon, FileInput } from '@blueprintjs/core'
 import TOAST from '../overlays/EasyToast'
 
 export default function About() {
+
+  const [folderName, setFolderName] = useState('')
+
+  useEffect(() => {
+    const input = document.getElementById('directory-file-input')
+    input && input.setAttribute('directory', 'true')
+    input && input.setAttribute('webkitdirectory', 'true')
+  }, [])
+
   return (
     <div>
       <h3 className="pt-4 text-base font-light mb-2"><Icon icon="console" className="w-6" />Get pano id(s)</h3>
@@ -40,16 +49,40 @@ export default function About() {
         <p className="text-sm text-gray-500">
           2. From folder: choose an existing folder contained with generated Panoda images.
         </p>
-        <Button
-          icon="folder-new"
-          className="mt-2"
-          onClick={() => {
-
-            TOAST.success('Copy successfully')
+        <FileInput
+          fill
+          text={folderName || `Choose folder...`}
+          className="mt-2 bp3-small"
+          inputProps={{
+            id: 'directory-file-input',
+            multiple: true
           }}
-        >
-          Choose
-        </Button>
+          hasSelection={folderName !== ''}
+          onInputChange={(event: any) => {
+            const { files } = event.target
+            if (!files[0]) return
+            setFolderName('/' + files[0].webkitRelativePath.split('/')[0])
+            let ids: string[] = 
+              Object.keys(files)
+                .map((key: string) => {
+                  const res = files[key].name.match(PANO_ID_REG_G)
+                  return res && res[0]
+                })
+                .filter(Boolean)
+            const len = ids.length
+            if (len) {
+              const input = document.createElement('input')
+              document.body.appendChild(input)
+              input.value = ids.join(',')
+              input.select()
+              document.execCommand('Copy')
+              document.body.removeChild(input)
+              TOAST.success(len + ` pano id${len>1?'s':''} matched and copied.`, 3000)
+            } else {
+              TOAST.danger('No pano id matched.')
+            }
+          }}
+        />
       </div>
 
       <h3 className="pt-4 text-base font-light mb-2"><Icon icon="link" className="w-6" />Thanks to</h3>
