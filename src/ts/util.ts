@@ -25,15 +25,14 @@ export const getDateStamp = (str?: string, format?: string) => {
   }
 }
 
+// copyStr
 export const copyStr = (str: string) => {
   const input = document.createElement('input')
   document.body.appendChild(input)
   input.value = str
   input.select()
   document.execCommand('Copy')
-  setTimeout(() => {
-    document.body.removeChild(input)
-  }, 1)
+  document.body.removeChild(input)
 }
 
 // getBaseSize
@@ -42,8 +41,8 @@ export const getBaseSize = (base64String: string) => {
   if (!base64String) return
 
   let padding, inBytes, base64StringLength
-  if (base64String.endsWith("==")) padding = 2
-  else if (base64String.endsWith("=")) padding = 1
+  if (base64String.endsWith('==')) padding = 2
+  else if (base64String.endsWith('=')) padding = 1
   else padding = 0
 
   base64StringLength = base64String.length
