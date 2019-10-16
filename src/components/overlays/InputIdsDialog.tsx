@@ -60,7 +60,7 @@ export default function InputIdsDialog(props: InputIdsDialogProps) {
 
   return (
     <Dialog
-      title="New Pano"
+      title="Add"
       icon="text-highlight"
       canEscapeKeyClose={false}
       canOutsideClickClose={false}

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { ButtonGroup, Button, Popover, Menu, MenuDivider, MenuItem, Classes, Divider } from '@blueprintjs/core'
+import { ButtonGroup, Button, Popover, Menu, MenuDivider, MenuItem, Divider } from '@blueprintjs/core'
 
 import { EmptyPano } from '../EmptySkeleton'
 import PanoBar from './PanoBar'
@@ -77,11 +77,12 @@ export default function Pano(props: PanoProps) {
               )
             }}
           />
-          <Button active style={{minWidth: 80 }} className="text-xs font-mono">
-            {checkedIds.length}/{panos.length}
+          <Button style={{ minWidth: 80, background: '#fff' }} className="text-xs">
+            {checkedIds.length} / {panos.length}
           </Button>
           <Button
             icon="sort-numerical"
+            className="px-4"
             onClick={() => {
               if (panos.length <= 1) return
               const _panos = [...panos]
@@ -113,10 +114,8 @@ export default function Pano(props: PanoProps) {
               </Menu>
             }
           >
-            <Button
-              icon="small-plus"
-            >
-              New Pano
+            <Button icon="plus">
+              Add
             </Button>
           </Popover>
         </ButtonGroup>
@@ -124,7 +123,7 @@ export default function Pano(props: PanoProps) {
         <ButtonGroup className="mx-4">
           <Button
             icon="play"
-            intent="primary"
+            intent="success"
             disabled={checkedIds.length === 0}
             onClick={() => {
               setPanoFrom('')
@@ -134,54 +133,34 @@ export default function Pano(props: PanoProps) {
           >
             Fetch
           </Button>
-          <Popover
+          <Button
+            icon="duplicate"
+            className="px-4"
             disabled={checkedIds.length === 0}
-            position="right"
-            content={
-              <div className="p-1">
-                <Button
-                  fill
-                  className={Classes.POPOVER_DISMISS + ' mb-1'}
-                  icon="duplicate"
-                  onClick={() => {
-                    copyStr(checkedIds.join(','))
-                    TOAST.success('Copy successfully')
-                  }}
-                >
-                  <span className="inline-block w-16 text-center">Copy ID</span>
-                </Button>
-                <Button
-                  fill
-                  icon="map-marker"
-                  className={Classes.POPOVER_DISMISS + ' mb-1'}
-                  onClick={() => {
-                    MAP.markPoints(
-                      panos.filter( pano => checkedIds.includes(pano.id))
-                    )
-                  }}
-                >
-                  <span className="inline-block w-16 text-center">Mark</span>
-                </Button>
-                <Button
-                  fill
-                  icon="trash"
-                  intent="danger"
-                  className={Classes.POPOVER_DISMISS}
-                  onClick={() => {
-                    setDeleteDialogOpen(true)
-                  }}
-                >
-                  <span className="inline-block w-16 text-center">Delete</span>
-                </Button>
-              </div>
-            }
-          >
-            <Button
-              icon="more"
-              intent="primary"
-              disabled={checkedIds.length === 0}
-            />
-          </Popover>
+            onClick={() => {
+              copyStr(checkedIds.join(','))
+              TOAST.success('Copy successfully')
+            }}
+          />
+          <Button
+            icon="map-marker"
+            className="px-4"
+            disabled={checkedIds.length === 0}
+            onClick={() => {
+              MAP.markPoints(
+                panos.filter(pano => checkedIds.includes(pano.id))
+              )
+            }}
+          />
+          <Button
+            icon="trash"
+            className="px-4"
+            disabled={checkedIds.length === 0}
+            intent="danger"
+            onClick={() => {
+              setDeleteDialogOpen(true)
+            }}
+          />
         </ButtonGroup>
 
         {/* view switch */}
