@@ -127,7 +127,7 @@ const MAP: MAPState = {
         size,
         { imageSize: size }
       )
-    });
+    })
   },
 
   getRectMarker(point) {
