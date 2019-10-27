@@ -91,13 +91,14 @@ export default function Fetcher(props: FetcherProps) {
         img.setAttribute('col', col)
         img.src = src
 
-        pool!.appendChild(img)
-
-        img.onload = _recursion
+        img.onload = () => {
+          pool!.appendChild(img)
+          _recursion()
+        }
 
         img.onerror = () => {
           setFetching(false)
-          TOAST.danger('Something wrong, please check network and fetch again', 0)
+          TOAST.warning('Something wrong, please check network and fetch again', 0)
         }
       } else {  // filled
         const imgs = pool.querySelectorAll('img')
@@ -208,7 +209,11 @@ export default function Fetcher(props: FetcherProps) {
                       Total:
                       <span className="float-right">[{currentIndex}/{checkedIds.length}]</span>
                     </p>
-                    <ProgressBar value={(currentIndex) / checkedIds.length} intent="success" animate={fetching} />
+                    <ProgressBar 
+                      value={(currentIndex * 32 + tileIndex ) / (checkedIds.length * 32)} 
+                      intent="success" 
+                      animate={fetching} 
+                    />
                   </div>
                 </>
               )
