@@ -97,9 +97,13 @@ export default function Fetcher(props: FetcherProps) {
         }
 
         img.onerror = () => {
-          setFetching(false)
-          TOAST.warning('Something wrong, please check network and fetch again', 0)
+          // setFetching(false)
+          TOAST.danger('Network error, fetch TILE_' + handleTimes +' failed, refetching 2s later..', 3000)
+          handleTimes--
+          tiles.unshift(tile)
+          setTimeout(_recursion, 2000)
         }
+
       } else {  // filled
         const imgs = pool.querySelectorAll('img')
         imgs.forEach(img => {
