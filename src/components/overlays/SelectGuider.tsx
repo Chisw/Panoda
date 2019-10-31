@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { ButtonGroup, Button, Tooltip, Tag } from '@blueprintjs/core'
+import { ButtonGroup, Button, Tooltip, Tag, Spinner } from '@blueprintjs/core'
 import IdScanner from './IdScanner'
 
 import MAP from '../../ts/map'
@@ -7,6 +7,7 @@ import TOAST from './EasyToast'
 import { IPoint } from '../../ts/type'
 
 interface SelectGuiderProps {
+  loading: boolean
   panoFrom: string
   setPanoFrom(val: string): void
   selectWith: string
@@ -19,7 +20,8 @@ interface SelectGuiderProps {
 
 export default function SelectGuider(props: SelectGuiderProps) {
 
-  const { 
+  const {
+    loading,
     panoFrom,
     setPanoFrom,
     selectWith,
@@ -51,7 +53,9 @@ export default function SelectGuider(props: SelectGuiderProps) {
             <p className="pl-2">Annother {otherLen} pano{otherLen === 1 ? '' : 's'} on this road.</p>
           </div>
           <Tag
+            round
             interactive
+            minimal={loading}
             className="text-xs"
             intent="primary"
             onClick={() => {
@@ -63,7 +67,9 @@ export default function SelectGuider(props: SelectGuiderProps) {
               )
             }}
           >
-            Import
+            <span className="inline-block w-10 text-center">
+              { loading ? <Spinner size={0}/> : <span>Import</span> }
+            </span>
           </Tag>
         </div>
 

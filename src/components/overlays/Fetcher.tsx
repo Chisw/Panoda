@@ -27,6 +27,7 @@ export default function Fetcher(props: FetcherProps) {
   const [tileIndex, setTileIndex] = useState(0)
   const [currentIndex, setCurrentIndex] = useState(0)
   const [confirmAlertOpen, setConfirmAlertOpen] = useState(false)
+  const [downloading, setDownloading] = useState(false)
 
   // init
   useEffect(() => {
@@ -231,28 +232,35 @@ export default function Fetcher(props: FetcherProps) {
                   >
                     <div className="text-right">
                       <Button
+                        loading={downloading}
+                        disabled={downloading}
                         icon="compressed"
                         intent="success"
                         onClick={() => {
-                          const name = 'Panoda_' + getDateStamp()
-                          const zip = new JSZip()
-                          const currDate = new Date()
-                          const dateWithOffset = new Date(currDate.getTime() - currDate.getTimezoneOffset() * 60000)
-                          const panodaFolder = zip.folder(name)
+                          setDownloading(true)
+                          setTimeout(() => {
+                            const name = 'Panoda_' + getDateStamp()
+                            const zip = new JSZip()
+                            const currDate = new Date()
+                            const dateWithOffset = new Date(currDate.getTime() - currDate.getTimezoneOffset() * 60000)
+                            const panodaFolder = zip.folder(name)
 
-                          fetchResList.forEach( (res, index) => {
-                            panodaFolder
-                              .file(
-                                `PANODA_${checkedIds[index]}.jpg`, 
-                                res.replace('data:image/jpeg;base64,', ''), 
-                                { base64: true, date: dateWithOffset })
-                          })
+                            fetchResList.forEach( (res, index) => {
+                              panodaFolder
+                                .file(
+                                  `PANODA_${checkedIds[index]}.jpg`, 
+                                  res.replace('data:image/jpeg;base64,', ''), 
+                                  { base64: true, date: dateWithOffset })
+                            })
 
-                          zip
-                            .generateAsync({ type: 'blob' })
-                            .then(function (content) {
-                              saveAs(content, name + '.zip');
-                            });
+                            zip
+                              .generateAsync({ type: 'blob' })
+                              .then(function (content) {
+                                saveAs(content, name + '.zip');
+                              })
+                              setDownloading(false)
+
+                          }, 200)
                         }}
                       >
                         Download All

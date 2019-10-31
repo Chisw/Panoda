@@ -99,6 +99,7 @@ const App: React.FC = () => {
       <div className="panoda-map absolute top-0 right-50 bottom-0 left-0">
         <div id="map" className="absolute top-0 right-0 bottom-0 left-0"></div>
         <SelectGuider
+          loading={loading}
           panoFrom={panoFrom}
           setPanoFrom={setPanoFrom}
           selectWith={selectWith}
