@@ -28,6 +28,7 @@ export default function Fetcher(props: FetcherProps) {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [confirmAlertOpen, setConfirmAlertOpen] = useState(false)
   const [downloading, setDownloading] = useState(false)
+  const [allSize, setAllSize] = useState('-- MB')
 
   // init
   useEffect(() => {
@@ -44,7 +45,8 @@ export default function Fetcher(props: FetcherProps) {
   useEffect(() => {
     if (currentIndex === checkedIds.length ) {
       setTimeout(() => {
-        setFetching(false)  
+        setAllSize(getBaseSize(fetchResList.join('')) as string)
+        setFetching(false)
       }, 20)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -258,17 +260,21 @@ export default function Fetcher(props: FetcherProps) {
                               .then(function (content) {
                                 saveAs(content, name + '.zip');
                               })
+
+                            setTimeout(() => {
                               setDownloading(false)
+                            }, 100)
 
                           }, 200)
                         }}
                       >
-                        Download All
+                        Download All ({allSize})
                       </Button>
                     </div>
                   </Callout>
                   {
                     checkedIds.map( (id, index) => {
+                      const data = fetchResList[index]
                       return (
                         <div className="my-1 p-2 rounded flex hover:bg-gray-100" key={index}>
                           <div className="text-gray-500">{(index + 1) + '.'}</div>
@@ -277,14 +283,14 @@ export default function Fetcher(props: FetcherProps) {
                           </div>
                           <div className="flex-grow text-right">
                             <span className="mr-4 text-gray-500">
-                              {getBaseSize(fetchResList[index])}
+                              {getBaseSize(data)}
                             </span>
                             <Tag 
                               minimal
                               interactive
                               intent="success"
                               onClick={() => {
-                                FileSaver.saveAs(fetchResList[index], `PANODA_${id}.jpg`)
+                                FileSaver.saveAs(data, `PANODA_${id}.jpg`)
                               }}
                             >
                               Download
