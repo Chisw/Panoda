@@ -263,9 +263,9 @@ export default function Fetcher(props: FetcherProps) {
 
                             setTimeout(() => {
                               setDownloading(false)
-                            }, 100)
+                            }, 1000)
 
-                          }, 200)
+                          }, 50)
                         }}
                       >
                         Download All ({allSize})

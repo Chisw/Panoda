@@ -43,7 +43,7 @@ const TOAST = {
   warning(message: string, timeout?: number, icon?: IconName, intent?: Intent) {
     TOAST.toast(
       message,
-      timeout || 0,
+      timeout || 5000,
       icon || 'error',
       intent || 'warning',
     )
