@@ -3,7 +3,7 @@ import { Dialog, ProgressBar, Tag, Callout, Button, Alert } from '@blueprintjs/c
 import FileSaver from 'file-saver'
 import JSZip from 'jszip'
 import TableGrid from '../TableGrid'
-
+import { DateTime } from 'luxon'
 import { getPanoTileSrc, getBaseSize, getExifedBase64, getDateStamp, fillWatermark } from '../../ts/util'
 import { IPano } from '../../ts/type'
 import store from '../../ts/store'
@@ -26,9 +26,16 @@ export default function Fetcher(props: FetcherProps) {
   const [fetching, setFetching] = useState(false)
   const [tileIndex, setTileIndex] = useState(0)
   const [currentIndex, setCurrentIndex] = useState(0)
+  const [startTime, setStartTime] = useState(0)
   const [confirmAlertOpen, setConfirmAlertOpen] = useState(false)
   const [downloading, setDownloading] = useState(false)
   const [allSize, setAllSize] = useState('-- MB')
+
+  useEffect(() => {
+    if (isOpen) {
+      setStartTime(new Date().getTime())
+    }
+  }, [isOpen])
 
   // init
   useEffect(() => {
@@ -151,6 +158,12 @@ export default function Fetcher(props: FetcherProps) {
     onClose()
   }
 
+  const usedSeconds = DateTime.fromJSDate(new Date()).diff(DateTime.fromJSDate(new Date(startTime))).as('second')
+  const allAmount = checkedIds.length * 32
+  const fetchedAmount = currentIndex * 32 + tileIndex + 1
+
+  const restSeconds = usedSeconds / fetchedAmount * (allAmount - fetchedAmount)
+
   return (
     <>
 
@@ -206,13 +219,13 @@ export default function Fetcher(props: FetcherProps) {
                   </div>
 
                   <div className="px-8 py-4">
-                    <p className="text-xs text-gray-600 font-mono mb-2 mt-4">
+                    <p className="mt-4 mb-2 text-xs text-gray-600 font-mono">
                       Current: {checkedIds[currentIndex]}
                       <span className="float-right">[{tileIndex}/32]</span>
                     </p>
                     <ProgressBar value={tileIndex / 32} intent="success" animate={fetching} />
 
-                    <p className="text-xs text-gray-600 font-mono mb-2 mt-4">
+                    <p className="mt-4 mb-2 text-xs text-gray-600 font-mono">
                       Total:
                       <span className="float-right">[{currentIndex}/{checkedIds.length}]</span>
                     </p>
@@ -221,6 +234,13 @@ export default function Fetcher(props: FetcherProps) {
                       intent="success" 
                       animate={fetching} 
                     />
+
+                    <p className="mt-4 mb-2 text-xs text-gray-600 font-mono">
+                      Rest:
+                      <span className="float-right">
+                        {(restSeconds).toFixed(1)}s{restSeconds > 60 ? ', about ' + (restSeconds / 60).toFixed(0) + 'min' : ''}
+                      </span>
+                    </p>
                   </div>
                 </>
               )
