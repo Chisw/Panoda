@@ -238,7 +238,7 @@ export default function Fetcher(props: FetcherProps) {
                     <p className="mt-4 mb-2 text-xs text-gray-600 font-mono">
                       Rest:
                       <span className="float-right">
-                        {(restSeconds).toFixed(1)}s{restSeconds > 60 ? ', about ' + Math.floor(restSeconds / 60) + 'min' : ''}
+                        {(restSeconds).toFixed(1)}s{restSeconds > 60 ? ', about ' + (restSeconds / 60).toFixed(0) + 'min' : ''}
                       </span>
                     </p>
                   </div>
