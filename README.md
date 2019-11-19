@@ -1,10 +1,10 @@
 # Panoda
 
-http://panoda.jisuowei.com 
+https://panoda.jisuowei.com 
 
 or short
 
-http://p.jsw.im
+p.jsw.im
 
 # Start
 
