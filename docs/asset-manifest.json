@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/i/panoda/static/css/main.b6ff884e.chunk.css",
+    "main.js": "/i/panoda/static/js/main.bb2cfc1c.chunk.js",
+    "runtime~main.js": "/i/panoda/static/js/runtime~main.1950d58c.js",
+    "static/css/2.07d04ac3.chunk.css": "/i/panoda/static/css/2.07d04ac3.chunk.css",
+    "static/js/2.bbd49a1f.chunk.js": "/i/panoda/static/js/2.bbd49a1f.chunk.js",
+    "index.html": "/i/panoda/index.html",
+    "precache-manifest.2cbd306445b821a46aca6fb1832b7bc4.js": "/i/panoda/precache-manifest.2cbd306445b821a46aca6fb1832b7bc4.js",
+    "service-worker.js": "/i/panoda/service-worker.js",
+    "static/media/index.css": "/i/panoda/static/media/mono.0e27753c.woff",
+    "static/media/pin.svg": "/i/panoda/static/media/pin.391098f4.svg",
+    "static/media/rect.svg": "/i/panoda/static/media/rect.22c89e3f.svg"
+  }
+}
