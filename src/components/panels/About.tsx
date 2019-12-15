@@ -72,8 +72,18 @@ export default function About() {
                 .filter(Boolean)
             const len = ids.length
             if (len) {
-              copyStr(ids.join(','))
-              TOAST.success(len + ` pano id${len>1?'s':''} matched and copied.`, 3000)
+              TOAST.success(
+                len + ` pano id${len>1?'s':''} matched.`,
+                10000,
+                undefined,
+                {
+                  text: 'Copy',
+                  icon: 'duplicate',
+                  onClick() {
+                    copyStr(ids.join(','))
+                  }
+                },
+              )
             } else {
               TOAST.danger('No pano id matched.')
             }

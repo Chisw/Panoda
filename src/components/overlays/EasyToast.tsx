@@ -1,51 +1,56 @@
-import { Toaster, IconName, Intent } from '@blueprintjs/core'
+import { Toaster, IconName, Intent, IActionProps } from '@blueprintjs/core'
 
 const toaster = Toaster.create({ position: 'top-left'})
 
 const TOAST = {
 
-  toast(message: string, timeout?: number, icon?: IconName, intent?: Intent) {
+  toast(message: string, timeout?: number, icon?: IconName, intent?: Intent, action?: IActionProps) {
     toaster.show({
-      message: message,
-      timeout: timeout,
-      icon: icon,
-      intent: intent,
+      message,
+      timeout,
+      icon,
+      intent,
+      action,
     })
   },
 
-  primary(message: string, timeout?: number, icon?: IconName, intent?: Intent) {
+  primary(message: string, timeout?: number, icon?: IconName, action?: IActionProps) {
     TOAST.toast(
       message,
       timeout || 5000,
       icon || 'console',
-      intent || 'primary',
+      'primary',
+      action,
     )
   },
 
-  success(message: string, timeout?: number, icon?: IconName, intent?: Intent) {
+  success(message: string, timeout?: number, icon?: IconName, action?: IActionProps) {
     TOAST.toast(
       message,
       timeout || 2000,
       icon || 'tick',
-      intent || 'success',
+      'success',
+      action,
     )
   },
 
-  danger(message: string, timeout?: number, icon?: IconName, intent?: Intent) {
+  danger(message: string, timeout?: number, icon?: IconName, action?: IActionProps) {
     TOAST.toast(
       message,
       timeout || 3000,
       icon || 'error',
-      intent || 'danger',
+      'danger',
+      action,
     )
   },
 
-  warning(message: string, timeout?: number, icon?: IconName, intent?: Intent) {
+  warning(message: string, timeout?: number, icon?: IconName, action?: IActionProps) {
     TOAST.toast(
       message,
       timeout || 5000,
       icon || 'error',
-      intent || 'warning',
+      'warning',
+      action,
     )
   },
 
