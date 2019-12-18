@@ -3,6 +3,7 @@ import { GET_PANO_ID_CODE, PANO_ID_REG_G } from '../../ts/constant'
 import { Tag, Icon, FileInput } from '@blueprintjs/core'
 import TOAST from '../overlays/EasyToast'
 import { copyStr } from '../../ts/util'
+import { uniq } from 'lodash'
 
 export default function About() {
 
@@ -64,12 +65,14 @@ export default function About() {
             if (!files[0]) return
             setFolderName('/' + files[0].webkitRelativePath.split('/')[0])
             let ids: string[] = 
-              Object.keys(files)
-                .map((key: string) => {
-                  const res = files[key].name.match(PANO_ID_REG_G)
-                  return res && res[0]
-                })
-                .filter(Boolean)
+              uniq(
+                Object.keys(files)
+                  .map((key: string) => {
+                    const res = files[key].name.match(PANO_ID_REG_G)
+                    return res ? res[0] : ''
+                  })
+                  .filter(Boolean)
+              )
             const len = ids.length
             if (len) {
               TOAST.success(

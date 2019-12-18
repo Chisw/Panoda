@@ -4,6 +4,7 @@ import { Dialog, TextArea, Button, Classes, Tooltip } from '@blueprintjs/core'
 import { PANO_ID_REG } from '../../ts/constant'
 import MAP from '../../ts/map'
 import TOAST from './EasyToast'
+import { uniq } from 'lodash'
 
 interface InputIdsDialogProps {
   isOpen: boolean
@@ -23,9 +24,7 @@ export default function InputIdsDialog(props: InputIdsDialogProps) {
       inputIds
         .replace(/\n/g, '')
         .split(',')
-        .filter(id => {
-          return id !== ''
-        })
+        .filter(id => id !== '')
 
     let err: boolean = false
     idList.forEach( id => {
@@ -37,9 +36,7 @@ export default function InputIdsDialog(props: InputIdsDialogProps) {
 
       const _idList = 
         idList
-          .filter(id => {
-            return id !== ''
-          })
+          .filter(id => id !== '')
           .map(id => {
             return !PANO_ID_REG.test(id)
               ? `!!> ${id} <!!`
@@ -54,8 +51,8 @@ export default function InputIdsDialog(props: InputIdsDialogProps) {
     onClose()
 
     isHistory
-      ? MAP.importHistoryPanosByIdList(idList)
-      : MAP.importPanosByIdList(idList)
+      ? MAP.importHistoryPanosByIdList(uniq(idList))
+      : MAP.importPanosByIdList(uniq(idList))
   }
 
   return (
