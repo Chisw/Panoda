@@ -4,7 +4,7 @@ https://panoda.jisuowei.com
 
 or short
 
-p.jsw.im
+http://p.jsw.im
 
 # Start
 
