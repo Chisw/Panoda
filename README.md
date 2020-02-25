@@ -1,10 +1,8 @@
 # Panoda
 
-https://panoda.jisuowei.com 
+批量下载百度全景图片
 
-or short
-
-http://p.jsw.im
+[https://panoda.jisuowei.com](https://panoda.jisuowei.com) or short [http://p.jsw.im](http://p.jsw.im)
 
 # Start
 

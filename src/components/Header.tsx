@@ -29,7 +29,7 @@ export default function Header(props: HeaderProps) {
           </Tooltip>
         </ButtonGroup>
       </h3>
-      <h3 className="text-xs text-gray-500 font-hairline">
+      <h3 className="text-xs text-gray-500">
         Fetch Baidu panoramic photo easily!
       </h3>
     </div>
