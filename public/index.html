@@ -4,9 +4,11 @@
     <title>Panoda - panoda.jisuowei.com</title>
     <meta charset="utf-8" />
     <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="panoda jisuowei.com" />
-    <script type="text/javascript" src="//jisuowei.com/i/js/chrome.js"></script>
+    <meta name="viewport" content="width=1366, user-scalable=no" />
+    <meta name="description" content="panoda panoda.jisuowei.com" />
+    <script>
+      if (location.href.startsWith('http://panoda')) location.href = 'https://panoda.jisuowei.com'
+    </script>
     <script type="text/javascript" src="%PUBLIC_URL%/piexif.min.js"></script>
     <script type="text/javascript" src="//api.map.baidu.com/api?v=3.0&ak=hWlAC3G3AFjWt3QGjB5o7eK4HIqzMhQZ"></script>
     <script>window.BMap = BMap;</script>
@@ -15,7 +17,4 @@
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
   </body>
-    <script>
-      if (location.href.startsWith('http://panoda')) location.href = 'https://panoda.jisuowei.com'
-    </script>
 </html>

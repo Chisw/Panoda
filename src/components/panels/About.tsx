@@ -112,7 +112,7 @@ export default function About() {
 
       <p className="absolute bottom-0 w-full py-4 text-xs text-gray-600 border-t bg-white">
         Panoda - http://p.jsw.im          
-        <span className="float-right text-blue-500 cursor-pointer" onClick={() => { window.open('http://jisuowei.com') }}>© jisuowei.com</span>
+        <span className="float-right text-blue-500 cursor-pointer" onClick={() => { window.open('//jisuowei.com') }}>© jisuowei.com</span>
       </p>
 
     </div>
