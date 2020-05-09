@@ -33,7 +33,7 @@ export const GET_PANO_ID_CODE =
 
   let idList = [];
   window.onclick = () => {
-    const match = location.href.match(/[0-9]{26}[A-Z]{1}/);
+    const match = location.href.match(/^[0-9]{25}[0-9A-Z]{2}$/);
     const id = match ? match[0] : '';
     const can = id && !idList.includes(id);
     if (can) idList.unshift(id);
