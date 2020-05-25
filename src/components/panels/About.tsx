@@ -100,7 +100,7 @@ export default function About() {
           [
             { label: 'BaiduMap', link: 'http://lbsyun.baidu.com' },
             { label: 'Blueprint', link: 'https://blueprintjs.com' },
-            { label: 'TailwindCSS', link: 'https://next.tailwindcss.com' },
+            { label: 'TailwindCSS', link: 'https://tailwindcss.com/' },
             { label: 'JSZip.js', link: 'https://github.com/Stuk/jszip' },
             { label: 'FileSaver.js', link: 'https://github.com/eligrey/FileSaver.js' },
             { label: 'Piexifjs', link: 'https://github.com/hMatoba/piexifjs' },
