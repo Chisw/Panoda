@@ -37,8 +37,7 @@ export default function PanoBar(props: PanoBarProps) {
 
   return (
     <Checkbox 
-      className={`
-        pano-pano-bar py-3 border-b flex hover:bg-gray-100 m-0 font-mono select-none 
+      className={`pano-pano-bar py-3 border-b flex hover:bg-gray-100 m-0 font-mono select-none 
         ${index === shift1 ? 'bg-gray-300 hover:bg-gray-300' : ''}
       `}
       checked={checked}
@@ -109,9 +108,7 @@ export default function PanoBar(props: PanoBarProps) {
         <ButtonGroup minimal>
           <Button
             icon="map-marker"
-            onClick={() => {
-              MAP.panToPoint({ lng, lat })
-            }}
+            onClick={() => MAP.panToPoint({ lng, lat })}
           />
           <Popover
             position="left"

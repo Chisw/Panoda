@@ -1,6 +1,5 @@
 import React from 'react'
 import { ButtonGroup, Button, Popover, Classes, Checkbox } from '@blueprintjs/core'
-
 import { IPano } from '../../ts/type'
 import MAP from '../../ts/map'
 import { getPreviewSrc } from '../../ts/util'
@@ -38,8 +37,7 @@ export default function PanoCard(props: PanoCardProps) {
 
   return (
     <Checkbox 
-      className={`
-        pano-pano-card border mt-6 mr-6 mb-0 ml-0 rounded border-none font-mono 
+      className={`pano-pano-card border mt-6 mr-6 mb-0 ml-0 rounded border-none font-mono 
         ${index === shift1 ? 'opacity-50' : ''}
       `}
       checked={checked}
@@ -80,16 +78,13 @@ export default function PanoCard(props: PanoCardProps) {
         <p className="text-xs text-white text-right">
           {rname} {date}<br />
           {id}   
-          {/* <br /> {lng + ', ' + lat} */}
         </p>
       </div>
       <div className="pano-operation text-right absolute top-0 right-0 left-0">
         <ButtonGroup>
           <Button
             icon="map-marker"
-            onClick={() => {
-              MAP.panToPoint({ lng, lat })
-            }}
+            onClick={() => MAP.panToPoint({ lng, lat })}
           />
           <Popover
             position="top"

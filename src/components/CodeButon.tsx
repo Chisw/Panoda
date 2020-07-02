@@ -15,7 +15,7 @@ export default function CodeButton(props: CodeButtonProps) {
       className={`bg-green-500 hover:bg-green-600 text-black px-1 rounded-sm inline-block cursor-pointer text-center 
         ${className}
       `}
-      style={{minWidth: 56}}
+      style={{ minWidth: 56 }}
       onClick={onClick}
     >
       {content}

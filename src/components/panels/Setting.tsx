@@ -5,15 +5,11 @@ import store from '../../ts/store'
 export default function Setting() {
 
   const storeUseAlert = store.get('PANO_SETTING_USEALERT')
-  const [useAlert, setUseAlert] = useState(storeUseAlert === null ? false : storeUseAlert)
-
   const storeInsertEXIF = store.get('PANO_SETTING_INSERTEXIF')
+
+  const [useAlert, setUseAlert] = useState(storeUseAlert === null ? false : storeUseAlert)
   const [insertEXIF, setInsertEXIF] = useState(storeInsertEXIF === null ? false : storeInsertEXIF)
-  
-  const [watermarkList, setWatermarkList] = useState(
-    store.get('PANO_SETTING_WATERMARK') || 
-    ['1id', '2position', '3date', '4rname', '5link']
-  )
+  const [watermarkList, setWatermarkList] = useState(store.get('PANO_SETTING_WATERMARK') || ['1id', '2position', '3date', '4rname', '5link'])
   const [imageQuality, setImageQuality] = useState(store.get('PANO_SETTING_IMAGEQUALITY') || '.92')
 
   useEffect(() => {
@@ -37,9 +33,7 @@ export default function Setting() {
           <Switch 
             label="Use alert" 
             checked={useAlert}
-            onChange={() => {
-              setUseAlert(!useAlert)
-            }}
+            onChange={() => setUseAlert(!useAlert)}
           />
         </div>
       </div>
@@ -75,9 +69,7 @@ export default function Setting() {
           <Switch 
             label="Insert"
             checked={insertEXIF}
-            onChange={() => {
-              setInsertEXIF(!insertEXIF)
-            }}
+            onChange={() => setInsertEXIF(!insertEXIF)}
           />
         </div>
       </div>
@@ -97,26 +89,23 @@ export default function Setting() {
               { label: 'Date', value: '3date' },
               { label: 'Road name', value: '4rname' },
               { label: 'Panoda link', value: '5link' },
-            ].map( item => {
-              const { label, value } = item
-              return (
-                <Checkbox
-                  key={value}
-                  label={label}
-                  value={value}
-                  checked={watermarkList.includes(value)}
-                  onChange={({ target: { checked } }: any) => {
-                    let _list = [...watermarkList]
-                    if (checked) {
-                      _list.push(value)
-                    } else {
-                      _list = _list.filter(item => item !== value)
-                    }
-                    setWatermarkList(_list)
-                  }}
-                />
-              )
-            })
+            ].map(({ label, value }) => (
+              <Checkbox
+                key={value}
+                label={label}
+                value={value}
+                checked={watermarkList.includes(value)}
+                onChange={({ target: { checked } }: any) => {
+                  let _list = [...watermarkList]
+                  if (checked) {
+                    _list.push(value)
+                  } else {
+                    _list = _list.filter(item => item !== value)
+                  }
+                  setWatermarkList(_list)
+                }}
+              />
+            ))
           }
         </div>
       </div>
@@ -131,9 +120,7 @@ export default function Setting() {
         <div className="flex-grow bg-gray-100 pt-4 pb-1 pl-4">
           <RadioGroup
             selectedValue={imageQuality}
-            onChange={({ target: { value }}: any) => {
-              setImageQuality(value)
-            }}
+            onChange={({ target: { value } }: any) => setImageQuality(value)}
           >
             <Radio label="High" value=".92" />
             <Radio label="Middle" value=".64" />

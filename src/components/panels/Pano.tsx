@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import { ButtonGroup, Button, Popover, Menu, MenuDivider, MenuItem, Divider } from '@blueprintjs/core'
-
 import { EmptyPano } from '../EmptySkeleton'
 import PanoBar from './PanoBar'
 import PanoCard from './PanoCard'
 import InputIdsDialog from '../overlays/InputIdsDialog'
 import DeleteCheckedPanosAlert from '../overlays/DeleteCheckedPanosAlert'
 import Fetcher from '../overlays/Fetcher'
-
 import { IPano } from '../../ts/type'
 import MAP from '../../ts/map'
 import TOAST from '../overlays/EasyToast'
@@ -99,9 +97,7 @@ export default function Pano(props: PanoProps) {
                 <MenuItem
                   icon="map-create"
                   text="Map"
-                  onClick={() => {
-                    setPanoFrom('map')
-                  }}
+                  onClick={() => setPanoFrom('map')}
                 />
                 <MenuItem
                   icon="text-highlight"
@@ -157,9 +153,7 @@ export default function Pano(props: PanoProps) {
             className="px-4"
             disabled={checkedIds.length === 0}
             intent="danger"
-            onClick={() => {
-              setDeleteDialogOpen(true)
-            }}
+            onClick={() => setDeleteDialogOpen(true)}
           />
         </ButtonGroup>
 
@@ -168,15 +162,15 @@ export default function Pano(props: PanoProps) {
           <Button
             icon="list"
             active={panoView === 'list'}
-            onClick={() => { setPanoView('list') }}
+            onClick={() => setPanoView('list')}
           />
           <Button
             icon="grid-view"
             active={panoView === 'grid'}
-            onClick={() => { setPanoView('grid') }}
+            onClick={() => setPanoView('grid')}
           />
         </ButtonGroup>
-      </div>{/* .pano-top-bar */}
+      </div>
 
       <div 
         className={`pano-wrapper absolute bottom-0 w-full border-t ${
@@ -225,9 +219,7 @@ export default function Pano(props: PanoProps) {
       
       <InputIdsDialog 
         isOpen={inputDialogOpen}
-        onClose={() => {
-          setInputDialogOpen(false)
-        }}
+        onClose={() => setInputDialogOpen(false)}
         setTabId={setTabId}
       />
 
@@ -236,9 +228,7 @@ export default function Pano(props: PanoProps) {
         panos={panos}
         setPanos={setPanos}
         isOpen={deleteDialogOpen}
-        onClose={() => {
-          setDeleteDialogOpen(false)
-        }}
+        onClose={() => setDeleteDialogOpen(false)}
       />
 
       <Fetcher
@@ -247,9 +237,7 @@ export default function Pano(props: PanoProps) {
         fetchResList={fetchResList}
         setFetchResList={setFetchResList}
         isOpen={fetcherDialogOpen}
-        onClose={() => {
-          setFetcherDialogOpen(false)
-        }}
+        onClose={() => setFetcherDialogOpen(false)}
       />
 
     </div>

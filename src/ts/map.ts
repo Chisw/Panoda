@@ -201,7 +201,7 @@ const MAP: MAPState = {
 
     const { panos, setPanos } = MAP.parent
 
-    if ( panos.map( (pano: IPano) => pano.id).includes(id) ) {
+    if (panos.map( (pano: IPano) => pano.id).includes(id) ) {
       TOAST.warning(`Pano ${id} already exist`)
       failed && failed()
     } else {

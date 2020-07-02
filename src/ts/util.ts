@@ -48,7 +48,7 @@ export const getBaseSize = (base64String: string) => {
   base64StringLength = base64String.length
   inBytes = (base64StringLength / 4) * 3 - padding
   const kbytes = inBytes / 1000;
-  if ( kbytes >= 1000 ) {
+  if (kbytes >= 1000) {
     return (kbytes / 1024).toFixed(1) + ' MB';
   } else {
     return kbytes.toFixed(1) + ' KB';

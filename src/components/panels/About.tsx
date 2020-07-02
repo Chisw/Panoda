@@ -104,13 +104,28 @@ export default function About() {
             { label: 'JSZip.js', link: 'https://github.com/Stuk/jszip' },
             { label: 'FileSaver.js', link: 'https://github.com/eligrey/FileSaver.js' },
             { label: 'Piexifjs', link: 'https://github.com/hMatoba/piexifjs' },
-          ].map((a, index) => {
-            return <Tag minimal interactive key={index} intent="primary" className="mr-2" onClick={() => { window.open(a.link) }} >{a.label}</Tag>
-          })
+          ].map(({ label, link }, index) => (
+            <a
+              key={index}
+              href={link}
+              target="_blank"
+              rel="noreferrer"
+              className="no-underline"
+            >
+              <Tag
+                minimal
+                interactive
+                intent="primary"
+                className="mr-2"
+              >
+                {label}
+              </Tag>
+            </a>
+          ))
         }
       </div>
 
-      <p className="absolute bottom-0 w-full py-4 text-xs text-gray-600 border-t bg-white">
+      <p className="absolute bottom-0 w-full py-4 text-xs text-gray-600 border-t bg-white font-mono">
         Panoda - http://p.jsw.im          
         <span className="float-right text-blue-500 cursor-pointer" onClick={() => { window.open('//jisuowei.com') }}>© jisuowei.com</span>
       </p>
