@@ -268,7 +268,7 @@ export default function Fetcher(props: FetcherProps) {
                             const panodaFolder = zip.folder(name)
 
                             fetchResList.forEach( (res, index) => {
-                              panodaFolder
+                              panodaFolder!
                                 .file(
                                   `PANODA_${checkedIds[index]}.jpg`, 
                                   res.replace('data:image/jpeg;base64,', ''), 
