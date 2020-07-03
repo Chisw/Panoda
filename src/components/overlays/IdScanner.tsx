@@ -27,11 +27,11 @@ export default function IdScanner(props: IdScannerProps) {
 
   const { lng, lat } = areaCenter
 
-  const lvOffset       = LEVEL_OFFSETS[zoomLevel]
+  const lvOffset = LEVEL_OFFSETS[zoomLevel]
   const lvOffsetCenter = lvOffset * 2.5
 
-  const topLeftLng     = lng - lvOffsetCenter
-  const topLeftLat     = lat + lvOffsetCenter
+  const topLeftLng = lng - lvOffsetCenter
+  const topLeftLat = lat + lvOffsetCenter
   
   const [closeConfirm, setCloseConfirm] = useState(false)
 
@@ -61,7 +61,7 @@ export default function IdScanner(props: IdScannerProps) {
       for (let col = 0, lon = 6; col < lon; col++) {
         points.push({
           lng: topLeftLng + lvOffset * row,
-          lat: topLeftLat - lvOffset * col
+          lat: topLeftLat - lvOffset * col,
         })
       }
     }
@@ -200,7 +200,7 @@ export default function IdScanner(props: IdScannerProps) {
           background: 'rgba(0,0,0, .8)',
           right: '50%',
           marginRight: -200,
-          minWidth: 800
+          minWidth: 800,
         }}
         isOpen={isOpen}
         canOutsideClickClose={false}
@@ -208,51 +208,40 @@ export default function IdScanner(props: IdScannerProps) {
           style: {
             background: 'rgba(0,0,0, .2)',
             cursor: 'not-allowed',
-          }
+          },
         }}
       >
-        <div 
-          className="absolute top-0 right-0 bottom-0 left-0 text-green-code font-mono text-xs"
-        >
+        <div className="absolute top-0 right-0 bottom-0 left-0 text-green-code font-mono text-xs">
           <h3 className="px-5 py-3">
             <span>Scanner</span>
             <span className="float-right">
-              {
-                closeConfirm
-                  ? (
-                    <span>
-                      <span>Are you sure to close?</span>
-                      <CodeButton
-                        className="mx-2"
-                        content="Yes"
-                        onClick={() => {
-                          MAP.parent.scannerRunning = false
-                          onClose()
-                          setCloseConfirm(false)
-                        }}
-                      />
-                      <CodeButton
-                        content="No"
-                        onClick={
-                          () => {
-                            setCloseConfirm(false)
-                          }
-                        }
-                      />
-                    </span>
-
-                  )
-                  : (
-                    <CodeButton 
-                      content = "Close"
-                      onClick = {
-                        () => {
-                          setCloseConfirm(true)
-                        }
+              {closeConfirm ? (
+                <span>
+                  <span>Are you sure to close?</span>
+                  <CodeButton
+                    className="mx-2"
+                    content="Yes"
+                    onClick={() => {
+                      MAP.parent.scannerRunning = false
+                      onClose()
+                      setCloseConfirm(false)
+                    }}
+                  />
+                  <CodeButton
+                    content="No"
+                    onClick={
+                      () => {
+                        setCloseConfirm(false)
                       }
-                    />
-                  )
-              }
+                    }
+                  />
+                </span>
+              ) : (
+                <CodeButton 
+                  content="Close"
+                  onClick={() => setCloseConfirm(true)}
+                />
+              )}
             </span>
           </h3>
 
@@ -263,7 +252,7 @@ export default function IdScanner(props: IdScannerProps) {
               top: 40,
               right: 20,
               bottom: 20,
-              left: 20
+              left: 20,
             }}
           >
             <div>

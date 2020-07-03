@@ -21,17 +21,13 @@ export default function DeleteCheckedPanosAlert(props: DeleteCheckedPanosAlertPr
       icon="trash"
       intent="danger"
       isOpen={isOpen}
-      onClose={() => {
-        onClose()
-      }}
+      onClose={onClose}
       cancelButtonText="Cancel"
       confirmButtonText="Yes"
       onConfirm={() => {
         const _panos: IPano[] = []
         panos.forEach(pano => {
-          if ( !checkedIds.includes(pano.id) ) {
-            _panos.push(pano)
-          }
+          if (!checkedIds.includes(pano.id)) _panos.push(pano)
         })
         setPanos(_panos)
         MAP.clear()

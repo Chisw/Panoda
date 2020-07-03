@@ -1,6 +1,6 @@
 import { Toaster, IconName, Intent, IActionProps } from '@blueprintjs/core'
 
-const toaster = Toaster.create({ position: 'top-left'})
+const toaster = Toaster.create({ position: 'top-left' })
 
 const TOAST = {
 
@@ -53,7 +53,6 @@ const TOAST = {
       action,
     )
   },
-
 
 }
 

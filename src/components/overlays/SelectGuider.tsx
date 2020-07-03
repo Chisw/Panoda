@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { ButtonGroup, Button, Tooltip, Tag, Spinner } from '@blueprintjs/core'
 import IdScanner from './IdScanner'
-
 import MAP from '../../ts/map'
 import TOAST from './EasyToast'
 import { IPoint } from '../../ts/type'
@@ -45,8 +44,7 @@ export default function SelectGuider(props: SelectGuiderProps) {
       {/* point */}
       <div
         className={`guider-top w-full h-8 rounded bg-white overflow-hidden
-          ${isPoint && otherLen  ? ' expand' : ''}`
-        }
+          ${isPoint && otherLen  ? ' expand' : ''}`}
       >
         <div className="px-1 w-full h-full flex items-center">
           <div className="text-xs font-mono flex items-center flex-grow leading-none">
@@ -68,7 +66,7 @@ export default function SelectGuider(props: SelectGuiderProps) {
             }}
           >
             <span className="inline-block w-10 text-center">
-              { loading ? <Spinner size={0}/> : <span>Import</span> }
+              {loading ? <Spinner size={0}/> : <span>Import</span>}
             </span>
           </Tag>
         </div>
@@ -78,15 +76,14 @@ export default function SelectGuider(props: SelectGuiderProps) {
       {/* area */}
       <div
         className={`guider-top w-full h-8 rounded bg-white overflow-hidden
-          ${isArea ? ' expand' : ''}`
-        }
+          ${isArea ? ' expand' : ''}`}
       >
         <div className="px-1 w-full h-full flex items-center">
           <div className="text-xs font-mono flex items-center flex-grow leading-none">
             <p className="text-gray-500 text-right">
               Area<br/>Center
             </p>
-            <p className="mx-2" style={{minWidth: 128}}>
+            <p className="mx-2" style={{ minWidth: 128 }}>
               {areaCenter.lng}<br />{areaCenter.lat}
             </p>
             <p className="text-gray-500 text-right ml-1">
@@ -122,18 +119,14 @@ export default function SelectGuider(props: SelectGuiderProps) {
         <Tooltip content="Locate your position" position="left">
           <Button
             icon="locate"
-            onClick={() => {
-              MAP.locate()
-            }}
+            onClick={() => MAP.locate()}
           />
         </Tooltip>
         <Button
           className="px-8"
           icon="map-marker"
           active={selectWith === 'point'}
-          onClick={() => {
-            setSelectWith('point')
-          }}
+          onClick={() => setSelectWith('point')}
         >
           Point
         </Button>
@@ -141,9 +134,7 @@ export default function SelectGuider(props: SelectGuiderProps) {
           className="px-8"
           icon="widget"
           active={selectWith === 'area'}
-          onClick={() => {
-            setSelectWith('area')
-          }}
+          onClick={() => setSelectWith('area')}
         >
           Area
         </Button>
@@ -151,9 +142,7 @@ export default function SelectGuider(props: SelectGuiderProps) {
           <Button
             icon="cross"
             intent="danger"
-            onClick={() => {
-              setPanoFrom('')
-            }}
+            onClick={() => setPanoFrom('')}
           >
           </Button>
         </Tooltip>
@@ -161,7 +150,7 @@ export default function SelectGuider(props: SelectGuiderProps) {
 
       <IdScanner
         isOpen={drawerOpen}
-        onClose={() => {setDrawerOpen(false)}}
+        onClose={() => setDrawerOpen(false)}
         areaCenter={areaCenter}
         zoomLevel={zoomLevel}
       />

@@ -32,14 +32,12 @@ export default function Fetcher(props: FetcherProps) {
   const [allSize, setAllSize] = useState('-- MB')
 
   useEffect(() => {
-    if (isOpen) {
-      setStartTime(new Date().getTime())
-    }
+    isOpen && setStartTime(Date.now())
   }, [isOpen])
 
   // init
   useEffect(() => {
-    if ( isOpen ) {
+    if (isOpen) {
       setTimeout(() => {
         setFetching(true)
         fillTiles(checkedIds[currentIndex])
@@ -50,7 +48,7 @@ export default function Fetcher(props: FetcherProps) {
 
   // show res
   useEffect(() => {
-    if (currentIndex === checkedIds.length ) {
+    if (currentIndex === checkedIds.length) {
       setTimeout(() => {
         setAllSize(getBaseSize(fetchResList.join('')) as string)
         setFetching(false)
@@ -62,7 +60,7 @@ export default function Fetcher(props: FetcherProps) {
   // generate pano
   const fillTiles = (id: string) => {
 
-    if ( !id ) return
+    if (!id) return
 
     let tiles: any = []
     for (let row = 0, rows = 4; row < rows; row++) {
@@ -70,8 +68,8 @@ export default function Fetcher(props: FetcherProps) {
         tiles.push({
           src: getPanoTileSrc(id, row, col),
           row,
-          col
-        });
+          col,
+        })
       }
     }
 
@@ -82,7 +80,7 @@ export default function Fetcher(props: FetcherProps) {
     const canvas = document.getElementById('fetcher-canvas')
     const ctx = (canvas as any).getContext('2d')
 
-    let handleTimes = 0;
+    let handleTimes = 0
 
     const _recursion = () => {
 
@@ -122,7 +120,7 @@ export default function Fetcher(props: FetcherProps) {
           ctx!.drawImage(img, 512 * col, 512 * row, 512, 512);
         })
 
-        const pano = panos.find( pano => pano.id === id )
+        const pano = panos.find(pano => pano.id === id )
 
         fillWatermark(ctx, pano!)
 
@@ -130,6 +128,7 @@ export default function Fetcher(props: FetcherProps) {
           'image/jpeg',
           +store.get('PANO_SETTING_IMAGEQUALITY')
         )
+
         const _fetchResList = [...fetchResList]
         _fetchResList.push(
           store.get('PANO_SETTING_INSERTEXIF')
@@ -172,9 +171,7 @@ export default function Fetcher(props: FetcherProps) {
         intent="danger"
         isOpen={confirmAlertOpen}
         cancelButtonText="Cancel"
-        onCancel={() => {
-          setConfirmAlertOpen(false)
-        }}
+        onCancel={() => setConfirmAlertOpen(false)}
         confirmButtonText="Sure"
         onConfirm={() => {
           handleClose()
@@ -197,7 +194,7 @@ export default function Fetcher(props: FetcherProps) {
         className="bg-white"
         style={{ width: 512 }}
         onClose={() => {
-          if ( store.get('PANO_SETTING_USEALERT')) {
+          if (store.get('PANO_SETTING_USEALERT')) {
             setConfirmAlertOpen(true)
           } else {
             handleClose()
@@ -205,123 +202,113 @@ export default function Fetcher(props: FetcherProps) {
         }}
       >
         <div className="fetcher-container w-full">
-          {
-            fetching && ( fetchResList.length !== checkedIds.length )
-              ? (  // process
-                <>
-                  <div className="fetcher-canvas-container relative w-full overflow-hidden text-none">
-                    <TableGrid />
-                    <div
-                      id="fetcher-pool"
-                      className="relative z-10"
-                      style={{ width: 512, height: 256 }}
-                    />
-                  </div>
+          {fetching && ( fetchResList.length !== checkedIds.length ) ? (  // process
+            <>
+              <div className="fetcher-canvas-container relative w-full overflow-hidden text-none">
+                <TableGrid />
+                <div
+                  id="fetcher-pool"
+                  className="relative z-10"
+                  style={{ width: 512, height: 256 }}
+                />
+              </div>
 
-                  <div className="px-8 py-4">
-                    <p className="mt-4 mb-2 text-xs text-gray-600 font-mono">
-                      Current: {checkedIds[currentIndex]}
-                      <span className="float-right">[{tileIndex}/32]</span>
-                    </p>
-                    <ProgressBar value={tileIndex / 32} intent="success" animate={fetching} />
+              <div className="px-8 py-4">
+                <p className="mt-4 mb-2 text-xs text-gray-600 font-mono">
+                  Current: {checkedIds[currentIndex]}
+                  <span className="float-right">[{tileIndex}/32]</span>
+                </p>
+                <ProgressBar value={tileIndex / 32} intent="success" animate={fetching} />
 
-                    <p className="mt-4 mb-2 text-xs text-gray-600 font-mono">
-                      Total:
-                      <span className="float-right">[{currentIndex}/{checkedIds.length}]</span>
-                    </p>
-                    <ProgressBar 
-                      value={(currentIndex * 32 + tileIndex ) / (checkedIds.length * 32)} 
-                      intent="success" 
-                      animate={fetching} 
-                    />
+                <p className="mt-4 mb-2 text-xs text-gray-600 font-mono">
+                  Total:
+                  <span className="float-right">[{currentIndex}/{checkedIds.length}]</span>
+                </p>
+                <ProgressBar 
+                  value={(currentIndex * 32 + tileIndex ) / (checkedIds.length * 32)} 
+                  intent="success" 
+                  animate={fetching} 
+                />
 
-                    <p className="mt-4 mb-2 text-xs text-gray-600 font-mono">
-                      Rest:
-                      <span className="float-right">
-                        {(restSeconds).toFixed(1)}s{restSeconds > 60 ? ', about ' + (restSeconds / 60).toFixed(0) + 'min' : ''}
-                      </span>
-                    </p>
-                  </div>
-                </>
-              )
-              : (  // result
-                <div className="p-4 pb-0 font-mono">
-                  <Callout
-                    icon="tick"
+                <p className="mt-4 mb-2 text-xs text-gray-600 font-mono">
+                  Rest:
+                  <span className="float-right">
+                    {(restSeconds).toFixed(1)}s{restSeconds > 60 ? ', about ' + (restSeconds / 60).toFixed(0) + 'min' : ''}
+                  </span>
+                </p>
+              </div>
+            </>
+          ) : (  // result
+            <div className="p-4 pb-0 font-mono">
+              <Callout
+                icon="tick"
+                intent="success"
+                title="Fetching completed!"
+                className="mb-4"
+              >
+                <div className="text-right">
+                  <Button
+                    loading={downloading}
+                    disabled={downloading}
+                    icon="compressed"
                     intent="success"
-                    title="Fetching completed!"
-                    className="mb-4"
+                    onClick={() => {
+                      setDownloading(true)
+                      setTimeout(() => {
+                        const name = 'Panoda_' + getDateStamp()
+                        const zip = new JSZip()
+                        const currDate = new Date()
+                        const dateWithOffset = new Date(currDate.getTime() - currDate.getTimezoneOffset() * 60000)
+                        const panodaFolder = zip.folder(name)
+
+                        fetchResList.forEach((res, index) => {
+                          panodaFolder!
+                            .file(
+                              `PANODA_${checkedIds[index]}.jpg`, 
+                              res.replace('data:image/jpeg;base64,', ''), 
+                              { base64: true, date: dateWithOffset }
+                            )
+                        })
+
+                        zip
+                          .generateAsync({ type: 'blob' })
+                          .then(content => saveAs(content, name + '.zip'))
+
+                        setTimeout(() => {
+                          setDownloading(false)
+                        }, 1000)
+
+                      }, 50)
+                    }}
                   >
-                    <div className="text-right">
-                      <Button
-                        loading={downloading}
-                        disabled={downloading}
-                        icon="compressed"
-                        intent="success"
-                        onClick={() => {
-                          setDownloading(true)
-                          setTimeout(() => {
-                            const name = 'Panoda_' + getDateStamp()
-                            const zip = new JSZip()
-                            const currDate = new Date()
-                            const dateWithOffset = new Date(currDate.getTime() - currDate.getTimezoneOffset() * 60000)
-                            const panodaFolder = zip.folder(name)
-
-                            fetchResList.forEach( (res, index) => {
-                              panodaFolder!
-                                .file(
-                                  `PANODA_${checkedIds[index]}.jpg`, 
-                                  res.replace('data:image/jpeg;base64,', ''), 
-                                  { base64: true, date: dateWithOffset })
-                            })
-
-                            zip
-                              .generateAsync({ type: 'blob' })
-                              .then(function (content) {
-                                saveAs(content, name + '.zip');
-                              })
-
-                            setTimeout(() => {
-                              setDownloading(false)
-                            }, 1000)
-
-                          }, 50)
-                        }}
-                      >
-                        Download All ({allSize})
-                      </Button>
-                    </div>
-                  </Callout>
-                  {
-                    checkedIds.map( (id, index) => {
-                      const data = fetchResList[index]
-                      return (
-                        <div className="my-1 p-2 rounded flex hover:bg-gray-100" key={index}>
-                          <div className="text-gray-500">{(index + 1) + '.'}</div>
-                          <div>
-                            {id}
-                          </div>
-                          <div className="flex-grow text-right">
-                            <span className="mr-4 text-gray-500">
-                              {getBaseSize(data)}
-                            </span>
-                            <Tag 
-                              minimal
-                              interactive
-                              intent="success"
-                              onClick={() => {
-                                FileSaver.saveAs(data, `PANODA_${id}.jpg`)
-                              }}
-                            >
-                              Download
-                            </Tag>
-                          </div>
-                        </div>
-                      )
-                    })
-                  }
+                    Download All ({allSize})
+                  </Button>
                 </div>
-              )
+              </Callout>
+              {checkedIds.map((id, index) => {
+                const data = fetchResList[index]
+                return (
+                  <div className="my-1 p-2 rounded flex hover:bg-gray-100" key={index}>
+                    <div className="text-gray-500">{(index + 1) + '.'}</div>
+                    <div>{id}</div>
+                    <div className="flex-grow text-right">
+                      <span className="mr-4 text-gray-500">
+                        {getBaseSize(data)}
+                      </span>
+                      <Tag 
+                        minimal
+                        interactive
+                        intent="success"
+                        onClick={() => FileSaver.saveAs(data, `PANODA_${id}.jpg`)}
+                      >
+                        Download
+                      </Tag>
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
+          )
           }
           <canvas id="fetcher-canvas" width="4096" height="2048" className="hidden"></canvas>
         </div>

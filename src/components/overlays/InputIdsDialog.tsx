@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import { Dialog, TextArea, Button, Classes, Tooltip } from '@blueprintjs/core'
-
 import { PANO_ID_REG } from '../../ts/constant'
 import MAP from '../../ts/map'
 import TOAST from './EasyToast'
@@ -27,7 +26,7 @@ export default function InputIdsDialog(props: InputIdsDialogProps) {
         .filter(id => id !== '')
 
     let err: boolean = false
-    idList.forEach( id => {
+    idList.forEach(id => {
       if ( !PANO_ID_REG.test(id) ) err = true
     })
 
@@ -37,11 +36,7 @@ export default function InputIdsDialog(props: InputIdsDialogProps) {
       const _idList = 
         idList
           .filter(id => id !== '')
-          .map(id => {
-            return !PANO_ID_REG.test(id)
-              ? `!!> ${id} <!!`
-              : id
-          })
+          .map(id => !PANO_ID_REG.test(id) ? `!!> ${id} <!!` : id)
 
       setInputIds(_idList.join(',\n'))
       return
@@ -73,10 +68,8 @@ export default function InputIdsDialog(props: InputIdsDialogProps) {
           style={{ height: '8rem', resize: 'none' }}
           intent="primary"
           placeholder="Paste pano id(s) here, separate values by commas"
-          onChange={(value: any) => { 
-            setInputIds(value.target.value) 
-          }}
           value={inputIds}
+          onChange={(value: any) => setInputIds(value.target.value)}
         />
       </div>
       <div className={Classes.DIALOG_FOOTER}>
@@ -94,7 +87,7 @@ export default function InputIdsDialog(props: InputIdsDialogProps) {
           <Tooltip content="Search and then import history panos by current ids" position="bottom">
             <Button
               disabled={inputIds.length === 0}
-              onClick={() => { importPanos(true) }}
+              onClick={() => importPanos(true)}
             >
               Import history
             </Button>
@@ -102,7 +95,7 @@ export default function InputIdsDialog(props: InputIdsDialogProps) {
           <Button 
             intent="primary" 
             disabled={inputIds.length === 0}
-            onClick={() => { importPanos() }}
+            onClick={() => importPanos()}
           >
             Import
           </Button>
