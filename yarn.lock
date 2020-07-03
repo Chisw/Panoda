@@ -9112,6 +9112,11 @@ picomatch@^2.0.4, picomatch@^2.0.5, picomatch@^2.2.1, picomatch@^2.2.2:
   resolved "https://registry.yarnpkg.com/picomatch/-/picomatch-2.2.2.tgz#21f333e9b6b8eaff02468f5146ea406d345f4dad"
   integrity sha512-q0M/9eZHzmr0AulXyPwNfZjtwZ/RBZlbN3K3CErVrk50T2ASYI7Bye0EvekFY3IP1Nt2DHu0re+V2ZHIpMkuWg==
 
+piexif-ts@^2.0.16:
+  version "2.0.16"
+  resolved "https://registry.yarnpkg.com/piexif-ts/-/piexif-ts-2.0.16.tgz#b49313811f099d617e7e5ea42741e3eed9fb58ab"
+  integrity sha512-D32ISpv1CwGYVMLk4Zm/+793DhOj2JuMMpyJRA2/b096XDDWhpAsB901ckXkP4m4cBnI5t6novtOwruwlNVxaA==
+
 pify@^2.0.0:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/pify/-/pify-2.3.0.tgz#ed141a6ac043a849ea588498e7dca8b15330e90c"

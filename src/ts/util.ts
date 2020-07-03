@@ -2,6 +2,7 @@ import { DateTime } from 'luxon'
 import { pick, values } from 'lodash'
 import { IPano } from './type'
 import store from './store'
+import { TagValues, GPSHelper, insert as piexifInsert, dump as piexifDump } from 'piexif-ts'
 
 // getPreviewSrc
 export const getPreviewSrc = (id: string) => {
@@ -56,29 +57,28 @@ export const getBaseSize = (base64String: string) => {
 }
 
 // getExifedBase64
-const piexif = (window as any).piexif
 export const getExifedBase64 = (base64: string, pano: IPano) => {
   const { id, lng, lat, date, rname } = pano
 
   const exifObj = {
     "0th": {
-      [piexif.ImageIFD.Artist]: 'map.baidu.com',
-      [piexif.ImageIFD.Software]: 'Panoda - panoda.jisuowei.com',
-      [piexif.ImageIFD.DateTime]: getDateStamp('', 'yyyy/MM/dd hh:mm:ss'),
-      [piexif.ImageIFD.ImageDescription]: id + '-' + encodeURIComponent(rname),
+      [TagValues.ImageIFD.Artist]: 'map.baidu.com',
+      [TagValues.ImageIFD.Software]: 'Panoda - panoda.jisuowei.com',
+      [TagValues.ImageIFD.DateTime]: getDateStamp('', 'yyyy/MM/dd hh:mm:ss'),
+      [TagValues.ImageIFD.ImageDescription]: id + '-' + encodeURIComponent(rname),
     },
     "Exif": {
-      [piexif.ExifIFD.DateTimeOriginal]: date,
+      [TagValues.ExifIFD.DateTimeOriginal]: date,
     },
     "GPS": {
-      [piexif.GPSIFD.GPSLongitudeRef]: lng < 0 ? 'W' : 'E',
-      [piexif.GPSIFD.GPSLongitude]: piexif.GPSHelper.degToDmsRational(lng),
-      [piexif.GPSIFD.GPSLatitudeRef]: lat < 0 ? 'S' : 'N',
-      [piexif.GPSIFD.GPSLatitude]: piexif.GPSHelper.degToDmsRational(lat),
+      [TagValues.GPSIFD.GPSLongitudeRef]: lng < 0 ? 'W' : 'E',
+      [TagValues.GPSIFD.GPSLongitude]: GPSHelper.degToDmsRational(lng),
+      [TagValues.GPSIFD.GPSLatitudeRef]: lat < 0 ? 'S' : 'N',
+      [TagValues.GPSIFD.GPSLatitude]: GPSHelper.degToDmsRational(lat),
     }
   }
 
-  return piexif.insert(piexif.dump(exifObj), base64)
+  return piexifInsert(piexifDump(exifObj), base64)
 }
 
 // fillWatermark
