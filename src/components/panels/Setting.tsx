@@ -1,17 +1,23 @@
 import React, { useState, useEffect } from 'react'
 import { Switch, Popover, RadioGroup, Radio, Checkbox, InputGroup, Button } from '@blueprintjs/core'
+import { DateRangeInput } from '@blueprintjs/datetime'
 import store from '../../ts/store'
 import MAP from '../../ts/map'
+import { DateTime } from 'luxon'
 
 export default function Setting() {
 
   const storeCenterPoint = store.get('PANO_SETTING_CENTERPOINT') || ''
+  const storeStartDate = store.get('PANO_SETTING_STARTDATE')
+  const storeEndDate = store.get('PANO_SETTING_ENDDATE')
   const storeUseAlert = store.get('PANO_SETTING_USEALERT')
   const storeInsertEXIF = store.get('PANO_SETTING_INSERTEXIF')
   const storeWaterMark = store.get('PANO_SETTING_WATERMARK') || ['1id', '2position', '3date', '4rname', '5link']
   const storeImageQuality = store.get('PANO_SETTING_IMAGEQUALITY') || '.92'
 
   const [centerPoint, setCenterPoint] = useState(storeCenterPoint)
+  const [startDate, setStartDate] = useState<Date | null>(storeStartDate ? new Date(storeStartDate) : null)
+  const [endDate, setEndDate] = useState<Date | null>(storeEndDate ? new Date(storeEndDate) : null)
   const [useAlert, setUseAlert] = useState(storeUseAlert === null ? false : storeUseAlert)
   const [insertEXIF, setInsertEXIF] = useState(storeInsertEXIF === null ? false : storeInsertEXIF)
   const [watermarkList, setWatermarkList] = useState(storeWaterMark)
@@ -19,11 +25,13 @@ export default function Setting() {
 
   useEffect(() => {
     store.set('PANO_SETTING_CENTERPOINT', centerPoint)
+    store.set('PANO_SETTING_STARTDATE', startDate)
+    store.set('PANO_SETTING_ENDDATE', endDate)
     store.set('PANO_SETTING_USEALERT', useAlert)
     store.set('PANO_SETTING_INSERTEXIF', insertEXIF)
     store.set('PANO_SETTING_WATERMARK', watermarkList)
     store.set('PANO_SETTING_IMAGEQUALITY', imageQuality)
-  }, [centerPoint, useAlert, insertEXIF, watermarkList, imageQuality])
+  }, [centerPoint, startDate, endDate, useAlert, insertEXIF, watermarkList, imageQuality])
 
   const handleSet = () => {
     const center = MAP.getCenter()
@@ -44,13 +52,50 @@ export default function Setting() {
           <InputGroup
             readOnly
             className="w-72"
-            placeholder="No point remembered"
+            placeholder="No point set"
             value={centerPoint}
           />
           <div className="my-2">
             <Button small intent="primary" onClick={handleSet}>Set</Button>
             <Button small className="ml-2" disabled={!centerPoint} onClick={() => setCenterPoint('')}>Clear</Button>
           </div>
+        </div>
+      </div>
+
+      <div className="flex border-b">
+        <div className="setting-left pt-4 pr-2">
+          <p className="text-base text-gray-800 font-light">Date range limit</p>
+          <p className="text-sm text-gray-500 mt-2 leading-snug">
+            Limit the date range for importing panos.
+          </p>
+        </div>
+        <div className="flex-grow bg-gray-100 pt-4 pb-1 px-4">
+          <div className="mb-2">Start and end date</div>
+          <DateRangeInput
+            reverseMonthAndYearMenus
+            shortcuts={false}
+            startInputProps={{
+              leftIcon: 'calendar',
+              rightElement: (
+                startDate ? <Button minimal icon="cross" onClick={() => setStartDate(null)} /> : undefined
+              )
+            }}
+            endInputProps={{
+              leftIcon: 'calendar',
+              rightElement: (
+                endDate ? <Button minimal icon="cross" onClick={() => setEndDate(null)} /> : undefined
+              )
+            }}
+            formatDate={(date: Date) => DateTime.fromJSDate(date).toFormat('yyyy/MM/dd')}
+            parseDate={(str: string) => str ? DateTime.fromFormat(str, 'yyyy/MM/dd').toJSDate() : null}
+            minDate={new Date('2012-01-01T00:00:00.000Z')}
+            value={[startDate, endDate]}
+            onChange={range => {
+              const [start, end] = range
+              setStartDate(start)
+              setEndDate(end)
+            }}
+          />
         </div>
       </div>
 

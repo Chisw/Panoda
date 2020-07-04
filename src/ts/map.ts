@@ -6,6 +6,7 @@ import { IPano, IPoint } from './type'
 import { getDateStamp } from "./util"
 import TOAST from "../components/overlays/EasyToast"
 import store from './store'
+import { DateTime } from 'luxon'
 
 const G = window as any
 const BMap = G.BMap
@@ -44,7 +45,7 @@ interface IMAP {
     end: () => void
   ): void
   importPanosByIdList(list: string[], end?: () => void): void
-  importHistoryPanosByIdList(list: string[], end?: () => void): void
+  importSelfExcludePanosByIdList(list: string[], end?: () => void): void
   markPoints(points: IPoint[]): void
   setAreaSelector(event: any): void
 }
@@ -60,7 +61,7 @@ const MAP: IMAP = {
     
     map = new BMap.Map('map', {enableMapClick: false})
     
-    map.centerAndZoom(new BMap.Point(lng, lat), 12)
+    map.centerAndZoom(new BMap.Point(lng, lat), 13)
     map.enableScrollWheelZoom(true)
     map.setMinZoom(5)
 
@@ -164,7 +165,7 @@ const MAP: IMAP = {
       if (data !== null) {
         MAP.getPanoInfoByIdAndAppendDom(
           data.id,
-          (data) => {
+          data => {
             const { position: { lng, lat } } = data
             const p = new BMap.Point(lng, lat)
             const marker = MAP.getPinMarker(p)
@@ -176,17 +177,15 @@ const MAP: IMAP = {
               Object.values(data.roads).forEach((road: any) => {
                 list = list.concat(road.map((node: any) => node.id))
               })
-              list = list.filter( item => item !== data.id)
+              list = list.filter(id => id !== data.id)
               MAP.parent.setSameRoadPanos(list)
             }
 
             MAP.parent.setLoading(false)
             TOAST.success(`Get pano successfully`)
           },
-          (id) => {
-            if ( id ) {
-              TOAST.warning(`Get pano ${id} info failed`)
-            }
+          id => {
+            id && TOAST.warning(`Get pano ${id} info failed`)
             MAP.parent.setLoading(false)
           }
         )
@@ -195,14 +194,14 @@ const MAP: IMAP = {
         MAP.parent.setSameRoadPanos([])
         TOAST.danger('No point matched, try again')
       }
-    });
+    })
   },
 
   getPanoramaByPoint(point, cb) {
     const { lng, lat } = point
     PANO_SERVER.getPanoramaByLocation(new BMap.Point(lng, lat), (data: any) => {
       cb(data)
-    });
+    })
   },
 
   getPanoInfoByIdAndAppendDom(id, success, failed) {
@@ -214,8 +213,8 @@ const MAP: IMAP = {
 
     const { panos, setPanos } = MAP.parent
 
-    if (panos.map( (pano: IPano) => pano.id).includes(id) ) {
-      TOAST.warning(`Pano ${id} already exist`)
+    if (panos.map((pano: IPano) => pano.id).includes(id)) {
+      TOAST.warning(`Pano ${id} already existed`)
       failed && failed()
     } else {
       PANO_SERVER.getPanoramaById(id, (data: any) => {
@@ -233,9 +232,26 @@ const MAP: IMAP = {
             }
           } = data
 
-          panos.unshift({ id, lng, lat, date: getDateStamp(photoDate), rname: roadName || 'Unnamed Road' })
-          const _panos = [...panos]
-          setPanos(_panos)
+          const start = store.get('PANO_SETTING_STARTDATE')
+          const startDate = start ? new Date(start) : null
+          const startDateStr = startDate ? DateTime.fromJSDate(startDate).toFormat('yyyy/MM/dd') : ''
+
+          const end = store.get('PANO_SETTING_ENDDATE')
+          const endDate = end ? new Date(end) : null
+          const endDateStr = endDate ? DateTime.fromJSDate(endDate).toFormat('yyyy/MM/dd') : ''
+          
+          const current = DateTime.fromFormat(photoDate, 'yyyyMMdd')
+          const currentDate = current.toJSDate()
+          const currentDateStr = current.toFormat('yyyy/MM/dd')
+
+          if (startDate && (currentDate < startDate)) {
+            TOAST.warning(`Import pano ${id} failed, the date [${currentDateStr}] is earlier than StartDate[${startDateStr}] set in DateRangeLimit.`)
+          } else if (endDate && (currentDate > endDate)) {
+            TOAST.warning(`Import pano ${id} failed, the date [${currentDateStr}] is later than EndDate[${endDateStr}] set in DateRangeLimit.`)
+          } else {
+            panos.unshift({ id, lng, lat, date: getDateStamp(photoDate), rname: roadName || 'Unnamed Road' })
+            setPanos([...panos])
+          }
 
           success && success(data)
         } else {
@@ -294,10 +310,8 @@ const MAP: IMAP = {
           MAP.getPanoInfoByIdAndAppendDom(
             list.shift() || '',
             _recursion,
-            (id) => {
-              if (id) {
-                TOAST.warning(`Get ${id} info failed`)
-              }
+            id => {
+              if (id) TOAST.warning(`Get ${id} info failed`)
               _recursion()
             }
           )
@@ -311,7 +325,7 @@ const MAP: IMAP = {
     _recursion()
   },
 
-  importHistoryPanosByIdList(list, end) {
+  importSelfExcludePanosByIdList(list, end) {
     MAP.parent.setLoading(true)
     let historyIds: string[] = []
     const _recursion = () => {

@@ -5,6 +5,7 @@
   "dependencies": {
     "@babel/core": "7.10.4",
     "@blueprintjs/core": "^3.29.0",
+    "@blueprintjs/datetime": "^3.18.3",
     "@svgr/webpack": "5.4.0",
     "@types/file-saver": "^2.0.1",
     "@types/jest": "26.0.3",

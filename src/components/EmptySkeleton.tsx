@@ -6,7 +6,7 @@ export function EmptyPano() {
     <NonIdealState
       icon="path-search"
       title="No Pano Here"
-      description="Create pano by clicking 'Add' button above"
+      description="Create pano by clicking 'Import' button above"
     />
   )
 }

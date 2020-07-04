@@ -17,7 +17,7 @@ export default function InputIdsDialog(props: InputIdsDialogProps) {
 
   const [inputIds, setInputIds] = useState('')
 
-  const importPanos = (isHistory?: boolean) => {
+  const importPanos = (isSelfExclude?: boolean) => {
 
     const idList = 
       inputIds
@@ -45,14 +45,14 @@ export default function InputIdsDialog(props: InputIdsDialogProps) {
     setInputIds('')
     onClose()
 
-    isHistory
-      ? MAP.importHistoryPanosByIdList(uniq(idList))
+    isSelfExclude
+      ? MAP.importSelfExcludePanosByIdList(uniq(idList))
       : MAP.importPanosByIdList(uniq(idList))
   }
 
   return (
     <Dialog
-      title="Add"
+      title="Import from input"
       icon="text-highlight"
       canEscapeKeyClose={false}
       canOutsideClickClose={false}
@@ -84,12 +84,12 @@ export default function InputIdsDialog(props: InputIdsDialogProps) {
           >
             How to get pano id(s)?
           </Button>
-          <Tooltip content="Search and then import history panos by current ids" position="bottom">
+          <Tooltip content="Get other panos at the same position based on each id" position="bottom">
             <Button
               disabled={inputIds.length === 0}
               onClick={() => importPanos(true)}
             >
-              Import history
+              Import other
             </Button>
           </Tooltip>
           <Button 

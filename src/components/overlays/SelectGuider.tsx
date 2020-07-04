@@ -56,14 +56,7 @@ export default function SelectGuider(props: SelectGuiderProps) {
             minimal={loading}
             className="text-xs"
             intent="primary"
-            onClick={() => {
-              MAP.importPanosByIdList(
-                sameRoadPanos,
-                () => {
-                  setSameRoadPanos([])
-                }
-              )
-            }}
+            onClick={() => MAP.importPanosByIdList(sameRoadPanos, () => setSameRoadPanos([]))}
           >
             <span className="inline-block w-10 text-center">
               {loading ? <Spinner size={0}/> : <span>Import</span>}

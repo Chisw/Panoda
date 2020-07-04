@@ -75,12 +75,10 @@ export default function Pano(props: PanoProps) {
               )
             }}
           />
-          <Button style={{ minWidth: 80, background: '#fff' }} className="text-xs">
-            {checkedIds.length} / {panos.length}
-          </Button>
           <Button
             icon="sort-numerical"
             className="px-4"
+            disabled={panos.length === 0}
             onClick={() => {
               if (panos.length <= 1) return
               const _panos = [...panos]
@@ -88,6 +86,9 @@ export default function Pano(props: PanoProps) {
               TOAST.success('Sorted')
             }}
           />
+          <Button active style={{ minWidth: 80, background: '#fff' }} className="text-xs">
+            {checkedIds.length} / {panos.length}
+          </Button>
           <Popover
             position="bottom"
             content={
@@ -111,7 +112,7 @@ export default function Pano(props: PanoProps) {
             }
           >
             <Button icon="plus">
-              Add
+              Import
             </Button>
           </Popover>
         </ButtonGroup>
@@ -157,7 +158,6 @@ export default function Pano(props: PanoProps) {
           />
         </ButtonGroup>
 
-        {/* view switch */}
         <ButtonGroup className="float-right">
           <Button
             icon="list"
