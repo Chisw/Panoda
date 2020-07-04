@@ -1,26 +1,58 @@
 import React, { useState, useEffect } from 'react'
-import { Switch, Popover, RadioGroup, Radio, Checkbox } from '@blueprintjs/core'
+import { Switch, Popover, RadioGroup, Radio, Checkbox, InputGroup, Button } from '@blueprintjs/core'
 import store from '../../ts/store'
+import MAP from '../../ts/map'
 
 export default function Setting() {
 
+  const storeCenterPoint = store.get('PANO_SETTING_CENTERPOINT') || ''
   const storeUseAlert = store.get('PANO_SETTING_USEALERT')
   const storeInsertEXIF = store.get('PANO_SETTING_INSERTEXIF')
+  const storeWaterMark = store.get('PANO_SETTING_WATERMARK') || ['1id', '2position', '3date', '4rname', '5link']
+  const storeImageQuality = store.get('PANO_SETTING_IMAGEQUALITY') || '.92'
 
+  const [centerPoint, setCenterPoint] = useState(storeCenterPoint)
   const [useAlert, setUseAlert] = useState(storeUseAlert === null ? false : storeUseAlert)
   const [insertEXIF, setInsertEXIF] = useState(storeInsertEXIF === null ? false : storeInsertEXIF)
-  const [watermarkList, setWatermarkList] = useState(store.get('PANO_SETTING_WATERMARK') || ['1id', '2position', '3date', '4rname', '5link'])
-  const [imageQuality, setImageQuality] = useState(store.get('PANO_SETTING_IMAGEQUALITY') || '.92')
+  const [watermarkList, setWatermarkList] = useState(storeWaterMark)
+  const [imageQuality, setImageQuality] = useState(storeImageQuality)
 
   useEffect(() => {
+    store.set('PANO_SETTING_CENTERPOINT', centerPoint)
     store.set('PANO_SETTING_USEALERT', useAlert)
     store.set('PANO_SETTING_INSERTEXIF', insertEXIF)
     store.set('PANO_SETTING_WATERMARK', watermarkList)
     store.set('PANO_SETTING_IMAGEQUALITY', imageQuality)
-  }, [useAlert, insertEXIF, watermarkList, imageQuality])
+  }, [centerPoint, useAlert, insertEXIF, watermarkList, imageQuality])
+
+  const handleSet = () => {
+    const center = MAP.getCenter()
+    setCenterPoint(JSON.stringify(center))
+  }
 
   return (
     <div>
+
+      <div className="flex border-b">
+        <div className="setting-left pt-4 pr-2">
+          <p className="text-base text-gray-800 font-light">Map Center</p>
+          <p className="text-sm text-gray-500 mt-2 leading-snug">
+            Set the current center point of the map as default when Panoda initializes.
+          </p>
+        </div>
+        <div className="flex-grow bg-gray-100 pt-4 pb-1 px-4">
+          <InputGroup
+            readOnly
+            className="w-72"
+            placeholder="No point remembered"
+            value={centerPoint}
+          />
+          <div className="my-2">
+            <Button small intent="primary" onClick={handleSet}>Set</Button>
+            <Button small className="ml-2" disabled={!centerPoint} onClick={() => setCenterPoint('')}>Clear</Button>
+          </div>
+        </div>
+      </div>
 
       <div className="flex border-b">
         <div className="setting-left pt-4 pr-2">
@@ -29,7 +61,7 @@ export default function Setting() {
             Alert when you close fetcher.
           </p>
         </div>
-        <div className="flex-grow bg-gray-100 pt-4 pb-1 pl-4">
+        <div className="flex-grow bg-gray-100 pt-4 pb-1 px-4">
           <Switch 
             label="Use alert" 
             checked={useAlert}
@@ -65,7 +97,7 @@ export default function Setting() {
             &nbsp;into image file.
           </p>
         </div>
-        <div className="flex-grow bg-gray-100 pt-4 pb-1 pl-4 pb-4">
+        <div className="flex-grow bg-gray-100 pt-4 pb-1 px-4 pb-4">
           <Switch 
             label="Insert"
             checked={insertEXIF}
@@ -81,7 +113,7 @@ export default function Setting() {
             The pano info will be filled on the bottom-left of each generated pano image.
           </p>
         </div>
-        <div className="flex-grow bg-gray-100 pt-4 pb-1 pl-4">
+        <div className="flex-grow bg-gray-100 pt-4 pb-1 px-4">
           {
             [
               { label: 'Pano ID', value: '1id' },
@@ -117,7 +149,7 @@ export default function Setting() {
             The quality of generated image.
           </p>
         </div>
-        <div className="flex-grow bg-gray-100 pt-4 pb-1 pl-4">
+        <div className="flex-grow bg-gray-100 pt-4 pb-1 px-4">
           <RadioGroup
             selectedValue={imageQuality}
             onChange={({ target: { value } }: any) => setImageQuality(value)}

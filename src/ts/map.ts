@@ -1,10 +1,11 @@
 import SVG_PIN from '../images/pin.svg'
 import SVG_RECT from '../images/rect.svg'
 
-import { PANO_ID_REG, /*CUSTOM_MAP*/ } from './constant'
+import { PANO_ID_REG } from './constant'
 import { IPano, IPoint } from './type'
 import { getDateStamp } from "./util"
 import TOAST from "../components/overlays/EasyToast"
+import store from './store'
 
 const G = window as any
 const BMap = G.BMap
@@ -13,13 +14,15 @@ const PANO_SERVER = new BMap.PanoramaService()
 
 let map: any
 
-interface MAPState {
+interface IMAP {
   parent: any
   init(): void
   clear(): void
   listen(selectWith: string): void
   unlisten(): void
   locate(): void
+  getCenter(): string
+  panTo(point: { lng: number, lat: number }): void
   getPinMarker(point: { lng: number, lat: number }): any
   getRectMarker(point: { lng: number, lat: number }): any
   getPanoIdByClicking(point: any, cb?: () => void): void
@@ -46,15 +49,18 @@ interface MAPState {
   setAreaSelector(event: any): void
 }
 
-const MAP: MAPState = {
+const MAP: IMAP = {
   parent: {
     scannerRunning: false,
     fetcherRunning: false,
   },
   init() {
+    const storePoint = store.get('PANO_SETTING_CENTERPOINT') || ''
+    const { lng, lat } = storePoint ? JSON.parse(storePoint) : { lng: 119.52, lat: 32.79}
+    
     map = new BMap.Map('map', {enableMapClick: false})
     
-    map.centerAndZoom(new BMap.Point(119.52, 32.79), 12)
+    map.centerAndZoom(new BMap.Point(lng, lat), 12)
     map.enableScrollWheelZoom(true)
     map.setMinZoom(5)
 
@@ -68,8 +74,6 @@ const MAP: MAPState = {
       const lv = map.getZoom()
       MAP.parent.setZoomLevel(lv)
     })
-
-    // map.setMapStyleV2({styleJson: CUSTOM_MAP})
   },
 
   clear() {
@@ -113,6 +117,15 @@ const MAP: MAPState = {
         enableHighAccuracy: true
       }
     )
+  },
+
+  getCenter() {
+    return map.getCenter()
+  },
+
+  panTo(point) {
+    const { lng, lat } = point
+    map.panTo(new BMap.Point(lng, lat))
   },
 
   getPinMarker(point) {
