@@ -71,6 +71,11 @@ const MAP: IMAP = {
     })
     map.addControl(navigationControl)
 
+    map.addControl(new BMap.CityListControl({
+      anchor: 1,
+      offset: new BMap.Size(10, 10),
+    }))
+
     map.addEventListener('tilesloaded', () => {
       const lv = map.getZoom()
       MAP.parent.setZoomLevel(lv)
