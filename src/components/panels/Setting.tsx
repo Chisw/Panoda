@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { Switch, Popover, RadioGroup, Radio, Checkbox, InputGroup, Button } from '@blueprintjs/core'
 import { DateRangeInput } from '@blueprintjs/datetime'
 import store from '../../ts/store'
@@ -40,7 +40,6 @@ export default function Setting() {
 
   return (
     <div>
-
       <div className="flex border-b">
         <div className="setting-left pt-4 pr-2">
           <p className="text-base text-gray-800 font-light">Map Center</p>
@@ -159,31 +158,29 @@ export default function Setting() {
           </p>
         </div>
         <div className="flex-grow bg-gray-100 pt-4 pb-1 px-4">
-          {
-            [
-              { label: 'Pano ID', value: '1id' },
-              { label: 'Position', value: '2position' },
-              { label: 'Date', value: '3date' },
-              { label: 'Road name', value: '4rname' },
-              { label: 'Panoda link', value: '5link' },
-            ].map(({ label, value }) => (
-              <Checkbox
-                key={value}
-                label={label}
-                value={value}
-                checked={watermarkList.includes(value)}
-                onChange={({ target: { checked } }: any) => {
-                  let _list = [...watermarkList]
-                  if (checked) {
-                    _list.push(value)
-                  } else {
-                    _list = _list.filter(item => item !== value)
-                  }
-                  setWatermarkList(_list)
-                }}
-              />
-            ))
-          }
+          {[
+            { label: 'Pano ID', value: '1id' },
+            { label: 'Position', value: '2position' },
+            { label: 'Date', value: '3date' },
+            { label: 'Road name', value: '4rname' },
+            { label: 'Panoda link', value: '5link' },
+          ].map(({ label, value }) => (
+            <Checkbox
+              key={value}
+              label={label}
+              value={value}
+              checked={watermarkList.includes(value)}
+              onChange={({ target: { checked } }: any) => {
+                let _list = [...watermarkList]
+                if (checked) {
+                  _list.push(value)
+                } else {
+                  _list = _list.filter(item => item !== value)
+                }
+                setWatermarkList(_list)
+              }}
+            />
+          ))}
         </div>
       </div>
 

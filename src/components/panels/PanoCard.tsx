@@ -1,4 +1,3 @@
-import React from 'react'
 import { ButtonGroup, Button, Popover, Classes, Checkbox } from '@blueprintjs/core'
 import { IPano } from '../../ts/type'
 import MAP from '../../ts/map'
@@ -111,10 +110,7 @@ export default function PanoCard(props: PanoCardProps) {
               </div>
             }
           >
-            <Button
-              icon="trash"
-              intent="danger"
-            />
+            <Button icon="trash" intent="danger" />
           </Popover>
         </ButtonGroup>
       </div>

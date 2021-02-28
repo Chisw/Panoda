@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Dialog, TextArea, Button, Classes, Tooltip } from '@blueprintjs/core'
 import { PANO_ID_REG } from '../../ts/constant'
 import MAP from '../../ts/map'

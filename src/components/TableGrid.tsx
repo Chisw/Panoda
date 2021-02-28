@@ -1,5 +1,3 @@
-import React from 'react'
-
 export default function TableGrid() {
   return (
     <table className="table-grid absolute z-0 top-0 right-0 bottom-0 left-0 w-full text-base text-gray-400 border-collapse bg-gray-100">

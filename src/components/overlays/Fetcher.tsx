@@ -9,7 +9,6 @@ import { IPano } from '../../ts/type'
 import store from '../../ts/store'
 import TOAST from './EasyToast'
 import MAP from '../../ts/map'
-
 interface FetcherProps {
   panos: IPano[] | []
   fetchResList: any[]

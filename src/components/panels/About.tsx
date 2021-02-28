@@ -96,33 +96,31 @@ export default function About() {
 
       <h3 className="pt-4 text-base font-light mb-2"><Icon icon="link" className="w-6" />Thanks to</h3>
       <div className="pl-6 mb-4 pt-1">
-        {
-          [
-            { label: 'BaiduMap', link: 'http://lbsyun.baidu.com' },
-            { label: 'Blueprint', link: 'https://blueprintjs.com' },
-            { label: 'TailwindCSS', link: 'https://tailwindcss.com/' },
-            { label: 'JSZip.js', link: 'https://github.com/Stuk/jszip' },
-            { label: 'FileSaver.js', link: 'https://github.com/eligrey/FileSaver.js' },
-            { label: 'Piexifjs', link: 'https://github.com/hMatoba/piexifjs' },
-          ].map(({ label, link }, index) => (
-            <a
-              key={index}
-              href={link}
-              target="_blank"
-              rel="noreferrer"
-              className="no-underline"
+        {[
+          { label: 'BaiduMap', link: 'http://lbsyun.baidu.com' },
+          { label: 'Blueprint', link: 'https://blueprintjs.com' },
+          { label: 'TailwindCSS', link: 'https://tailwindcss.com/' },
+          { label: 'JSZip.js', link: 'https://github.com/Stuk/jszip' },
+          { label: 'FileSaver.js', link: 'https://github.com/eligrey/FileSaver.js' },
+          { label: 'Piexifjs', link: 'https://github.com/hMatoba/piexifjs' },
+        ].map(({ label, link }, index) => (
+          <a
+            key={index}
+            href={link}
+            target="_blank"
+            rel="noreferrer"
+            className="no-underline"
+          >
+            <Tag
+              minimal
+              interactive
+              intent="primary"
+              className="mr-2"
             >
-              <Tag
-                minimal
-                interactive
-                intent="primary"
-                className="mr-2"
-              >
-                {label}
-              </Tag>
-            </a>
-          ))
-        }
+              {label}
+            </Tag>
+          </a>
+        ))}
       </div>
 
       <p className="absolute bottom-0 w-full py-4 text-xs text-gray-600 border-t bg-white font-mono flex justify-between">

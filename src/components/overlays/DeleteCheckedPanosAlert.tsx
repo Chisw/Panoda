@@ -1,4 +1,3 @@
-import React from 'react'
 import { Alert } from '@blueprintjs/core'
 import { IPano } from '../../ts/type'
 import TOAST from './EasyToast'

@@ -180,41 +180,39 @@ export default function Pano(props: PanoProps) {
         }`}
       >
         {panos.length === 0 && (<EmptyPano />)}
-        {
-          panos.map( (pano, index) => {
-            return panoView === 'list'
-              ? (
-                <PanoBar
-                  key={index}
-                  index={index}
-                  pano={pano}
-                  panos={panos}
-                  setPanos={setPanos}
-                  checkedIds={checkedIds}
-                  setCheckedIds={setCheckedIds}
-                  shift1={shift1}
-                  shift2={shift2}
-                  setShift1={setShift1}
-                  setShift2={setShift2}
-                />
-              )
-              : (
-                <PanoCard
-                  key={index}
-                  index={index}
-                  pano={pano}
-                  panos={panos}
-                  setPanos={setPanos}
-                  checkedIds={checkedIds}
-                  setCheckedIds={setCheckedIds}
-                  shift1={shift1}
-                  shift2={shift2}
-                  setShift1={setShift1}
-                  setShift2={setShift2}
-                />
-              )
-          })
-        }
+        {panos.map( (pano, index) => {
+          return panoView === 'list'
+            ? (
+              <PanoBar
+                key={index}
+                index={index}
+                pano={pano}
+                panos={panos}
+                setPanos={setPanos}
+                checkedIds={checkedIds}
+                setCheckedIds={setCheckedIds}
+                shift1={shift1}
+                shift2={shift2}
+                setShift1={setShift1}
+                setShift2={setShift2}
+              />
+            )
+            : (
+              <PanoCard
+                key={index}
+                index={index}
+                pano={pano}
+                panos={panos}
+                setPanos={setPanos}
+                checkedIds={checkedIds}
+                setCheckedIds={setCheckedIds}
+                shift1={shift1}
+                shift2={shift2}
+                setShift1={setShift1}
+                setShift2={setShift2}
+              />
+            )
+        })}
       </div>
       
       <InputIdsDialog 

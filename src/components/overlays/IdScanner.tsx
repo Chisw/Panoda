@@ -5,7 +5,7 @@ import CodeButton from '../CodeButon'
 import { IPoint } from '../../ts/type'
 import { CMD } from '../../ts/util'
 import { LEVEL_OFFSETS } from '../../ts/constant'
-import _ from 'lodash'
+import { uniq } from 'lodash'
 import TOAST from './EasyToast'
 import MAP from '../../ts/map'
 
@@ -138,7 +138,7 @@ export default function IdScanner(props: IdScannerProps) {
       },
       // end
       () => {
-        const uniquedIds = _.uniq(ids)
+        const uniquedIds = uniq(ids)
         const totalLen = ids.length
         const uniqueLen = uniquedIds.length
         const repeatedLen = totalLen - uniqueLen

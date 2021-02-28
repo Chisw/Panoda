@@ -1,4 +1,3 @@
-import React from 'react'
 import { ButtonGroup, Button, Popover, Classes, Checkbox } from '@blueprintjs/core'
 import { IPano } from '../../ts/type'
 import MAP from '../../ts/map'
@@ -94,10 +93,9 @@ export default function PanoBar(props: PanoBarProps) {
         </p>
         <p className="text-xs text-gray-500">
           Date: {date}
-          {
-            rname
-              ? <span className="ml-4">Road: {rname}</span>
-              : ''
+          {rname
+            ? <span className="ml-4">Road: {rname}</span>
+            : ''
           }
         </p>
         <p className="text-xs text-gray-500">
@@ -135,10 +133,7 @@ export default function PanoBar(props: PanoBarProps) {
               </div>
             }
           >
-            <Button
-              icon="trash"
-              intent="danger"
-            />
+            <Button icon="trash" intent="danger" />
           </Popover>
         </ButtonGroup>
       </div>

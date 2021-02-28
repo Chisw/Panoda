@@ -1,4 +1,3 @@
-import React from 'react'
 import { NonIdealState } from '@blueprintjs/core'
 
 export function EmptyPano() {

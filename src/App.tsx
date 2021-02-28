@@ -23,12 +23,14 @@ const App: React.FC = () => {
   const [panos, setPanos] = useState(store.get('PANODA_PANOS') || [])
   const [checkedIds, setCheckedIds] = useState(store.get('PANODA_CHECKED_IDS') || [])
 
-  MAP.parent.setLoading = setLoading
-  MAP.parent.panos = panos
-  MAP.parent.setPanos = setPanos
-  MAP.parent.setSameRoadPanos = setSameRoadPanos
-  MAP.parent.setAreaCenter = setAreaCenter
-  MAP.parent.setZoomLevel = setZoomLevel
+  useEffect(() => {
+    MAP.parent.setLoading = setLoading
+    MAP.parent.panos = panos
+    MAP.parent.setPanos = setPanos
+    MAP.parent.setSameRoadPanos = setSameRoadPanos
+    MAP.parent.setAreaCenter = setAreaCenter
+    MAP.parent.setZoomLevel = setZoomLevel
+  }, [panos])
 
   const initSettings = () => {
     const isSet = store.get('PANO_SETTING_SET')

@@ -1,6 +1,5 @@
 import SVG_PIN from '../images/pin.svg'
 import SVG_RECT from '../images/rect.svg'
-
 import { PANO_ID_REG } from './constant'
 import { IPano, IPoint } from './type'
 import { getDateStamp } from "./util"
@@ -14,7 +13,6 @@ const PANO_COVER = new BMap.PanoramaCoverageLayer()
 const PANO_SERVER = new BMap.PanoramaService()
 
 let map: any
-
 interface IMAP {
   parent: any
   init(): void
