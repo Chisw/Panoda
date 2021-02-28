@@ -1,88 +1,47 @@
 {
-  "name": "pano",
+  "name": "Panoda",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@babel/core": "7.11.5",
-    "@blueprintjs/core": "^3.31.0",
-    "@blueprintjs/datetime": "^3.18.6",
-    "@svgr/webpack": "5.4.0",
+    "@blueprintjs/core": "^3.39.0",
+    "@blueprintjs/datetime": "^3.20.5",
+    "@craco/craco": "^6.1.1",
+    "@testing-library/jest-dom": "^5.11.4",
+    "@testing-library/react": "^11.1.0",
+    "@testing-library/user-event": "^12.7.3",
     "@types/file-saver": "^2.0.1",
-    "@types/jest": "26.0.13",
+    "@types/jest": "^26.0.15",
     "@types/jszip": "^3.4.1",
-    "@types/lodash": "^4.14.161",
-    "@types/luxon": "^1.24.4",
-    "@types/node": "14.6.3",
-    "@types/react": "16.9.49",
-    "@types/react-dom": "16.9.8",
-    "@typescript-eslint/eslint-plugin": "4.0.1",
-    "@typescript-eslint/parser": "4.0.1",
-    "babel-eslint": "10.1.0",
-    "babel-jest": "^26.3.0",
-    "babel-loader": "8.1.0",
-    "babel-plugin-named-asset-import": "^0.3.6",
-    "babel-preset-react-app": "^9.1.2",
-    "camelcase": "^6.0.0",
-    "case-sensitive-paths-webpack-plugin": "2.3.0",
-    "css-loader": "4.2.2",
-    "dotenv": "8.2.0",
-    "dotenv-expand": "5.1.0",
-    "eslint": "^7.8.1",
-    "eslint-config-react-app": "^5.2.1",
-    "eslint-loader": "4.0.2",
-    "eslint-plugin-flowtype": "5.2.0",
-    "eslint-plugin-import": "2.22.0",
-    "eslint-plugin-jsx-a11y": "6.3.1",
-    "eslint-plugin-react": "7.20.6",
-    "eslint-plugin-react-hooks": "^4.1.0",
-    "file-loader": "6.1.0",
-    "file-saver": "^2.0.2",
-    "fs-extra": "9.0.1",
-    "html-webpack-plugin": "4.4.1",
-    "identity-obj-proxy": "3.0.0",
-    "is-wsl": "^2.2.0",
-    "jest": "26.4.2",
-    "jest-environment-jsdom-fourteen": "1.0.1",
-    "jest-resolve": "26.4.0",
-    "jest-watch-typeahead": "0.6.0",
-    "jszip": "^3.5.0",
-    "lodash": "^4.17.20",
-    "luxon": "^1.25.0",
-    "mini-css-extract-plugin": "0.11.0",
-    "optimize-css-assets-webpack-plugin": "5.0.4",
+    "@types/lodash": "^4.14.168",
+    "@types/luxon": "^1.26.1",
+    "@types/node": "^14.14.31",
+    "@types/react": "^17.0.0",
+    "@types/react-dom": "^17.0.0",
+    "autoprefixer": "^9",
+    "file-saver": "^2.0.5",
+    "jszip": "^3.6.0",
+    "lodash": "^4.17.21",
+    "luxon": "^1.26.0",
     "piexif-ts": "^2.0.16",
-    "pnp-webpack-plugin": "1.6.4",
-    "postcss-flexbugs-fixes": "4.2.1",
-    "postcss-loader": "3.0.0",
-    "postcss-normalize": "9.0.0",
-    "postcss-preset-env": "6.7.0",
-    "postcss-safe-parser": "4.0.2",
-    "react": "^16.13.1",
-    "react-app-polyfill": "^1.0.6",
-    "react-dev-utils": "10.2.1",
-    "react-dom": "^16.13.1",
-    "resolve": "1.17.0",
-    "resolve-url-loader": "3.1.1",
-    "sass-loader": "10.0.1",
-    "semver": "7.3.2",
-    "style-loader": "1.2.1",
-    "tailwindcss": "^1.7.6",
-    "terser-webpack-plugin": "4.1.0",
-    "ts-pnp": "1.2.0",
-    "typescript": "4.0.2",
-    "url-loader": "4.1.0",
-    "webpack": "4.44.1",
-    "webpack-dev-server": "3.11.0",
-    "webpack-manifest-plugin": "2.2.0",
-    "workbox-webpack-plugin": "5.1.3"
+    "postcss": "^7",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "react-scripts": "4.0.3",
+    "tailwindcss": "npm:@tailwindcss/postcss7-compat",
+    "typescript": "^4.2.2",
+    "web-vitals": "^1.0.1"
   },
   "scripts": {
-    "start": "node scripts/start.js",
-    "build": "node scripts/build.js",
-    "test": "node scripts/test.js"
+    "start": "craco start",
+    "start:oss": "craco start & cd ../../oss && anywhere",
+    "build": "craco build",
+    "test": "craco test"
   },
   "eslintConfig": {
-    "extends": "react-app"
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
   },
   "browserslist": {
     "production": [
@@ -94,59 +53,6 @@
       "last 1 chrome version",
       "last 1 firefox version",
       "last 1 safari version"
-    ]
-  },
-  "jest": {
-    "roots": [
-      "<rootDir>/src"
-    ],
-    "collectCoverageFrom": [
-      "src/**/*.{js,jsx,ts,tsx}",
-      "!src/**/*.d.ts"
-    ],
-    "setupFiles": [
-      "react-app-polyfill/jsdom"
-    ],
-    "setupFilesAfterEnv": [],
-    "testMatch": [
-      "<rootDir>/src/**/__tests__/**/*.{js,jsx,ts,tsx}",
-      "<rootDir>/src/**/*.{spec,test}.{js,jsx,ts,tsx}"
-    ],
-    "testEnvironment": "jest-environment-jsdom-fourteen",
-    "transform": {
-      "^.+\\.(js|jsx|ts|tsx)$": "<rootDir>/node_modules/babel-jest",
-      "^.+\\.css$": "<rootDir>/config/jest/cssTransform.js",
-      "^(?!.*\\.(js|jsx|ts|tsx|css|json)$)": "<rootDir>/config/jest/fileTransform.js"
-    },
-    "transformIgnorePatterns": [
-      "[/\\\\]node_modules[/\\\\].+\\.(js|jsx|ts|tsx)$",
-      "^.+\\.module\\.(css|sass|scss)$"
-    ],
-    "modulePaths": [],
-    "moduleNameMapper": {
-      "^react-native$": "react-native-web",
-      "^.+\\.module\\.(css|sass|scss)$": "identity-obj-proxy"
-    },
-    "moduleFileExtensions": [
-      "web.js",
-      "js",
-      "web.ts",
-      "ts",
-      "web.tsx",
-      "tsx",
-      "json",
-      "web.jsx",
-      "jsx",
-      "node"
-    ],
-    "watchPlugins": [
-      "jest-watch-typeahead/filename",
-      "jest-watch-typeahead/testname"
-    ]
-  },
-  "babel": {
-    "presets": [
-      "react-app"
     ]
   }
 }
